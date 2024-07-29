@@ -1,0 +1,39 @@
+This README file contains information on the contents of the meta-axelera layer.
+
+Please see the corresponding sections below for details.
+
+Dependencies
+============
+
+  URI: https://git.openembedded.org/openembedded-core
+  branch: kirkstone
+
+  URI: git://git.yoctoproject.org/meta-arm
+  branch: kirkstone
+
+Patches
+=======
+
+Please submit any patches against the meta-axelera layer as patches to
+feedback@bootlin.com or as github pull requests at
+https://github.com/bootlin/simplest-yocto-setup
+
+Table of Contents
+=================
+
+  I. Adding the meta-axelera layer to your build
+ II. Misc
+
+
+I. Adding the meta-axelera layer to your build
+=================================================
+
+Run 'bitbake-layers add-layer meta-axelera'
+
+II. Misc
+========
+
+This layer provides an example of the simplest, but realistic and working,
+Yocto/OpenEmbedded setup for end products. It is not useful as is, but
+rather as a reference on how a layer can be written without unnecessary
+complications.
