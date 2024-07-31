@@ -1,0 +1,31 @@
+From a680a6515fe47c637366b2a797926fc8999aacdd Mon Sep 17 00:00:00 2001
+From: lvsx <lvsx@t-chip.com.cn>
+Date: Mon, 20 Feb 2023 07:41:50 +0000
+Subject: [PATCH] drivers: spi: add spi to uart support
+
+---
+ drivers/spi/Makefile                           |   2 +-
+ drivers/spi/{spi-wk2xxx.o => spi-wk2xxx_64bit} | Bin
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename drivers/spi/{spi-wk2xxx.o => spi-wk2xxx_64bit} (100%)
+
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 423949b48135..922d8560bcd5 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -132,7 +132,7 @@ obj-$(CONFIG_SPI_XTENSA_XTFPGA)		+= spi-xtensa-xtfpga.o
+ obj-$(CONFIG_SPI_ZYNQ_QSPI)		+= spi-zynq-qspi.o
+ obj-$(CONFIG_SPI_ZYNQMP_GQSPI)		+= spi-zynqmp-gqspi.o
+ obj-$(CONFIG_SPI_AMD)			+= spi-amd.o
+-obj-$(CONFIG_SPI_WK2XXX)		+= spi-wk2xxx.o
++obj-$(CONFIG_SPI_WK2XXX)		+= spi-wk2xxx_64bit
+ obj-$(CONFIG_SPI_FIREFLY) 		+= spi-firefly-demo.o
+ 
+ 
+diff --git a/drivers/spi/spi-wk2xxx.o b/drivers/spi/spi-wk2xxx_64bit
+similarity index 100%
+rename from drivers/spi/spi-wk2xxx.o
+rename to drivers/spi/spi-wk2xxx_64bit
+-- 
+2.17.1
+

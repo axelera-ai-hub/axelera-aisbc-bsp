@@ -1,7 +1,7 @@
 header:
   version: 11
 
-machine: firefly-rk3588
+machine: itx-3588j
 distro: voyager
 target:
   - voyager-image
