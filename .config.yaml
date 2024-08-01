@@ -45,3 +45,7 @@ local_conf_header:
     # Some useful lines you may want to copy to your site.conf for development
     # INHERIT += "rm_work"
     # EXTRA_IMAGE_FEATURES = "debug-tweaks"
+    IMAGE_FSTYPES:append = " ${RK_ROOTFS_TYPE} wic"
+    RK_ROOTDEV_UUID ?= "614e0000-0000-4b53-8000-1d28000054a9"
+    RK_ROOTFS_TYPE ?= "ext4"
+    WKS_FILE = "generic-gptdisk.wks.in"
