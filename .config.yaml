@@ -5,6 +5,7 @@ machine: itx-3588j
 distro: voyager
 target:
   - voyager-image
+  - voyager-image-weston
 
 repos:
   bitbake:
