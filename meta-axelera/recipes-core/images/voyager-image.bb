@@ -27,4 +27,6 @@ do_fixup_wks() {
 }
 addtask do_fixup_wks after do_write_wks_template before do_image_wic
 
+IMAGE_INIT_MANAGER  = "systemd"
+
 inherit core-image
