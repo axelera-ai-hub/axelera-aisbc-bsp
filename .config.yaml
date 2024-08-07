@@ -11,7 +11,6 @@ repos:
   bitbake:
     url: "https://git.openembedded.org/bitbake"
     commit: 734b0ea3dfe45eb16ee60f0c2c388e22af4040e0
-    tag: "2022-04.20-kirkstone"
     layers:
       .: excluded
 
