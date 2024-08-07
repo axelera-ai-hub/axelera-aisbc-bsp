@@ -6,6 +6,7 @@ SUMMARY = "A simple, minimal image"
 
 IMAGE_INSTALL = " \
   dropbear \
+  gstreamer1.0-rockchip \
   packagegroup-core-boot \
 "
 
