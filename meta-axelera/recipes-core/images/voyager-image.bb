@@ -6,6 +6,11 @@ SUMMARY = "A simple, minimal image"
 
 IMAGE_INSTALL = " \
   dropbear \
+  gstreamer1.0-libav \
+  gstreamer1.0-plugins-bad \
+  gstreamer1.0-plugins-base \
+  gstreamer1.0-plugins-good \
+  gstreamer1.0-plugins-ugly \
   gstreamer1.0-rockchip \
   libdrm \
   packagegroup-core-boot \
