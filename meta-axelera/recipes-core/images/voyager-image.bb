@@ -13,6 +13,7 @@ IMAGE_INSTALL = " \
   gstreamer1.0-plugins-ugly \
   gstreamer1.0-rockchip \
   libdrm \
+  os-release \
   packagegroup-core-boot \
   rockchip-libmali \
 "
