@@ -46,3 +46,7 @@ The meta-axelera layer contains fireflyx machine configurations, called
 # Run your first build
 
 kas-container build
+
+# Build the host sdk
+
+kas-container shell .config.yaml -c "bitbake -fc populate\_sdk voyager-image"
