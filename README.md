@@ -44,4 +44,5 @@ The meta-axelera layer contains fireflyx machine configurations, called
 **firefly-rk3588**.
 
 # Run your first build
-bitbake voyager-image
+
+kas-container build
