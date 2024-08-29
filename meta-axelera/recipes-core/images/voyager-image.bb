@@ -6,6 +6,7 @@ SUMMARY = "A simple, minimal image"
 
 IMAGE_INSTALL = " \
   dropbear \
+  ffmpeg \
   gstreamer1.0-libav \
   gstreamer1.0-plugins-bad \
   gstreamer1.0-plugins-base \
