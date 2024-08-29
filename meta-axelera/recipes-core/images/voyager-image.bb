@@ -5,8 +5,10 @@
 SUMMARY = "A simple, minimal image"
 
 IMAGE_INSTALL = " \
+  bash \
   dropbear \
   ffmpeg \
+  firefly-fan \
   gstreamer1.0-libav \
   gstreamer1.0-plugins-bad \
   gstreamer1.0-plugins-base \
