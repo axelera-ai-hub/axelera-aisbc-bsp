@@ -47,7 +47,7 @@ local_conf_header:
     # INHERIT += "rm_work"
     INIT_MANAGER = "systemd"
     EXTRA_IMAGE_FEATURES = "debug-tweaks"
-    IMAGE_FSTYPES:append = " ${RK_ROOTFS_TYPE} wic"
+    IMAGE_FSTYPES:append = " ${RK_ROOTFS_TYPE} wic wic.gz wic.bmap ext4.gz"
     RK_ROOTDEV_UUID ?= "614e0000-0000-4b53-8000-1d28000054a9"
     RK_ROOTFS_TYPE ?= "ext4"
     WKS_FILE = "generic-gptdisk.wks.in"
