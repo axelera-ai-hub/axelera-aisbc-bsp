@@ -1,1 +1,4 @@
-PACKAGECONFIG:append = "mpp rga"
+PACKAGECONFIG:append = "\
+  mpp \
+  rga \
+"
