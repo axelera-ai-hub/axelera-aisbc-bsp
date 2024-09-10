@@ -45,6 +45,7 @@ local_conf_header:
   meta-axelera: |
     # Some useful lines you may want to copy to your site.conf for development
     # INHERIT += "rm_work"
+    INHERIT += "cve-check"
     INIT_MANAGER = "systemd"
     EXTRA_IMAGE_FEATURES = "debug-tweaks"
     IMAGE_FSTYPES:append = " ${RK_ROOTFS_TYPE} wic wic.gz wic.bmap ext4.gz"
