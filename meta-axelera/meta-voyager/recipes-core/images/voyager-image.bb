@@ -5,6 +5,7 @@
 SUMMARY = "A simple, minimal image"
 
 IMAGE_INSTALL = " \
+  axelera-container \
   bash \
   docker \
   dropbear \
@@ -19,6 +20,8 @@ IMAGE_INSTALL = " \
   libdrm \
   os-release \
   packagegroup-core-boot \
+  python3 \
+  python3-pip \
   kernel-module-axelera \
   rockchip-libmali \
 "
