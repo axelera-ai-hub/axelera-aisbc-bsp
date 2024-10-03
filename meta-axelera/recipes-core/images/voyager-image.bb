@@ -6,6 +6,7 @@ SUMMARY = "A simple, minimal image"
 
 IMAGE_INSTALL = " \
   bash \
+  docker \
   dropbear \
   ffmpeg \
   firefly-fan \

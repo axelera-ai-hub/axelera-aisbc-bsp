@@ -24,7 +24,14 @@ repos:
     url: "git://git.openembedded.org/meta-openembedded"
     commit: dd3d2293ffdf2559f8a433f241765a8ab50cd085
     layers:
+      meta-filesystems:
       meta-oe:
+      meta-python:
+      meta-networking:
+
+  meta-virtualization:
+    url: "https://git.yoctoproject.org/meta-virtualization"
+    commit: e0cd09e3b8367e2745a27db2e7ff1f8452c8cf41
 
   meta-arm:
     url: "git://git.yoctoproject.org/meta-arm"
