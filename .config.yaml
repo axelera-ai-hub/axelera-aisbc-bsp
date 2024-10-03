@@ -10,32 +10,32 @@ target:
 repos:
   bitbake:
     url: "https://git.openembedded.org/bitbake"
-    commit: 734b0ea3dfe45eb16ee60f0c2c388e22af4040e0
+    commit: ec2a99a077da9aa0e99e8b05e0c65dcbd45864b1
     layers:
       .: excluded
 
   openembedded-core:
     url: "https://git.openembedded.org/openembedded-core"
-    commit: f6de96c9fa8d0b6c81c32016f342ad93c8940d9e
+    commit: ff720f337e40761c7d4d544c963cf518ad5403ad
     layers:
       meta:
 
   meta-openembedded:
     url: "git://git.openembedded.org/meta-openembedded"
-    commit: 4052c97dc83d0c88fc277d6fc1815e0699020daa
+    commit: dd3d2293ffdf2559f8a433f241765a8ab50cd085
     layers:
       meta-oe:
 
   meta-arm:
     url: "git://git.yoctoproject.org/meta-arm"
-    commit: 260e3adc2bf322f52d81c0642c825088a88bb051
+    commit: bf98ef902e6e7042e46a69fb2df6c68d00de2764
     layers:
       meta-arm-toolchain:
       meta-arm:
 
   meta-rockchip:
     url: "https://github.com/JeffyCN/meta-rockchip.git"
-    commit: fefd732272a7a7d2773c0e7ed39f0e8a5ced2766
+    commit: 5832fc26ccf8e021b0be9be44929e9cb86174422
 
   meta-axelera:
     layers:
