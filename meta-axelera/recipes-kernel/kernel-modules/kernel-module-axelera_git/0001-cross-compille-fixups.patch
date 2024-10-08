@@ -1,0 +1,41 @@
+From ea7e97df45470a1b1183c11bc75e563c9a11fd1d Mon Sep 17 00:00:00 2001
+From: Adam Duskett <adam.duskett@amarulasolutions.com>
+Date: Tue, 8 Oct 2024 12:15:56 +0200
+Subject: [PATCH] cross-compille fixups
+
+Add the following to Makefile to allow cross-compiling in Yocto:
+ - ARCH variable
+ - all:
+ - clean:
+
+Clean is optional, but makes managing development a bit easier.
+
+Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
+---
+ Makefile | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 2743e4e..dab65e2 100755
+--- a/Makefile
++++ b/Makefile
+@@ -1,5 +1,5 @@
+-
+ # Copyright (c) 2023 Axelera AI. All rights reserved.
++ARCH ?= arm64
+ 
+ obj-m += dmabuf-triton-exporter.o
+ obj-m += dmabuf-triton-importer.o
+@@ -8,3 +8,9 @@ obj-m += metis.o
+ 
+ metis-y += metis-core.o
+ metis-y += metis-dma-buf.o
++
++all:
++	make ARCH=$(ARCH) -C $(KERNEL_PATH) M=$(PWD) modules
++
++clean:
++	make ARCH=$(ARCH) -C $(KERNEL_PATH) M=$(PWD) clean
+-- 
+2.46.2
+

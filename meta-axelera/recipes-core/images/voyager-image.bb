@@ -19,6 +19,7 @@ IMAGE_INSTALL = " \
   libdrm \
   os-release \
   packagegroup-core-boot \
+  kernel-module-axelera \
   rockchip-libmali \
 "
 
