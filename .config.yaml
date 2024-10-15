@@ -47,6 +47,7 @@ repos:
   meta-axelera:
     layers:
       meta-axelera:
+      meta-axelera/meta-voyager:
 
 local_conf_header:
   meta-axelera: |
