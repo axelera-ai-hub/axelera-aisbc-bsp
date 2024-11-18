@@ -14,6 +14,7 @@ SRCREV = "a30d5a5e2455f04b855fdd8aacbf0ec832004202"
 SRC_URI = " \
 	git://gitlab.com/firefly-linux/kernel.git;protocol=https;nobranch=1;branch="rk3588/firefly"; \
 	file://${THISDIR}/files/cgroups.cfg \
+	file://${THISDIR}/files/axelera.cfg \
 "
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
