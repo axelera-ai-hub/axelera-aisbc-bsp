@@ -1,0 +1,27 @@
+From d8110bb58fe8615961ae63741bd38a6c26ebdec4 Mon Sep 17 00:00:00 2001
+From: Michael Trimarchi <michael@amarulasolutions.com>
+Date: Fri, 15 Nov 2024 10:42:27 +0000
+Subject: [PATCH] arm: dts: rk3588-firefly-itx-3588j force regulator to be
+ always on for pcie
+
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+---
+ arch/arm64/boot/dts/rockchip/rk3588-firefly-itx-3588j.dtsi | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-firefly-itx-3588j.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-firefly-itx-3588j.dtsi
+index 43a92e294763..572649ec281c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-firefly-itx-3588j.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-firefly-itx-3588j.dtsi
+@@ -255,9 +255,10 @@ &pcie3x4 {
+ 	status = "okay";
+ };
+ 
+-&vcc3v3_pcie30{
++&vcc3v3_pcie30 {
+ 	gpios = <&gpio2 RK_PC5 GPIO_ACTIVE_HIGH>;
+ 	startup-delay-us = <5000>;
++	regulator-always-on;
+ 	status = "okay";
+ };
+ 
