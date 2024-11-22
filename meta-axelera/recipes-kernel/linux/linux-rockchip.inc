@@ -18,6 +18,13 @@ do_patch:append() {
 		sed -i -e '1s|^#!.*python[23]*|#!/usr/bin/env ${PYTHON_PN}|' $s
 	done
 
+	# Without this firmware, the kernel fails to build with the following error:
+	# Error: file not found: drivers/gpu/arm/bifrost/mali_csffw.bin
+	if [ -f "${S}/drivers/gpu/arm/bifrost/mali_csffw.bin" ];then
+		install -d ${B}/drivers/gpu/arm/bifrost
+		install ${S}/drivers/gpu/arm/bifrost/mali_csffw.bin ${B}/drivers/gpu/arm/bifrost/mali_csffw.bin
+	fi
+
 	#Copy some files needed by the firefly kernel
 	if [ -f "${STAGING_KERNEL_DIR}/drivers/spi/spi-wk2xxx_64bit" ];then
 		install -d ${B}/drivers/spi/
