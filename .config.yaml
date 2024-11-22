@@ -41,8 +41,8 @@ repos:
       meta-arm:
 
   meta-rockchip:
-    url: "https://github.com/JeffyCN/meta-rockchip.git"
-    commit: 5832fc26ccf8e021b0be9be44929e9cb86174422
+    url: "ssh://gitea@gitea.amarulasolutions.com:38745/axelera/meta-rockchip.git"
+    commit: fb6193a5f5cf80070cf8182c06cb5621433111aa
 
   meta-axelera:
     layers:
