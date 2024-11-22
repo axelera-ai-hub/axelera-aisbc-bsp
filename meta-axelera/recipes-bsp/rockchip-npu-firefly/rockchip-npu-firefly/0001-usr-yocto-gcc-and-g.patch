@@ -1,0 +1,31 @@
+From 02ac2b2de213c3b6124c4ad559ed43fb231a33df Mon Sep 17 00:00:00 2001
+From: lvsx <lvsx@t-chip.com.cn>
+Date: Thu, 13 Jun 2024 16:18:57 +0800
+Subject: [PATCH] usr yocto gcc and g++
+
+---
+ examples/rknn_yolov5_demo/build-linux_RK3588.sh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/examples/rknn_yolov5_demo/build-linux_RK3588.sh b/examples/rknn_yolov5_demo/build-linux_RK3588.sh
+index 2d60dda..7e50b7d 100755
+--- a/examples/rknn_yolov5_demo/build-linux_RK3588.sh
++++ b/examples/rknn_yolov5_demo/build-linux_RK3588.sh
+@@ -1,11 +1,11 @@
+ set -e
+ 
+ TARGET_SOC="RK3588"
+-GCC_COMPILER=aarch64-linux-gnu
++#GCC_COMPILER=aarch64-linux-gnu
+ 
+ export LD_LIBRARY_PATH=${TOOL_CHAIN}/lib64:$LD_LIBRARY_PATH
+-export CC=${GCC_COMPILER}-gcc
+-export CXX=${GCC_COMPILER}-g++
++#export CC=${GCC_COMPILER}-gcc
++#export CXX=${GCC_COMPILER}-g++
+ 
+ ROOT_PWD=$( cd "$( dirname $0 )" && cd -P "$( dirname "$SOURCE" )" && pwd )
+ 
+-- 
+2.25.1
+

@@ -24,6 +24,7 @@ IMAGE_INSTALL = " \
   python3-pip \
   kernel-module-axelera \
   rockchip-libmali \
+  rockchip-npu-firefly \
 "
 
 IMAGE_LINGUAS = " "
