@@ -18,8 +18,6 @@ do_patch:append() {
 		sed -i -e '1s|^#!.*python[23]*|#!/usr/bin/env ${PYTHON_PN}|' $s
 	done
 
-	cp ${STAGING_KERNEL_DIR}/ramdisk.img ${B}/
-
 	#Copy some files needed by the firefly kernel
 	if [ -f "${STAGING_KERNEL_DIR}/drivers/spi/spi-wk2xxx_64bit" ];then
 		install -d ${B}/drivers/spi/
@@ -177,11 +175,6 @@ do_install:prepend() {
 			ln -sf ${RK_KERNEL_DTS}.dtb ${EXTBOOT_DIR}/rk-kernel.dtb
 
 			echo "\tfdt /rk-kernel.dtb" >> ${EXTBOOT_DIR}/extlinux/extlinux.conf
-
-			if [ -f "${B}/ramdisk.img" ]; then
-				cp ${B}/ramdisk.img ${EXTBOOT_DIR}/initrd-${KERNEL_VERSION}
-				echo "\tinitrd /initrd-${KERNEL_VERSION}" >> ${EXTBOOT_DIR}/extlinux/extlinux.conf
-			fi
 
 			cp ${B}/.config ${EXTBOOT_DIR}/config-${KERNEL_VERSION}
 			cp ${B}/System.map ${EXTBOOT_DIR}/System.map-${KERNEL_VERSION}
