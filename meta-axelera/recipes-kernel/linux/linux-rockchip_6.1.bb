@@ -1,6 +1,7 @@
 # Copyright (C) 2024, Rockchip Electronics Co., Ltd
 # Released under the MIT license (see COPYING.MIT for the terms)
 
+require recipes-kernel/linux/cve-exclusion_6.1.inc
 require recipes-kernel/linux/linux-yocto.inc
 require linux-rockchip.inc
 
@@ -17,7 +18,7 @@ SRC_URI = " \
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 KERNEL_VERSION_SANITY_SKIP = "1"
-LINUX_VERSION ?= "6.1"
+LINUX_VERSION ?= "6.1.84"
 
 SRC_URI:append = " ${@bb.utils.contains('IMAGE_FSTYPES', 'ext4', \
 		   'file://${THISDIR}/files/ext4.cfg', \
