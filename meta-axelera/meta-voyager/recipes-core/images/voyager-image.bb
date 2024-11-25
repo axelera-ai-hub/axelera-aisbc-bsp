@@ -5,6 +5,7 @@
 SUMMARY = "A simple, minimal image"
 
 IMAGE_INSTALL = " \
+  axelera-container \
   bash \
   docker \
   dropbear \
