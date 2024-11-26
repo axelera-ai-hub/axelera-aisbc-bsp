@@ -7,6 +7,7 @@ SUMMARY = "A simple, minimal image"
 IMAGE_INSTALL = " \
   axelera-container \
   bash \
+  curl \
   docker \
   dropbear \
   ffmpeg \
