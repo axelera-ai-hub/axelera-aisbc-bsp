@@ -51,7 +51,7 @@ repos:
 
 local_conf_header:
   meta-axelera: |
-    MIRRORS:prepend = "git://gitea@gitea\.amarulasolutions\.com:38745/axelera.* git://git@github.com/axelera-ai/BASENAME "
+    MIRRORS:prepend = "git://gitea@gitea\.amarulasolutions\.com:38745/axelera.* git://git@github.com/axelera-ai/aisbc.BASENAME "
     # Some useful lines you may want to copy to your site.conf for development
     # INHERIT += "rm_work"
     INHERIT += " cve-check rockchip-image"
