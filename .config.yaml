@@ -54,7 +54,7 @@ local_conf_header:
     PREMIRRORS:prepend = "git://gitea@gitea\.amarulasolutions\.com:38745/axelera.* git://git@github.com/axelera-ai/ \n"
     # Some useful lines you may want to copy to your site.conf for development
     # INHERIT += "rm_work"
-    INHERIT += " cve-check"
+    INHERIT += " cve-check rockchip-image"
     INIT_MANAGER = "systemd"
     IMAGE_INSTALL:append = " android-tools-adbd android-tools-conf-rockchip "
     PREFERRED_PROVIDER_android-tools-conf = "android-tools-conf-rockchip"
