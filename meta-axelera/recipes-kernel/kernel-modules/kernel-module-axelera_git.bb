@@ -12,9 +12,9 @@ CVE_PRODUCT = "axelera"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=4641e94ec96f98fabc56ff9cc48be14b"
 
-SRC_URI = "git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.git;protocol=ssh;branch=main"
+SRC_URI = "git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.git;protocol=ssh;branch=release/v1.1.0"
 SRC_URI[sha256sum] = "ad2598304a8af697d0c335a50a3e5a1ba06c82d9b63ef5f9d3e730b54cf9148a"
-SRCREV = "32a61ac2a1b329624fefbb23386a86b1c84c70e8"
+SRCREV = "f8c8c6c07d261fc55f1161716054ff520f14fe83"
 S = "${WORKDIR}/git/os/driver"
 
 EXTRA_OEMAKE = "CROSS_COMPILE=${TARGET_PREFIX} SYSROOT=${STAGING_DIR_TARGET}"
@@ -28,7 +28,7 @@ do_install(){
     install -m 644 ${S}/*.ko ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/axelera/
 }
 
-COMPATIBLE_MACHINE = "itx-3588j"
+COMPATIBLE_MACHINE = "(itx-3588j|antelao-3588j)"
 CLEANBROKEN = "1"
 RPROVIDES:${PN} += "kernel-module-axl-pcie-reset kernel-module-dmabuf-triton-exporter kernel-module-dmabuf-triton-importer kernel-module-metis"
 

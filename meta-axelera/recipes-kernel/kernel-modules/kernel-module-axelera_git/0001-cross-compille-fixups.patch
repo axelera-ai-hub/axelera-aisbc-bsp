@@ -1,7 +1,7 @@
-From ea7e97df45470a1b1183c11bc75e563c9a11fd1d Mon Sep 17 00:00:00 2001
-From: Adam Duskett <adam.duskett@amarulasolutions.com>
-Date: Tue, 8 Oct 2024 12:15:56 +0200
-Subject: [PATCH] cross-compille fixups
+From ee715f8d2879d881d532dcf5a9633ed08c49ae57 Mon Sep 17 00:00:00 2001
+From: Michael Trimarchi <michael@amarulasolutions.com>
+Date: Wed, 4 Dec 2024 16:34:24 +0000
+Subject: [PATCH] Fix cross-compille fixups
 
 Add the following to Makefile to allow cross-compiling in Yocto:
  - ARCH variable
@@ -11,12 +11,13 @@ Add the following to Makefile to allow cross-compiling in Yocto:
 Clean is optional, but makes managing development a bit easier.
 
 Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
 ---
  Makefile | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/Makefile b/Makefile
-index 2743e4e..dab65e2 100755
+diff --git a/os/driver/Makefile b/os/driver/Makefile
+index b3d63f4..ed320ec 100755
 --- a/Makefile
 +++ b/Makefile
 @@ -1,5 +1,5 @@
@@ -26,10 +27,10 @@ index 2743e4e..dab65e2 100755
  
  obj-m += dmabuf-triton-exporter.o
  obj-m += dmabuf-triton-importer.o
-@@ -8,3 +8,9 @@ obj-m += metis.o
+@@ -7,3 +7,9 @@ obj-m += axl-pcie-reset.o
+ obj-m += metis.o
  
  metis-y += metis-core.o
- metis-y += metis-dma-buf.o
 +
 +all:
 +	make ARCH=$(ARCH) -C $(KERNEL_PATH) M=$(PWD) modules
@@ -37,5 +38,5 @@ index 2743e4e..dab65e2 100755
 +clean:
 +	make ARCH=$(ARCH) -C $(KERNEL_PATH) M=$(PWD) clean
 -- 
-2.46.2
+2.39.2
 
