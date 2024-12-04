@@ -7,7 +7,7 @@ require linux-rockchip.inc
 
 inherit local-git
 
-SRCREV = "914ed5ee1cf30fb6e1488e067b718a7679855796"
+SRCREV = "4308d1c84b7aec92134612da621ba6878919bf5b"
 SRC_URI = " \
 	git://gitea@gitea.amarulasolutions.com:38745/axelera/linux-rockchip.git;protocol=ssh;branch=rk3588; \
 	file://${THISDIR}/files/cgroups.cfg \
