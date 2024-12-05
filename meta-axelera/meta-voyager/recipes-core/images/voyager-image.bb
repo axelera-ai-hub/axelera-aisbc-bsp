@@ -26,6 +26,8 @@ IMAGE_INSTALL = " \
   kernel-module-axelera \
   rockchip-libmali \
   rockchip-npu-firefly \
+  e2fsprogs \
+  parted \
 "
 
 IMAGE_LINGUAS = " "
