@@ -1,0 +1,66 @@
+header:
+  version: 11
+
+machine: antelao-3588j
+distro: voyager
+target:
+  - voyager-image
+  - voyager-image-weston
+
+repos:
+  bitbake:
+    url: "https://git.openembedded.org/bitbake"
+    commit: ec2a99a077da9aa0e99e8b05e0c65dcbd45864b1
+    layers:
+      .: excluded
+
+  openembedded-core:
+    url: "https://git.openembedded.org/openembedded-core"
+    commit: ff720f337e40761c7d4d544c963cf518ad5403ad
+    layers:
+      meta:
+
+  meta-openembedded:
+    url: "git://git.openembedded.org/meta-openembedded"
+    commit: dd3d2293ffdf2559f8a433f241765a8ab50cd085
+    layers:
+      meta-filesystems:
+      meta-oe:
+      meta-python:
+      meta-networking:
+
+  meta-virtualization:
+    url: "https://git.yoctoproject.org/meta-virtualization"
+    commit: e0cd09e3b8367e2745a27db2e7ff1f8452c8cf41
+
+  meta-arm:
+    url: "git://git.yoctoproject.org/meta-arm"
+    commit: bf98ef902e6e7042e46a69fb2df6c68d00de2764
+    layers:
+      meta-arm-toolchain:
+      meta-arm:
+
+  meta-rockchip:
+    url: "ssh://gitea@gitea.amarulasolutions.com:38745/axelera/meta-rockchip.git"
+    commit: fb6193a5f5cf80070cf8182c06cb5621433111aa
+
+  meta-axelera:
+    layers:
+      meta-axelera:
+      meta-axelera/meta-voyager:
+
+local_conf_header:
+  meta-axelera: |
+    PREMIRRORS:prepend = "git://gitea@gitea\.amarulasolutions\.com:38745/axelera.* git://git@github.com/axelera-ai/aisbc.BASENAME "
+    # Some useful lines you may want to copy to your site.conf for development
+    # INHERIT += "rm_work"
+    INHERIT += " cve-check rockchip-image"
+    INIT_MANAGER = "systemd"
+    IMAGE_INSTALL:append = " android-tools-adbd android-tools-conf-rockchip "
+    PREFERRED_PROVIDER_android-tools-conf = "android-tools-conf-rockchip"
+    USB_DEBUGGING_ENABLED = "1"
+    EXTRA_IMAGE_FEATURES = "debug-tweaks"
+    IMAGE_FSTYPES:append = " ${RK_ROOTFS_TYPE} wic wic.gz wic.bmap ext4.gz"
+    RK_ROOTDEV_UUID ?= "614e0000-0000-4b53-8000-1d28000054a9"
+    RK_ROOTFS_TYPE ?= "ext4"
+    WKS_FILE = "generic-gptdisk.wks.in"
