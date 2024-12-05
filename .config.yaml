@@ -64,4 +64,3 @@ local_conf_header:
     RK_ROOTDEV_UUID ?= "614e0000-0000-4b53-8000-1d28000054a9"
     RK_ROOTFS_TYPE ?= "ext4"
     WKS_FILE = "generic-gptdisk.wks.in"
-    IMAGE_ROOTFS_EXTRA_SPACE = "16777216"
