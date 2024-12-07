@@ -26,7 +26,7 @@ IMAGE_INSTALL = " \
   kernel-module-axelera \
   rockchip-libmali \
   rockchip-npu-firefly \
-  e2fsprogs \
+  e2fsprogs-resize2fs \
   parted \
 "
 
