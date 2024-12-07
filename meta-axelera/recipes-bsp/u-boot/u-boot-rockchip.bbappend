@@ -6,13 +6,20 @@ CPU_SERIES = "RK3588"
 
 inherit local-git
 
-SRCREV_rkbin = "fd46174432fbfdbdd3274bcd94990fd81185ae51"
+SRCREV_rkbin:itx-3588j = "fd46174432fbfdbdd3274bcd94990fd81185ae51"
+SRCREV_uboot:itx-3588j = "f83f9138f588e918effaa200da488f0eb0d5afc1"
 
-SRCREV_uboot = "f83f9138f588e918effaa200da488f0eb0d5afc1"
-
-SRC_URI = " \
+SRC_URI:itx-3588j = " \
 	git://gitlab.com/firefly-linux/u-boot.git;protocol=https;branch="rk3588/firefly";name=uboot; \
 	git://gitlab.com/firefly-linux/rkbin.git;protocol=https;branch="rk3588/firefly";name=rkbin;destsuffix=rkbin; \
+"
+
+SRCREV_rkbin:antelao-3588j = "12660714c81be85350a4092542e2ff599aa5adcb"
+SRCREV_uboot:antelao-3588j = "840f624d1d6838fce87bd772128b08e649c7b152"
+
+SRC_URI:antelao-3588j = " \
+	git://gitea@gitea.amarulasolutions.com:38745/axelera/uboot-rockchip.git;protocol=ssh;branch=rk3588;name=uboot; \
+	git://gitea@gitea.amarulasolutions.com:38745/axelera/rk-binary-native.git;protocol=ssh;branch=rk3588;name=rkbin;destsuffix=rkbin; \
 "
 
 SRC_URI:append = " ${@bb.utils.contains('CPU_SERIES', 'RK356X', 'file://${CURDIR}/rk356x/0001-add-firefly-rk3566_defconfig.patch', '', d)} \
