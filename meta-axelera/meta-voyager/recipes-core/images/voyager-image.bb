@@ -11,7 +11,6 @@ IMAGE_INSTALL = " \
   docker \
   dropbear \
   ffmpeg \
-  firefly-fan \
   gstreamer1.0-libav \
   gstreamer1.0-plugins-bad \
   gstreamer1.0-plugins-base \
@@ -25,9 +24,14 @@ IMAGE_INSTALL = " \
   python3-pip \
   kernel-module-axelera \
   rockchip-libmali \
-  rockchip-npu-firefly \
   e2fsprogs-resize2fs \
   parted \
+  pciutils \
+"
+
+IMAGE_INSTALL:itx-rk3588j:append = " \
+  firefly-fan \
+  rockchip-npu-firefly \
 "
 
 IMAGE_LINGUAS = " "
