@@ -15,7 +15,7 @@ SRC_URI:itx-3588j = " \
 "
 
 SRCREV_rkbin:antelao-3588j = "12660714c81be85350a4092542e2ff599aa5adcb"
-SRCREV_uboot:antelao-3588j = "840f624d1d6838fce87bd772128b08e649c7b152"
+SRCREV_uboot:antelao-3588j = "4cb81ad5558dec446092422d4590d700d9815c7c"
 
 SRC_URI:antelao-3588j = " \
 	git://gitea@gitea.amarulasolutions.com:38745/axelera/uboot-rockchip.git;protocol=ssh;branch=rk3588;name=uboot; \
