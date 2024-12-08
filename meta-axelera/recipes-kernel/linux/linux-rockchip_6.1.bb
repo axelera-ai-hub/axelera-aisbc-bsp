@@ -12,6 +12,9 @@ SRC_URI = " \
 	git://gitea@gitea.amarulasolutions.com:38745/axelera/linux-rockchip.git;protocol=ssh;branch=rk3588; \
 	file://${THISDIR}/files/cgroups.cfg \
 	file://${THISDIR}/files/axelera.cfg \
+"
+
+SRC_URI:itx-rk3588:append = " \
 	file://${THISDIR}/files/firefly.cfg \
 "
 
