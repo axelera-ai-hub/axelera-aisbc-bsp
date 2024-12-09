@@ -4,6 +4,7 @@
 echo "Starting Docker..."
 systemctl start docker || { echo "Failed to start Docker."; exit 1; }
 
+SDK_PATH="voyager-sdk"
 
 # Exit successfully if the voyager-sdk directory exists
 if [ -d "$SDK_PATH" ]; then
