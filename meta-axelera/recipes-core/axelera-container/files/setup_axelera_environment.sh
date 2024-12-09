@@ -14,7 +14,7 @@ fi
 
 # Download the tar archive
 echo "Downloading archive..."
-curl -O "https://amarula-share.s3.eu-central-1.amazonaws.com/release/v1.0.0-a6/sdk-docker-image-build-ubuntu-22.04-arm64/axelera-sdk-ubuntu-2204-arm64.tar" || { echo "Failed to download."; exit 1; }
+curl -O "https://amarula-share.s3.eu-central-1.amazonaws.com/release/v1.1.0-rc2-0-g0ee2fdfd4/sdk-docker-image-build-ubuntu-22.04-arm64/axelera-sdk-ubuntu-2204-arm64.tar" || { echo "Failed to download."; exit 1; }
 
 # Load the Docker image from the archive
 echo "Loading Axelera Docker image..."
@@ -22,7 +22,7 @@ docker load < axelera-sdk-ubuntu-2204-arm64.tar || { echo "Failed to load Docker
 
 # Create a Docker container from the image
 echo "Creating Docker container from image..."
-CONTAINER_ID=$(docker create axelera-sdk-ubuntu-2204-arm64:1.0.0-a6) || { echo "Failed to create Docker container"; exit 1; }
+CONTAINER_ID=$(docker create axelera-sdk-ubuntu-2204-arm64:1.1.0-rc2) || { echo "Failed to create Docker container"; exit 1; }
 
 # Copy the voyager-sdk from the container
 echo "Copying voyager-sdk from container $CONTAINER_ID..."

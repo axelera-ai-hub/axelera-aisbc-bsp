@@ -128,7 +128,7 @@ def start(args):
     '''Start the docker container.'''
     if not os.path.exists('voyager-sdk'):
         print("Extracting voyager-sdk from docker image")
-        container = _run(args, 'docker create axelera-sdk-ubuntu-2204-arm64:1.0.0-a6').strip()
+        container = _run(args, 'docker create axelera-sdk-ubuntu-2204-arm64:1.1.0-rc2').strip()
         _run(args, f'docker cp {container}:/home/ubuntu/voyager-sdk .', capture=False)
         _run(args, f'docker rm {container}')
         print("Copying this script to voyager-sdk so it is available in the container")
@@ -143,7 +143,7 @@ def start(args):
         '--name=software-platform-voyager-sdk '
         '--entrypoint=/bin/bash '
         '--network=host '
-        'axelera-sdk-ubuntu-2204-arm64:1.0.0-a6 '
+        'axelera-sdk-ubuntu-2204-arm64:1.1.0-rc2 '
         '-l -c "cd /home/ubuntu/voyager-sdk && . venv/bin/activate && make gst-operators && /bin/bash"',
         capture=False,
         check=False,
