@@ -14,7 +14,7 @@ SRC_URI = " \
 	file://${THISDIR}/files/axelera.cfg \
 "
 
-SRC_URI:itx-rk3588:append = " \
+SRC_URI:append:itx-3588j = " \
 	file://${THISDIR}/files/firefly.cfg \
 "
 

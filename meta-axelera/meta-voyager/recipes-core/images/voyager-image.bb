@@ -29,7 +29,7 @@ IMAGE_INSTALL = " \
   pciutils \
 "
 
-IMAGE_INSTALL:itx-rk3588j:append = " \
+IMAGE_INSTALL:append:itx-3588j = " \
   firefly-fan \
   rockchip-npu-firefly \
 "
