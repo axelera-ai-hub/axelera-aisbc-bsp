@@ -12,7 +12,7 @@ CVE_PRODUCT = "axelera"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=4641e94ec96f98fabc56ff9cc48be14b"
 
-SRC_URI = "git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.git;protocol=ssh;branch=release/v1.1.0"
+SRC_URI = "git://git@github.com/axelera-ai/host.pcie-driver.git;protocol=ssh;branch=release/v1.1.0"
 SRC_URI[sha256sum] = "ad2598304a8af697d0c335a50a3e5a1ba06c82d9b63ef5f9d3e730b54cf9148a"
 SRCREV = "f8c8c6c07d261fc55f1161716054ff520f14fe83"
 S = "${WORKDIR}/git/os/driver"
