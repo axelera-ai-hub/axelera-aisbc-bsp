@@ -14,10 +14,10 @@ SRC_URI:itx-3588j = " \
 	git://gitlab.com/firefly-linux/rkbin.git;protocol=https;branch="rk3588/firefly";name=rkbin;destsuffix=rkbin; \
 "
 
-SRCREV_rkbin:antelao-3588j = "12660714c81be85350a4092542e2ff599aa5adcb"
-SRCREV_uboot:antelao-3588j = "4cb81ad5558dec446092422d4590d700d9815c7c"
+SRCREV_rkbin:antelao-3588 = "12660714c81be85350a4092542e2ff599aa5adcb"
+SRCREV_uboot:antelao-3588 = "4cb81ad5558dec446092422d4590d700d9815c7c"
 
-SRC_URI:antelao-3588j = " \
+SRC_URI:antelao-3588 = " \
 	git://git@github.com/axelera-ai/aisbc.uboot-rockchip.git;protocol=ssh;branch=rk3588;name=uboot; \
 	git://git@github.com/axelera-ai/aisbc.rk-binary-native.git;protocol=ssh;branch=rk3588;name=rkbin;destsuffix=rkbin; \
 "

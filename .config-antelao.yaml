@@ -1,7 +1,7 @@
 header:
   version: 11
 
-machine: antelao-3588j
+machine: antelao-3588
 distro: voyager
 target:
   - voyager-image
