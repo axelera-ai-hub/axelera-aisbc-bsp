@@ -28,7 +28,7 @@ do_install(){
     install -m 644 ${S}/*.ko ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/axelera/
 }
 
-COMPATIBLE_MACHINE = "(itx-3588j|antelao-3588j)"
+COMPATIBLE_MACHINE = "(itx-3588j|antelao-3588)"
 CLEANBROKEN = "1"
 RPROVIDES:${PN} += "kernel-module-axl-pcie-reset kernel-module-dmabuf-triton-exporter kernel-module-dmabuf-triton-importer kernel-module-metis"
 
