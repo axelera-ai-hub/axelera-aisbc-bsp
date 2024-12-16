@@ -5,6 +5,7 @@
 SUMMARY = "A simple, minimal image"
 
 IMAGE_INSTALL = " \
+  auto-extend-partition \
   axelera-container \
   bash \
   curl \
