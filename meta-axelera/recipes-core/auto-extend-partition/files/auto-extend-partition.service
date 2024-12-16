@@ -1,0 +1,9 @@
+[Unit]
+Description=Run first boot script which extends the partition
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/auto-extend-partition.sh
+
+[Install]
+WantedBy=multi-user.target
