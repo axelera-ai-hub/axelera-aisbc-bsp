@@ -34,6 +34,8 @@ IMAGE_INSTALL:append:itx-3588j = " \
   rockchip-npu-firefly \
 "
 
+PREFERRED_VERSION:parted = "3.6"
+
 IMAGE_LINGUAS = " "
 
 require recipes-core/images/voyager.inc
