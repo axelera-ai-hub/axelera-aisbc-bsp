@@ -10,6 +10,7 @@ IMAGE_INSTALL = " \
   curl \
   docker \
   dropbear \
+  e2fsprogs-resize2fs \
   ffmpeg \
   gstreamer1.0-libav \
   gstreamer1.0-plugins-bad \
@@ -17,16 +18,15 @@ IMAGE_INSTALL = " \
   gstreamer1.0-plugins-good \
   gstreamer1.0-plugins-ugly \
   gstreamer1.0-rockchip \
+  kernel-module-axelera \
   libdrm \
   os-release \
   packagegroup-core-boot \
-  python3 \
-  python3-pip \
-  kernel-module-axelera \
-  rockchip-libmali \
-  e2fsprogs-resize2fs \
   parted \
   pciutils \
+  python3 \
+  python3-pip \
+  rockchip-libmali \
 "
 
 IMAGE_INSTALL:append:itx-3588j = " \
