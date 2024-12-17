@@ -30,6 +30,7 @@ IMAGE_INSTALL = " \
   python3 \
   python3-pip \
   rockchip-libmali \
+  udev-conf-axelera \
 "
 
 IMAGE_INSTALL:append:itx-3588j = " \
