@@ -17,7 +17,6 @@ SRC_URI = "\
 "
 
 inherit allarch
-S = "${UNPACKDIR}"
 
 do_install[nostamp] = "1"
 do_unpack[nostamp] = "1"
