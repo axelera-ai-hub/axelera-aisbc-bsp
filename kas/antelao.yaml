@@ -1,4 +1,6 @@
 header:
   version: 11
+  includes:
+    - kas/include/base.yaml
 
 machine: antelao-3588
