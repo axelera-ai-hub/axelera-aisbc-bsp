@@ -22,10 +22,10 @@ do_install[nostamp] = "1"
 do_unpack[nostamp] = "1"
 
 do_install() {
-    install -d ${D}${nonarch_base_libdir}/udev/rules.d
+    install -d ${D}${sysconfdir}/udev/rules.d
     for file in ${SRC_URI}; do
         filename=$(basename ${file})
-        install -m 0644 ${WORKDIR}/${filename} ${D}${nonarch_base_libdir}/udev/rules.d
+        install -m 0644 ${WORKDIR}/${filename} ${D}${sysconfdir}/udev/rules.d
     done
 }
 
