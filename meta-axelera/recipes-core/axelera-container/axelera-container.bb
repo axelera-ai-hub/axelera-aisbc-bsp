@@ -9,13 +9,24 @@ SRC_URI += " \
     file://start_axelera.py \
 "
 
-do_install () {
+do_install:itx-3588j () {
     install -d ${D}/home/firefly/
     install -m 0755 ${WORKDIR}/setup_axelera_environment.sh ${D}/home/firefly/setup_axelera_environment.sh
     install -m 0755 ${WORKDIR}/start_axelera.py ${D}/home/firefly/start_axelera.py
 }
 
-FILES:${PN} += " \
+do_install:antelao-3588 () {
+    install -d ${D}/home/antelao/
+    install -m 0755 ${WORKDIR}/setup_axelera_environment.sh ${D}/home/antelao/setup_axelera_environment.sh
+    install -m 0755 ${WORKDIR}/start_axelera.py ${D}/home/antelao/start_axelera.py
+}
+
+FILES:${PN}:itx-3588j += " \
     /home/firefly/setup_axelera_environment.sh \
     /home/firefly/start_axelera.py \
+"
+
+FILES:${PN}:antelao-3588 =+ " \
+    /home/antelao/setup_axelera_environment.sh \
+    /home/antelao/start_axelera.py \
 "
