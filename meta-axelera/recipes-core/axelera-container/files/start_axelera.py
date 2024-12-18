@@ -137,7 +137,7 @@ def start(args):
     _run(
         args,
         'docker run --rm  -it --privileged '
-        '-v /home/firefly/voyager-sdk:/home/ubuntu/voyager-sdk/ '
+        '-v voyager-sdk:/home/ubuntu/voyager-sdk/ '
         '-v /tmp/.X11-unix:/tmp/.X11-unix '
         ' -e DISPLAY=$DISPLAY '
         '--name=software-platform-voyager-sdk '
