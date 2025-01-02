@@ -5,6 +5,6 @@ SRCREV_rkbin = "12660714c81be85350a4092542e2ff599aa5adcb"
 SRCREV_tools = "50034068f09b9833f3fb61f70263f4312407aac7"
 
 SRC_URI = " \
-	git://gitea@gitea.amarulasolutions.com:38745/axelera/rk-binary-native.git;protocol=ssh;nobranch=1;branch=rk3588;name=rkbin \
-	git://gitea@gitea.amarulasolutions.com:38745/axelera/tools.git;protocol=ssh;branch=rk3588;name=tools;destsuffix=git/extra \
+	${REMOTE_REPOS_PREFIX}rk-binary-native.git;protocol=ssh;nobranch=1;branch=rk3588;name=rkbin \
+	${REMOTE_REPOS_PREFIX}tools.git;protocol=ssh;branch=rk3588;name=tools;destsuffix=git/extra \
 "
