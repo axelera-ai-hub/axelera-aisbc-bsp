@@ -6,8 +6,17 @@ SUMMARY = "A simple, minimal image"
 
 inherit extrausers
 
-EXTRA_USERS_PARAMS:append:itx-3588j = "useradd -p '\$5\$n.d2SD190GZItUvJ\$YuFQVXzbgsdN/Ku6ACR6fq1d2M72N9Wg31.0lamahhC' firefly"
-EXTRA_USERS_PARAMS:append:antelao-3588 = "useradd -p '\$5\$L7cOVUOwlfdgicw/\$mzVadqHcAl.NLkCKWPm76.M2SL61Y0bEvQLU3XVKZb7' antelao"
+EXTRA_USERS_PARAMS = "\
+    groupadd docker; \
+"
+
+PASSWORD:itx-3588j = "\$5\$n.d2SD190GZItUvJ\$YuFQVXzbgsdN/Ku6ACR6fq1d2M72N9Wg31.0lamahhC"
+USERNAME:itx-3588j = "firefly"
+PASSWORD:antelao-3588 = "\$5\$L7cOVUOwlfdgicw/\$mzVadqHcAl.NLkCKWPm76.M2SL61Y0bEvQLU3XVKZb7"
+USERNAME:antelao-3588 = "antelao"
+
+EXTRA_USERS_PARAMS += " useradd -p '${PASSWORD}' ${USERNAME}; "
+EXTRA_USERS_PARAMS += " usermod -aG docker ${USERNAME}"
 
 IMAGE_INSTALL = " \
   auto-extend-partition \
