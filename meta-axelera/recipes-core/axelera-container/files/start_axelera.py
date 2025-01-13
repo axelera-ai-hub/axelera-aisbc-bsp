@@ -7,6 +7,8 @@ import subprocess
 import sys
 import time
 
+version = '1.1.0-rc5'
+
 parser = argparse.ArgumentParser(description='''Axelera Firefly Metis support.''')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='Verbose output')
 subparsers = parser.add_subparsers()
@@ -128,7 +130,7 @@ def start(args):
     '''Start the docker container.'''
     if not os.path.exists('voyager-sdk'):
         print("Extracting voyager-sdk from docker image")
-        container = _run(args, 'docker create axelera-sdk-ubuntu-2204-arm64:1.1.0-rc2').strip()
+        container = _run(args, f'docker create axelera-sdk-ubuntu-2204-arm64:{version}').strip()
         _run(args, f'docker cp {container}:/home/ubuntu/voyager-sdk .', capture=False)
         _run(args, f'docker rm {container}')
         print("Copying this script to voyager-sdk so it is available in the container")
@@ -150,7 +152,7 @@ def start(args):
         '--name=software-platform-voyager-sdk '
         '--entrypoint=/bin/bash '
         '--network=host '
-        'axelera-sdk-ubuntu-2204-arm64:1.1.0-rc2 '
+        f'axelera-sdk-ubuntu-2204-arm64:{version} '
         '-l -c "cd /home/ubuntu/voyager-sdk && . venv/bin/activate && make gst-operators && /bin/bash"',
         capture=False,
         check=False,

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 SDK_PATH="voyager-sdk"
-VERSION="v1.1.0-rc5"
+VERSION="1.1.0-rc5"
 
 # Exit successfully if the voyager-sdk directory exists
 if [ -d "$SDK_PATH" ]; then
@@ -11,7 +11,7 @@ fi
 
 # Download the tar archive
 echo "Downloading archive..."
-return_code=$(curl --write-out %{http_code} -O "https://amarula-share.s3.eu-central-1.amazonaws.com/release/$VERSION/axelera-sdk-ubuntu-2204-arm64.tar")
+return_code=$(curl --write-out %{http_code} -O "https://amarula-share.s3.eu-central-1.amazonaws.com/release/v$VERSION/axelera-sdk-ubuntu-2204-arm64.tar")
 
 if [ "x$return_code" != "x200" ]; then
     echo "Failed to download."
@@ -24,7 +24,7 @@ docker load < axelera-sdk-ubuntu-2204-arm64.tar || { echo "Failed to load Docker
 
 # Create a Docker container from the image
 echo "Creating Docker container from image..."
-CONTAINER_ID=$(docker create axelera-sdk-ubuntu-2204-arm64:1.1.0-rc2) || { echo "Failed to create Docker container"; exit 1; }
+CONTAINER_ID=$(docker create axelera-sdk-ubuntu-2204-arm64:$VERSION) || { echo "Failed to create Docker container"; exit 1; }
 
 # Copy the voyager-sdk from the container
 echo "Copying voyager-sdk from container $CONTAINER_ID..."
