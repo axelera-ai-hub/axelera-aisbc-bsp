@@ -22,6 +22,7 @@ IMAGE_INSTALL = " \
   auto-extend-partition \
   axelera-container \
   bash \
+  clinfo \
   curl \
   docker \
   dropbear \
