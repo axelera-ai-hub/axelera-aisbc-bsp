@@ -11,7 +11,12 @@ fi
 
 # Download the tar archive
 echo "Downloading archive..."
-curl -O "https://amarula-share.s3.eu-central-1.amazonaws.com/release/$VERSION/axelera-sdk-ubuntu-2204-arm64.tar" || { echo "Failed to download."; exit 1; }
+return_code=$(curl --write-out %{http_code} -O "https://amarula-share.s3.eu-central-1.amazonaws.com/release/$VERSION/axelera-sdk-ubuntu-2204-arm64.tar")
+
+if [ "x$return_code" != "x200" ]; then
+    echo "Failed to download."
+    exit 1
+fi
 
 # Load the Docker image from the archive
 echo "Loading Axelera Docker image..."
