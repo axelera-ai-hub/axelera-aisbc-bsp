@@ -62,3 +62,14 @@ require recipes-core/images/voyager.inc
 IMAGE_INIT_MANAGER  = "systemd"
 
 inherit core-image
+
+ROOTFS_POSTPROCESS_COMMAND:append = " do_change_home_ownerships; "
+
+do_change_home_ownerships() {
+    if [ -d "${IMAGE_ROOTFS}/home/firefly" ]; then
+        chown -R firefly:firefly "${IMAGE_ROOTFS}/home/firefly"
+    fi
+    if [ -d "${IMAGE_ROOTFS}/home/antelao" ]; then
+        chown -R antelao:antelao "${IMAGE_ROOTFS}/home/antelao"
+    fi
+}
