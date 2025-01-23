@@ -38,6 +38,7 @@ IMAGE_INSTALL = " \
   kernel-module-axelera \
   libdrm \
   lmsensors \
+  minicom \
   opencv \
   os-release \
   packagegroup-core-boot \
