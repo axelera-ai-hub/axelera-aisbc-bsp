@@ -8,6 +8,7 @@ inherit extrausers
 
 EXTRA_USERS_PARAMS = "\
     groupadd docker; \
+    groupadd axelera; \
 "
 
 PASSWORD:itx-3588j = "\$5\$n.d2SD190GZItUvJ\$YuFQVXzbgsdN/Ku6ACR6fq1d2M72N9Wg31.0lamahhC"
@@ -17,6 +18,7 @@ USERNAME:antelao-3588 = "antelao"
 
 EXTRA_USERS_PARAMS += " useradd -p '${PASSWORD}' ${USERNAME}; "
 EXTRA_USERS_PARAMS += " usermod -aG docker ${USERNAME}; "
+EXTRA_USERS_PARAMS += " usermod -aG axelera ${USERNAME}; "
 
 IMAGE_INSTALL = " \
   auto-extend-partition \
