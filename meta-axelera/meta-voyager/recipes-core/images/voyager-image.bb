@@ -16,7 +16,7 @@ PASSWORD:antelao-3588 = "\$5\$L7cOVUOwlfdgicw/\$mzVadqHcAl.NLkCKWPm76.M2SL61Y0bE
 USERNAME:antelao-3588 = "antelao"
 
 EXTRA_USERS_PARAMS += " useradd -p '${PASSWORD}' ${USERNAME}; "
-EXTRA_USERS_PARAMS += " usermod -aG docker ${USERNAME}"
+EXTRA_USERS_PARAMS += " usermod -aG docker ${USERNAME}; "
 
 IMAGE_INSTALL = " \
   auto-extend-partition \
