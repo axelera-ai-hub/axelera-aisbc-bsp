@@ -29,7 +29,7 @@ IMAGE_INSTALL = " \
   docker \
   dropbear \
   e2fsprogs-resize2fs \
-  ffmpeg \
+  ffmpeg-rockchip \
   gstreamer1.0-libav \
   gstreamer1.0-plugins-bad \
   gstreamer1.0-plugins-base \
