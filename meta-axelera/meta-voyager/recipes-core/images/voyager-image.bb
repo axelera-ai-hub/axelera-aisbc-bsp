@@ -58,6 +58,7 @@ IMAGE_INSTALL:append:itx-3588j = " \
 "
 
 PREFERRED_VERSION:parted = "3.6"
+PREFERRED_VERSION:strace = "6.9"
 
 IMAGE_LINGUAS = " "
 
