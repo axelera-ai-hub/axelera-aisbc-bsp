@@ -9,19 +9,19 @@ target:
 repos:
   bitbake:
     url: "https://git.openembedded.org/bitbake"
-    commit: ec2a99a077da9aa0e99e8b05e0c65dcbd45864b1
+    commit: 3f88b005244a0afb5d5c7260e54a94a453ec9b3e
     layers:
       .: excluded
 
   openembedded-core:
     url: "https://git.openembedded.org/openembedded-core"
-    commit: ff720f337e40761c7d4d544c963cf518ad5403ad
+    commit: a270d4c957259761bcc7382fcc54642a02f9fc7d
     layers:
       meta:
 
   meta-openembedded:
     url: "git://git.openembedded.org/meta-openembedded"
-    commit: dd3d2293ffdf2559f8a433f241765a8ab50cd085
+    commit: de8681b4a2a101b99dd2c48d89a7de2ccd9a961f
     layers:
       meta-filesystems:
       meta-oe:
@@ -30,11 +30,11 @@ repos:
 
   meta-virtualization:
     url: "https://git.yoctoproject.org/meta-virtualization"
-    commit: e0cd09e3b8367e2745a27db2e7ff1f8452c8cf41
+    commit: b5a1645250c17fb657b7f10166f1c665ce192aaf
 
   meta-arm:
     url: "git://git.yoctoproject.org/meta-arm"
-    commit: bf98ef902e6e7042e46a69fb2df6c68d00de2764
+    commit: 936c02ec13661bd86a05f7f90e1b920d5092d670
     layers:
       meta-arm-toolchain:
       meta-arm:
