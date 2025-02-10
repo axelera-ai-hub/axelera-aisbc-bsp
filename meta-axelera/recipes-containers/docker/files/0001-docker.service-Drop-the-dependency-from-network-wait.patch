@@ -1,0 +1,28 @@
+From 7b3d09b343bd16f9b054628c2d210d4f8b88b050 Mon Sep 17 00:00:00 2001
+From: Michael Trimarchi <michael@amarulasolutions.com>
+Date: Mon, 10 Feb 2025 14:31:43 +0000
+Subject: [PATCH] docker.service: Drop the dependency from network-wait-online
+
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+---
+ contrib/init/systemd/docker.service | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/contrib/init/systemd/docker.service b/contrib/init/systemd/docker.service
+index 517463172b..8b33452c21 100644
+--- a/contrib/init/systemd/docker.service
++++ b/contrib/init/systemd/docker.service
+@@ -1,8 +1,8 @@
+ [Unit]
+ Description=Docker Application Container Engine
+ Documentation=https://docs.docker.com
+-After=network-online.target docker.socket firewalld.service
+-Wants=network-online.target
++After=network.target docker.socket firewalld.service
++Wants=network.target
+ Requires=docker.socket
+ 
+ [Service]
+-- 
+2.39.2
+
