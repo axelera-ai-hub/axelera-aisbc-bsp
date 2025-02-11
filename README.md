@@ -7,8 +7,8 @@
 This repository is composed of:
 
  * `.config.yaml`: a kas configuration file
- * `meta-axelera`: the layer with the (fictitious) metadata for the products
-   of a (fictitious) company
+ * `meta-axelera`: the layer with the Axelera metadata for the products
+   of Axelera
 
 The `.config.yaml` is the configuration file for the
 [kas](https://kas.readthedocs.io/) utility, which allows to easily download
