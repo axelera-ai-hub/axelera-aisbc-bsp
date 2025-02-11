@@ -6,9 +6,13 @@ SUMMARY = "A simple, minimal image"
 
 inherit extrausers
 
+# Force gid 1000 to ensure that the Ubuntu user in the docker container,
+# and the axelera group on the host have the same GID. This allows permissions
+# between the Ubuntu user in the docker container to be shared between the host
+# and the container.
 EXTRA_USERS_PARAMS = "\
     groupadd docker; \
-    groupadd axelera; \
+    groupadd -g 1000 axelera; \
 "
 
 PASSWORD:itx-3588j = "\$5\$n.d2SD190GZItUvJ\$YuFQVXzbgsdN/Ku6ACR6fq1d2M72N9Wg31.0lamahhC"
