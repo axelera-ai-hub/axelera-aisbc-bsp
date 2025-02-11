@@ -23,7 +23,6 @@ EXTRA_USERS_PARAMS += " usermod -aG axelera ${USERNAME}; "
 IMAGE_INSTALL = " \
   auto-extend-partition \
   axelera-container \
-  bash \
   clinfo \
   curl \
   docker \
@@ -53,6 +52,7 @@ IMAGE_INSTALL = " \
 "
 
 IMAGE_INSTALL:append:itx-3588j = " \
+  bash \
   firefly-fan \
   rockchip-npu-firefly \
 "
