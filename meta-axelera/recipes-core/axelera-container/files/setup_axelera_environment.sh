@@ -42,8 +42,4 @@ docker cp $CONTAINER_ID:/home/ubuntu/voyager-sdk . || { echo "Failed to copy voy
 echo "Removing Docker container $CONTAINER_ID..."
 docker rm $CONTAINER_ID || { echo "Failed to remove Docker container"; exit 1; }
 
-# Change ownership of the voyager-sdk directory
-echo "Changing ownership of voyager-sdk..."
-chown -R 1000:1000 "voyager-sdk" || { echo "Failed to change ownership"; exit 1; }
-
 echo "Setup complete."
