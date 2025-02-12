@@ -2,6 +2,8 @@
 
 SDK_PATH="voyager-sdk"
 VERSION="1.1.0-rc5"
+ARCHIVE_NAME="axelera-sdk-ubuntu-2204-arm64.tar"
+ARCHIVE_SHA256="16de6a414b71724aa88977bb3df5076cd2d0844a9f1d977641bf63cdd07bea8d"
 
 # Exit successfully if the voyager-sdk directory exists
 if [ -d "$SDK_PATH" ]; then
@@ -9,18 +11,24 @@ if [ -d "$SDK_PATH" ]; then
     exit 0
 fi
 
-# Download the tar archive
-echo "Downloading archive..."
-return_code=$(curl --write-out %{http_code} -O "https://amarula-share.s3.eu-central-1.amazonaws.com/release/v$VERSION/axelera-sdk-ubuntu-2204-arm64.tar")
+if [ -f "$ARCHIVE_NAME" ]; then
+	# Archive already present
+	echo "Archive already downloaded. Checking SHA256..."
+	echo "$ARCHIVE_SHA256  $ARCHIVE_NAME" | sha256sum -c || { echo "Wrong SHA256. Image is corrupted."; exit 1; }
+else
+	# Download the tar archive
+	echo "Downloading archive..."
+	return_code=$(curl --write-out %{http_code} -O "https://amarula-share.s3.eu-central-1.amazonaws.com/release/v$VERSION/$ARCHIVE_NAME")
 
-if [ "x$return_code" != "x200" ]; then
-    echo "Failed to download."
-    exit 1
+	if [ "x$return_code" != "x200" ]; then
+		echo "Failed to download."
+		exit 1
+	fi
 fi
 
 # Load the Docker image from the archive
 echo "Loading Axelera Docker image..."
-docker load < axelera-sdk-ubuntu-2204-arm64.tar || { echo "Failed to load Docker image."; exit 1; }
+docker load < $ARCHIVE_NAME || { echo "Failed to load Docker image."; exit 1; }
 
 # Create a Docker container from the image
 echo "Creating Docker container from image..."
