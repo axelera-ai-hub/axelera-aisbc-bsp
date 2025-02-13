@@ -23,13 +23,32 @@ export KERNEL_PATH="${STAGING_KERNEL_DIR}"
 
 inherit auto-patch module
 
-do_install(){
+do_install() {
     install -d ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/axelera
     install -m 644 ${S}/*.ko ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/axelera/
+
+    install -d ${D}${systemd_system_unitdir}
+    install -d ${D}/usr/local/bin
+
+    install -m 0755 ${WORKDIR}/git/dkms/service_files/check_pcie_device.sh ${D}/usr/local/bin
+    install -m 0644 ${WORKDIR}/git/dkms/service_files/pcie-check.service ${D}${systemd_system_unitdir}
 }
 
 COMPATIBLE_MACHINE = "(itx-3588j|antelao-3588)"
 CLEANBROKEN = "1"
 RPROVIDES:${PN} += "kernel-module-axl-pcie-reset kernel-module-dmabuf-triton-exporter kernel-module-dmabuf-triton-importer kernel-module-metis"
+
+inherit systemd
+
+SYSTEMD_SERVICE:${PN} = "pcie-check.service"
+
+RDEPENDS:${PN} = "bash"
+
+FILES:${PN} += " \
+    /usr/local/bin/check_pcie_device.sh \
+    ${systemd_system_unitdir}/pcie-check.service \
+"
+
+SYSTEMD_AUTO_ENABLE = "enable"
 
 BBCLASSEXTEND =+ "native nativesdk"
