@@ -13,6 +13,11 @@ LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=4641e94ec96f98fabc56ff9cc48be14b"
 
 SRC_URI = "${REMOTE_DRIVER};protocol=ssh;branch=release/v1.1.0"
+SRC_URI:append:antelao-3588 = " \
+    file://check_pcie_device.sh \
+    file://pcie-check.service \
+"
+
 SRC_URI[sha256sum] = "ad2598304a8af697d0c335a50a3e5a1ba06c82d9b63ef5f9d3e730b54cf9148a"
 SRCREV = "dcd72e2349965c8726bae3e53155b526ee30d121"
 S = "${WORKDIR}/git/os/driver"
@@ -27,11 +32,14 @@ do_install() {
     install -d ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/axelera
     install -m 644 ${S}/*.ko ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/axelera/
 
+}
+
+do_install:append:antelao-3588() {
     install -d ${D}${systemd_system_unitdir}
     install -d ${D}/usr/local/bin
 
-    install -m 0755 ${WORKDIR}/git/dkms/service_files/check_pcie_device.sh ${D}/usr/local/bin
-    install -m 0644 ${WORKDIR}/git/dkms/service_files/pcie-check.service ${D}${systemd_system_unitdir}
+    install -m 0755 ${WORKDIR}/check_pcie_device.sh ${D}/usr/local/bin
+    install -m 0644 ${WORKDIR}/pcie-check.service ${D}${systemd_system_unitdir}
 }
 
 COMPATIBLE_MACHINE = "(itx-3588j|antelao-3588)"
@@ -40,15 +48,13 @@ RPROVIDES:${PN} += "kernel-module-axl-pcie-reset kernel-module-dmabuf-triton-exp
 
 inherit systemd
 
-SYSTEMD_SERVICE:${PN} = "pcie-check.service"
+SYSTEMD_SERVICE:${PN}:antelao-3588 = "pcie-check.service"
 
-RDEPENDS:${PN} = "bash"
-
-FILES:${PN} += " \
+FILES:${PN}:antelao-3588 += " \
     /usr/local/bin/check_pcie_device.sh \
     ${systemd_system_unitdir}/pcie-check.service \
 "
 
-SYSTEMD_AUTO_ENABLE = "enable"
+SYSTEMD_AUTO_ENABLE:antelao-3588 = "enable"
 
 BBCLASSEXTEND =+ "native nativesdk"

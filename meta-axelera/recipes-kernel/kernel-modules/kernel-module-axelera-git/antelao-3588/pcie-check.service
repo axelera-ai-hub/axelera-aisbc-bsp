@@ -1,0 +1,12 @@
+[Unit]
+Description=Check for PCIe devices with vendor ID 1f9d and reboot once if not found
+After=network.target
+Requires=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/check_pcie_device.sh
+#RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
