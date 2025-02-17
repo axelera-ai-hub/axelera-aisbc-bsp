@@ -13,7 +13,7 @@ LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=4641e94ec96f98fabc56ff9cc48be14b"
 
 SRC_URI = " \
-    ${REMOTE_DRIVER};protocol=ssh;branch=release/v1.1.0 \
+    ${REMOTE_DRIVER};protocol=ssh;branch=release/v1.2.0 \
     file://0001-cross-compile-fixups.patch \
 "
 
@@ -23,7 +23,7 @@ SRC_URI:append:antelao-3588 = " \
 "
 
 SRC_URI[sha256sum] = "ad2598304a8af697d0c335a50a3e5a1ba06c82d9b63ef5f9d3e730b54cf9148a"
-SRCREV = "dcd72e2349965c8726bae3e53155b526ee30d121"
+SRCREV = "307d4a2a6a2a3add851b421b0dbf0be6bb7485f1"
 S = "${WORKDIR}/git/os/driver"
 
 EXTRA_OEMAKE = "CROSS_COMPILE=${TARGET_PREFIX} SYSROOT=${STAGING_DIR_TARGET}"
