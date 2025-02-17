@@ -12,7 +12,11 @@ CVE_PRODUCT = "axelera"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=4641e94ec96f98fabc56ff9cc48be14b"
 
-SRC_URI = "${REMOTE_DRIVER};protocol=ssh;branch=release/v1.1.0"
+SRC_URI = " \
+    ${REMOTE_DRIVER};protocol=ssh;branch=release/v1.1.0 \
+    file://0001-cross-compile-fixups.patch \
+"
+
 SRC_URI:append:antelao-3588 = " \
     file://check_pcie_device.sh \
     file://pcie-check.service \
@@ -26,7 +30,7 @@ EXTRA_OEMAKE = "CROSS_COMPILE=${TARGET_PREFIX} SYSROOT=${STAGING_DIR_TARGET}"
 INHIBIT_PACKAGE_STRIP = "1"
 export KERNEL_PATH="${STAGING_KERNEL_DIR}"
 
-inherit auto-patch module
+inherit module
 
 do_install() {
     install -d ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/axelera
