@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # File to track whether a reboot has already occurred
-TRACK_FILE="/var/log/pcie_reboot_done"
+TRACK_FILE="/var/local/pcie_reboot_done"
 
 # Check if the reboot was already performed
 if [ -f "$TRACK_FILE" ]; then
