@@ -1,9 +1,9 @@
 #!/bin/sh
 
 SDK_PATH="voyager-sdk"
-VERSION="1.1.0-rc5"
+VERSION="1.2.0-rc2"
 ARCHIVE_NAME="axelera-sdk-ubuntu-2204-arm64.tar"
-ARCHIVE_SHA256="16de6a414b71724aa88977bb3df5076cd2d0844a9f1d977641bf63cdd07bea8d"
+ARCHIVE_SHA256="7a4ca1492b836c8fa39ebdc5f39f1b3125b58d888c8c0049dccc75769eae1058"
 
 # Exit successfully if the voyager-sdk directory exists
 if [ -d "$SDK_PATH" ]; then

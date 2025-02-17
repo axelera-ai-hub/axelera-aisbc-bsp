@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 
-version = '1.1.0-rc5'
+version = '1.2.0-rc2'
 
 parser = argparse.ArgumentParser(description='''Axelera Firefly Metis support.''')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='Verbose output')
@@ -147,7 +147,7 @@ def start(args):
         '-v /etc/OpenCL:/etc/OpenCL '
         '-v /etc/ld.so.cache:/etc/ld.so.cache '
         '-v /usr/lib/libMaliOpenCL.so.1:/usr/lib/libMaliOpenCL.so.1 '
-        '-v /usr/lib/gstreamer-1.0/:/opt/axelera/runtime-1.1.0-rc5-1/lib/gstreamer-1.0 '
+        '-v /usr/lib/gstreamer-1.0/:/opt/axelera/runtime-1.2.0-rc2-1/lib/gstreamer-1.0 '
         '-v /usr/lib/librockchip_mpp.so.1:/usr/lib/librockchip_mpp.so.1 '
         '-v /usr/lib/librga.so.2:/usr/lib/librga.so.2 '
         '-v /usr/lib/liba52.so.0:/usr/lib/liba52.so.0 '
