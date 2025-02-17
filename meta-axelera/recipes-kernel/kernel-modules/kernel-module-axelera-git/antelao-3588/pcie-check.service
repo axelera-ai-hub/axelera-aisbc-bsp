@@ -5,7 +5,7 @@ Requires=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/check_pcie_device.sh
+ExecStart=/usr/local/bin/check_pcie_device.sh
 #RemainAfterExit=yes
 
 [Install]
