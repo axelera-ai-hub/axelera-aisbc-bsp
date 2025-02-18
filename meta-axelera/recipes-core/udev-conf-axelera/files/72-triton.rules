@@ -3,4 +3,4 @@ SUBSYSTEM=="misc", DEVPATH=="/devices/virtual/misc/dmabuf_triton_*", GROUP="axel
 SUBSYSTEM=="metis", DEVPATH=="*/metis/metis*", GROUP="axelera", MODE="0660"
 SUBSYSTEM=="dma_heap", DEVPATH=="/devices/virtual/dma_heap/*", GROUP="axelera", MODE="0660"
 SUBSYSTEM=="mpp_class", DEVPATH=="/devices/platform/mpp-srv/mpp_class/mpp_service", GROUP="axelera", MODE="0660"
-SUBSYSTEM=="misc", KERNEL=="mali0", GROUP="axelera", MODE="0660"
+SUBSYSTEM=="misc", KERNEL=="mali0", GROUP="axelera", MODE="0666"
