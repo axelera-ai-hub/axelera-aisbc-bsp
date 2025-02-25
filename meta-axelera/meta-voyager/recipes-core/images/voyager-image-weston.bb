@@ -4,7 +4,7 @@ SUMMARY = "A voyager image with Wayland and Weston"
 
 require voyager-image.bb
 
-EXTRA_USERS_PARAMS += " usermod -aG docker weston;"
+EXTRA_USERS_PARAMS += " usermod -aG docker,axelera weston;"
 
 IMAGE_FEATURES:append = " splash hwcodecs weston"
 
