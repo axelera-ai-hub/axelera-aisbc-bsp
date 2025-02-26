@@ -76,9 +76,11 @@ ROOTFS_POSTPROCESS_COMMAND:append = " do_change_home_ownerships; "
 
 do_change_home_ownerships() {
     if [ -d "${IMAGE_ROOTFS}/home/firefly" ]; then
-        chown -R firefly:firefly "${IMAGE_ROOTFS}/home/firefly"
+        chown -R firefly:axelera "${IMAGE_ROOTFS}/home/firefly"
+        chmod 0775 "${IMAGE_ROOTFS}/home/firefly"
     fi
     if [ -d "${IMAGE_ROOTFS}/home/antelao" ]; then
-        chown -R antelao:antelao "${IMAGE_ROOTFS}/home/antelao"
+        chown -R antelao:axelera "${IMAGE_ROOTFS}/home/antelao"
+        chmod 0775 "${IMAGE_ROOTFS}/home/antelao"
     fi
 }
