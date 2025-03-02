@@ -1,4 +1,4 @@
-#!bin/sh
+#!/bin/sh
 
 MARKER_FILE="/etc/auto-extend-partition.done"
 
