@@ -5,6 +5,11 @@ VERSION="1.2.0-rc2"
 ARCHIVE_NAME="axelera-sdk-ubuntu-2204-arm64.tar"
 ARCHIVE_SHA256="7a4ca1492b836c8fa39ebdc5f39f1b3125b58d888c8c0049dccc75769eae1058"
 
+# Set up external access to weston
+echo "Setting up external users access to weston..."
+chmod o=x $XDG_RUNTIME_DIR
+chmod o=rwx $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY
+
 # Exit successfully if the voyager-sdk directory exists
 if [ -d "$SDK_PATH" ]; then
     echo "$SDK_PATH already exists. Setup complete."
