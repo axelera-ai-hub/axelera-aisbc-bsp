@@ -135,6 +135,10 @@ def start(args):
         _run(args, f'docker rm {container}')
         print("Copying this script to voyager-sdk so it is available in the container")
         shutil.copy2(__file__, 'voyager-sdk/start_axelera.py')
+    if set(["XDG_RUNTIME_DIR", "WAYLAND_DISPLAY"]).issubset(os.environ):
+        print("Setting permissions for external weston access...")
+        _run(args, 'chmod o=x ${XDG_RUNTIME_DIR}')
+        _run(args, 'chmod o=rwx ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}')
     print("Starting container...")
     _run(
         args,
