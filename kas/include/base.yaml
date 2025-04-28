@@ -6,6 +6,10 @@ target:
   - voyager-image
   - voyager-image-weston
 
+env:
+  WS_APIKEY: ""
+  WS_USERKEY: ""
+
 repos:
   bitbake:
     url: "https://git.openembedded.org/bitbake"
@@ -69,9 +73,6 @@ local_conf_header:
     WKS_FILE = "generic-gptdisk.wks.in"
     REMOTE_REPOS_PREFIX := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai/aisbc.', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/', d)}"
     REMOTE_DRIVER := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai/host.pcie-driver.git', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.git', d)}"
-
-    # WS_USERKEY = "fill in"
-    # WS_APIKEY = "fill in"
+    # Mend variables
     WS_WSS_URL = "https://saas-eu.whitesourcesoftware.com/agent"
     WS_PRODUCTNAME = "Axelera"
-    # WS_PRODUCTTOKEN = "fill in"
