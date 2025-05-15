@@ -44,6 +44,8 @@ IMAGE_INSTALL = " \
   libdrm \
   lmsensors \
   minicom \
+  networkmanager \
+  networkmanager-nmcli \
   opencv \
   os-release \
   packagegroup-core-boot \
