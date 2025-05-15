@@ -15,9 +15,9 @@ EXTRA_USERS_PARAMS = "\
     groupadd -g 1000 axelera; \
 "
 
-PASSWORD:itx-3588j = "\$5\$n.d2SD190GZItUvJ\$YuFQVXzbgsdN/Ku6ACR6fq1d2M72N9Wg31.0lamahhC"
+PASSWORD:itx-3588j = "\$1\$moraR.7A\$pfg9OHFPwNoI0xsrPGsHX/"
 USERNAME:itx-3588j = "firefly"
-PASSWORD:antelao-3588 = "\$5\$L7cOVUOwlfdgicw/\$mzVadqHcAl.NLkCKWPm76.M2SL61Y0bEvQLU3XVKZb7"
+PASSWORD:antelao-3588 = "\$1\$fK445h2M\$JFznFB4S6TEAxsGSd/jXE/"
 USERNAME:antelao-3588 = "antelao"
 
 EXTRA_USERS_PARAMS += " useradd -p '${PASSWORD}' ${USERNAME}; "
