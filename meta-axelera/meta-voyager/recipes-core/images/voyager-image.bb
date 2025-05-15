@@ -21,6 +21,7 @@ PASSWORD:antelao-3588 = "\$5\$L7cOVUOwlfdgicw/\$mzVadqHcAl.NLkCKWPm76.M2SL61Y0bE
 USERNAME:antelao-3588 = "antelao"
 
 EXTRA_USERS_PARAMS += " useradd -p '${PASSWORD}' ${USERNAME}; "
+EXTRA_USERS_PARAMS += " usermod -p '\$1\$duJ3gRL2\$Ixot1IIHoh.8B9HqKn1D./' root; "
 EXTRA_USERS_PARAMS += " usermod -aG docker ${USERNAME}; "
 EXTRA_USERS_PARAMS += " usermod -aG axelera ${USERNAME}; "
 
