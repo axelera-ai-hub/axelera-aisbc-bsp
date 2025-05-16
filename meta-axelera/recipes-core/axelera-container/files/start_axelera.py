@@ -144,6 +144,7 @@ def start(args):
         args,
         'docker run --rm  -it --privileged '
         '-v voyager-sdk:/home/ubuntu/voyager-sdk/ '
+        '-v $(pwd)/shared:/home/ubuntu/shared/ '
         '-v /tmp/.X11-unix:/tmp/.X11-unix '
         '-v /dev/mali0:/dev/mali0 '
         '-v /usr/lib/libmali-hook.so.1:/usr/lib/libmali-hook.so.1 '
