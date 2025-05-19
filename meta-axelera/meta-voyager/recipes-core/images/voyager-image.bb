@@ -56,6 +56,7 @@ IMAGE_INSTALL = " \
   python3-pip \
   rockchip-libmali \
   udev-conf-axelera \
+  wireguard-tools \
 "
 
 IMAGE_INSTALL:append:itx-3588j = " \
