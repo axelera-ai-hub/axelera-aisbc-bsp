@@ -55,6 +55,7 @@ IMAGE_INSTALL = " \
   python3 \
   python3-pip \
   rockchip-libmali \
+  tar\
   udev-conf-axelera \
   wireguard-tools \
 "
