@@ -7,9 +7,10 @@ import subprocess
 import sys
 import time
 
-version = '1.2.0-rc2'
+default_container_name = 'axelera-sdk-ubuntu-2204-arm64'
+default_version = '1.2.0-rc2'
 
-parser = argparse.ArgumentParser(description='''Axelera Firefly Metis support.''')
+parser = argparse.ArgumentParser(description='''Axelera AI - Metis Compute Board''')
 parser.add_argument('-v', '--verbose', action='count', default=0, help='Verbose output')
 subparsers = parser.add_subparsers()
 
@@ -48,19 +49,19 @@ def rescan_pci(args):
 
 @_subcommand
 def start(args):
-    '''Start the docker container.'''
-    if not os.path.exists('voyager-sdk'):
-        print("Extracting voyager-sdk from docker image")
-        container = _run(args, f'docker create axelera-sdk-ubuntu-2204-arm64:{version}').strip()
-        _run(args, f'docker cp {container}:/home/ubuntu/voyager-sdk .', capture=False)
-        _run(args, f'docker rm {container}')
-        print("Copying this script to voyager-sdk so it is available in the container")
-        shutil.copy2(__file__, 'voyager-sdk/start_axelera.py')
+    '''Start the docker container.
+
+    Optional arguments:
+        --container-name: Name of the docker container image (default: axelera-sdk-ubuntu-2204-arm64)
+        --version: Version tag of the container (default: 1.2.0-rc2)
+
+    Note: You can use `docker images` to list all available images.
+    '''
     if set(["XDG_RUNTIME_DIR", "WAYLAND_DISPLAY"]).issubset(os.environ):
         print("Setting permissions for external weston access...")
         _run(args, 'chmod o=x ${XDG_RUNTIME_DIR}')
         _run(args, 'chmod o=rwx ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}')
-    print("Starting container...")
+    print(f"Starting container {args.container_name}:{args.version}...")
     _run(
         args,
         'docker run --rm  -it --privileged '
@@ -91,18 +92,28 @@ def start(args):
         ' -e XDG_RUNTIME_DIR=/tmp '
         ' -e WAYLAND_DISPLAY=$WAYLAND_DISPLAY '
         ' -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY '
-        '--name=software-platform-voyager-sdk '
+        '--name=axelera-voyager-sdk '
         '--entrypoint=/bin/bash '
         '--network=host '
-        f'axelera-sdk-ubuntu-2204-arm64:{version} '
+        f'{args.container_name}:{args.version} '
         '-l -c "cd /home/ubuntu/voyager-sdk && . venv/bin/activate && make gst-operators && /bin/bash"',
         capture=False,
         check=False,
     )
 
 
+start_parser = subparsers.choices['start']
+start_parser.add_argument('--container-name', default=default_container_name,
+                        help='Name of the docker container')
+start_parser.add_argument('--version', default=default_version,
+                        help='Version tag of the container')
+
+
 def main(args):
     try:
+        if not hasattr(args, 'func'):
+            # If no subcommand is provided, default to 'start'
+            args = parser.parse_args(['start'])
         args.func(args)
         return 0
     except RuntimeError as e:
