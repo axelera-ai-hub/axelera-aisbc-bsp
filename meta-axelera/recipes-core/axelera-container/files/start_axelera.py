@@ -36,14 +36,19 @@ def _run(args, cmd, check=True, capture=True):
 
 @_subcommand
 def rescan_pci(args):
-    '''Provoke a pci rescan.'''
+    '''Invoke a PCIe bus rescan.'''
+    # Check if running as root
+    if os.geteuid() != 0:
+        print("Error: please invoke this command as superuser (root)")
+        sys.exit(1)
+
     if os.path.exists(r'/sys/bus/pci/devices/0000\:01\:00.0/remove'):
         _run(
             args,
-            r'sudo bash -c "echo 1 > /sys/bus/pci/devices/0000\:01\:00.0/remove"',
+            r'bash -c "echo 1 > /sys/bus/pci/devices/0000\:01\:00.0/remove"',
             check=False,
         )
-    _run(args, 'sudo bash -c "echo 1 > /sys/bus/pci/rescan"')
+    _run(args, 'bash -c "echo 1 > /sys/bus/pci/rescan"')
     time.sleep(1)
 
 
