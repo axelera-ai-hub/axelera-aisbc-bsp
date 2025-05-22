@@ -70,7 +70,6 @@ def start(args):
     _run(
         args,
         'docker run --rm  -it --privileged '
-        '-v voyager-sdk:/home/ubuntu/voyager-sdk/ '
         '-v $(pwd)/shared:/home/ubuntu/shared/ '
         '-v /tmp/.X11-unix:/tmp/.X11-unix '
         '-v /usr/lib/libmali-hook.so.1:/usr/lib/libmali-hook.so.1 '
