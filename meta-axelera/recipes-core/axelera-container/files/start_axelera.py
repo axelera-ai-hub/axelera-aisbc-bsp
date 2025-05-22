@@ -24,35 +24,6 @@ def _subcommand(func):
     return subparser
 
 
-def _find_device(args):
-    by_id = '/dev/serial/by-id'
-    device_expr = re.compile(r'usb-Axelera_AI_Metis_Alpha_PCIe_Card_[\dA-F]+-if03-port0')
-
-    devices = sorted([x for x in os.listdir(by_id)])
-    metis_ftdis = [d for d in devices if device_expr.match(d)]
-    if len(metis_ftdis) == 0:
-        raise RuntimeError(f"Could not find ftdi device (found {' '.join(devices)})")
-    elif len(metis_ftdis) > 1 and args.index is None:
-        devs = '\n'.join(f"{n: 2d}: {d}" for n, d in enumerate(devices))
-        raise RuntimeError(f"Multiple ftdi devices found select one:\n{devs}")
-
-    if args.index and args.index >= len(metis_ftdis):
-        raise RuntimeError(
-            f"Bad index {args.index}, only devices {' '.join(metis_ftdis)} devices available"
-        )
-
-    return f"{by_id}/{metis_ftdis[args.index or 0]}"
-
-
-def _wait_for_prompt(s):
-    while 1:
-        line = s.readline().decode('latin1').rstrip()
-        if '$' in line:
-            break
-        if line:
-            print('(triton)', line)
-
-
 def _run(args, cmd, check=True, capture=True):
     if args.verbose:
         print(cmd)
@@ -61,56 +32,6 @@ def _run(args, cmd, check=True, capture=True):
     )
     return p.stdout if check else None
 
-
-@_subcommand
-def reset(args):
-    '''Reset the Metis device using the usb->serial interface.'''
-    d = _find_device(args)
-    for _retry in range(2):
-        try:
-            import serial
-        except ImportError:
-            if _retry == 1:
-                sys.exit('Please run `pip install pyserial` to run this script')
-            subprocess.run(f'{sys.executable} -m pip install pyserial', shell=True)
-
-    with serial.Serial(d, 115200, timeout=1) as s:
-        s.write('\r\n'.encode('latin1'))
-        _wait_for_prompt(s)
-        s.write('cold_boot 2\r\n'.encode('latin1'))
-        _wait_for_prompt(s)
-
-
-reset.add_argument(
-    'index', nargs='?', default=None, type=int, help='Index of device if multiple devices found'
-)
-
-@_subcommand
-def fan(args, fanspeed=100):
-    '''Set the Fan speed'''
-    print("Args = ",args)
-    d = _find_device(args)
-    for _retry in range(2):
-        try:
-            import serial
-        except ImportError:
-            if _retry == 1:
-                sys.exit('Please run `pip install pyserial` to run this script')
-            subprocess.run(f'{sys.executable} -m pip install pyserial', shell=True)
-
-    with serial.Serial(d, 115200, timeout=1) as s:
-        s.write('\r\n'.encode('latin1'))
-        _wait_for_prompt(s)
-        s.write('fan drive 0 50\r\n'.encode('latin1'))
-        _wait_for_prompt(s)
-
-
-fan.add_argument(
-    'index', nargs='?', default=None, type=int, help='Index of device if multiple devices found'
-)
-#fan.add_argument(
-#    'fanspeed', nargs='?', default=100, type=int, help='Fanspeed [0-100]'
-#)
 
 @_subcommand
 def rescan_pci(args):
