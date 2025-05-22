@@ -28,9 +28,12 @@ repos:
     commit: de8681b4a2a101b99dd2c48d89a7de2ccd9a961f
     layers:
       meta-filesystems:
+      meta-gnome:
       meta-oe:
       meta-python:
       meta-networking:
+      meta-multimedia:
+      meta-xfce:
 
   meta-virtualization:
     url: "https://git.yoctoproject.org/meta-virtualization"
