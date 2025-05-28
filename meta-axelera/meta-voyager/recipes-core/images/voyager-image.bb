@@ -41,6 +41,7 @@ IMAGE_INSTALL = " \
   gstreamer1.0-plugins-good \
   gstreamer1.0-plugins-ugly \
   gstreamer1.0-rockchip \
+  gzip \
   htop \
   kernel-module-axelera \
   libdrm \
