@@ -16,14 +16,11 @@ EXTRA_USERS_PARAMS = "\
 "
 
 PASSWORD:itx-3588j = "\$1\$moraR.7A\$pfg9OHFPwNoI0xsrPGsHX/"
-USERNAME:itx-3588j = "firefly"
 PASSWORD:antelao-3588 = "\$1\$fK445h2M\$JFznFB4S6TEAxsGSd/jXE/"
-USERNAME:antelao-3588 = "antelao"
 
-EXTRA_USERS_PARAMS += " useradd -p '${PASSWORD}' ${USERNAME}; "
+EXTRA_USERS_PARAMS += " useradd -p '${PASSWORD}' ${WESTON_USER}; "
 EXTRA_USERS_PARAMS += " usermod -p '\$1\$duJ3gRL2\$Ixot1IIHoh.8B9HqKn1D./' root; "
-EXTRA_USERS_PARAMS += " usermod -aG docker ${USERNAME}; "
-EXTRA_USERS_PARAMS += " usermod -aG axelera ${USERNAME}; "
+EXTRA_USERS_PARAMS += " usermod -aG docker,axelera,video,input ${WESTON_USER}; "
 
 IMAGE_INSTALL = " \
   auto-extend-partition \
