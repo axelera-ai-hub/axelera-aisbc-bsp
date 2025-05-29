@@ -9,6 +9,7 @@ target:
 env:
   WS_APIKEY: ""
   WS_USERKEY: ""
+  WS_PRODUCTTOKEN: ""
 
 repos:
   bitbake:
