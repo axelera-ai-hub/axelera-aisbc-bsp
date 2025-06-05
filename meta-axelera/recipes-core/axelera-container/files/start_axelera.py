@@ -77,7 +77,7 @@ def start(args):
         '-v /etc/OpenCL:/etc/OpenCL '
         '-v /usr/lib/aarch64-linux-gnu/mali:/usr/lib/aarch64-linux-gnu/mali:ro '
         '-v /usr/lib/libMaliOpenCL.so.1:/usr/lib/libMaliOpenCL.so.1 '
-        '-v /usr/lib/gstreamer-1.0/:/opt/axelera/runtime-1.2.0-rc2-1/lib/gstreamer-1.0 '
+        f'-v /usr/lib/gstreamer-1.0/:/opt/axelera/runtime-{args.version}-1/lib/gstreamer-1.0 '
         '-v /usr/lib/librockchip_mpp.so.1:/usr/lib/librockchip_mpp.so.1 '
         '-v /usr/lib/librga.so.2:/usr/lib/librga.so.2 '
         '-v /usr/lib/liba52.so.0:/usr/lib/liba52.so.0 '
