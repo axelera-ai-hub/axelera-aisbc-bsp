@@ -75,7 +75,7 @@ def start(args):
         '-v /usr/lib/libmali-hook.so.1:/usr/lib/libmali-hook.so.1 '
         '-v /usr/lib/libmali.so.1:/usr/lib/libmali.so.1 '
         '-v /etc/OpenCL:/etc/OpenCL '
-        '-v /etc/ld.so.cache:/etc/ld.so.cache '
+        '-v /usr/lib/aarch64-linux-gnu/mali:/usr/lib/aarch64-linux-gnu/mali:ro '
         '-v /usr/lib/libMaliOpenCL.so.1:/usr/lib/libMaliOpenCL.so.1 '
         '-v /usr/lib/gstreamer-1.0/:/opt/axelera/runtime-1.2.0-rc2-1/lib/gstreamer-1.0 '
         '-v /usr/lib/librockchip_mpp.so.1:/usr/lib/librockchip_mpp.so.1 '
