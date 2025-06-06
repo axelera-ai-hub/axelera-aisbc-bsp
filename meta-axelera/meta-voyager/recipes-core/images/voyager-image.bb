@@ -22,13 +22,14 @@ EXTRA_USERS_PARAMS += " useradd -p '${PASSWORD}' ${WESTON_USER}; "
 EXTRA_USERS_PARAMS += " usermod -p '\$1\$duJ3gRL2\$Ixot1IIHoh.8B9HqKn1D./' root; "
 EXTRA_USERS_PARAMS += " usermod -aG docker,axelera,video,input ${WESTON_USER}; "
 
+IMAGE_FEATURES:append = " ssh-server-openssh"
+
 IMAGE_INSTALL = " \
   auto-extend-partition \
   axelera-container \
   clinfo \
   curl \
   docker \
-  dropbear \
   e2fsprogs-resize2fs \
   e2fsprogs-mke2fs \
   ffmpeg-rockchip \
@@ -57,6 +58,7 @@ IMAGE_INSTALL = " \
   tar\
   udev-conf-axelera \
   wireguard-tools \
+  xauth \
 "
 
 IMAGE_INSTALL:append:itx-3588j = " \
