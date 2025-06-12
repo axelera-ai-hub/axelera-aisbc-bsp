@@ -42,6 +42,9 @@ IMAGE_INSTALL = " \
   gzip \
   htop \
   kernel-module-axelera \
+  kernel-module-usb-f-ss-lb \
+  kernel-module-g-zero \
+  kernel-module-usbtest \
   libdrm \
   lmsensors \
   minicom \
@@ -56,7 +59,9 @@ IMAGE_INSTALL = " \
   python3-pip \
   rockchip-libmali \
   tar\
+  testusb \
   udev-conf-axelera \
+  usbutils \
   wireguard-tools \
   xauth \
 "
