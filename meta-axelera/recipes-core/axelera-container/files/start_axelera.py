@@ -67,6 +67,11 @@ def start(args):
         _run(args, 'chmod o=x ${XDG_RUNTIME_DIR}')
         _run(args, 'chmod o=rwx ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}')
     print(f"Starting container {args.container_name}:{args.version}...")
+
+    mount_wayland_display = ''
+    if os.getenv('WAYLAND_DISPLAY') is not None:
+        mount_wayland_display = '-v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY'
+
     _run(
         args,
         'docker run --rm  -it --privileged '
@@ -94,7 +99,7 @@ def start(args):
         ' -e DISPLAY=$DISPLAY '
         ' -e XDG_RUNTIME_DIR=/tmp '
         ' -e WAYLAND_DISPLAY=$WAYLAND_DISPLAY '
-        ' -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY '
+        f'{mount_wayland_display} '
         '--name=axelera-voyager-sdk '
         '--entrypoint=/bin/bash '
         '--network=host '
