@@ -53,7 +53,7 @@ repos:
 
   meta-mend:
     url: "https://github.com/amarula/meta-mend.git"
-    commit: 27b06bac37626fa6c0e57bc21d4bb4fc66b3ee24
+    commit: fbae9dd8fcf427db553b493a852247932b22eee4
 
   meta-axelera:
     layers:
