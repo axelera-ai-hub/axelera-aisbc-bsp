@@ -60,6 +60,12 @@ repos:
       meta-axelera:
       meta-axelera/meta-voyager:
 
+  axelera-doc:
+    url: "ssh://gitea@gitea.amarulasolutions.com:38745/axelera/axelera-doc.git"
+    branch: "master"
+    layers:
+      .: excluded
+
 local_conf_header:
   meta-axelera: |
     # Some useful lines you may want to copy to your site.conf for development
