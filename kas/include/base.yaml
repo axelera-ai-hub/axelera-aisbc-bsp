@@ -10,6 +10,7 @@ env:
   WS_APIKEY: ""
   WS_USERKEY: ""
   WS_PRODUCTTOKEN: ""
+  WS_AGENT_CONFIG: "/work/meta-mend/conf/axelera.wss.config"
 
 repos:
   bitbake:
