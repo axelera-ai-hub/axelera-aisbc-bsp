@@ -15,6 +15,7 @@ VERSION=$1
 VERSION_DIR="v${VERSION}"
 ARCHIVE_NAME="axelera-sdk-ubuntu-2204-arm64.tar"
 ARCHIVE_CHECKSUM="${ARCHIVE_NAME}.md5sum"
+REMOTE_URL="https://amarula-share.s3.eu-central-1.amazonaws.com"
 
 # Create version-specific directory
 mkdir -p "$VERSION_DIR"
@@ -22,7 +23,7 @@ cd "$VERSION_DIR" || { echo "Failed to create/enter directory $VERSION_DIR"; exi
 
 download_md5sum() {
   echo "Downloading checksum file..."
-  return_code=$(curl --write-out %{http_code} -O "https://amarula-share.s3.eu-central-1.amazonaws.com/release/v$VERSION/$ARCHIVE_CHECKSUM")
+  return_code=$(curl --write-out %{http_code} -O "$REMOTE_URL/release/v$VERSION/$ARCHIVE_CHECKSUM")
 
   if [ "x$return_code" != "x200" ]; then
     echo "Warning: checksum file not found in remote location."
@@ -53,7 +54,7 @@ if [ -f "$ARCHIVE_NAME" ]; then
   verify_md5sum
 else
   echo "Downloading Docker image into directory: $(realpath $PWD)"
-  return_code=$(curl --write-out %{http_code} -O "https://amarula-share.s3.eu-central-1.amazonaws.com/release/v$VERSION/$ARCHIVE_NAME")
+  return_code=$(curl --write-out %{http_code} -O "$REMOTE_URL/release/v$VERSION/$ARCHIVE_NAME")
 
   if [ "x$return_code" != "x200" ]; then
     echo "Failed to download archive."
