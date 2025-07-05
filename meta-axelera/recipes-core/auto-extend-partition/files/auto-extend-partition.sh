@@ -3,7 +3,7 @@
 MARKER_FILE="/etc/auto-extend-partition.done"
 
 if [ -f "$MARKER_FILE" ]; then
-	exit 0;
+  exit 0;
 fi
 
 echo "auto-extend-partition: Partition extension process starting..." > /dev/kmsg
