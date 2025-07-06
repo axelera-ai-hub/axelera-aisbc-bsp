@@ -1,0 +1,6 @@
+header:
+  version: 1
+
+local_conf_header:
+  security: |
+    INHERIT += " mend cve-check"

@@ -70,7 +70,7 @@ local_conf_header:
   meta-axelera: |
     # Some useful lines you may want to copy to your site.conf for development
     # INHERIT += "rm_work"
-    INHERIT += " mend cve-check rockchip-image"
+    INHERIT += " rockchip-image"
     INIT_MANAGER = "systemd"
     IMAGE_INSTALL:append = " android-tools-adbd android-tools-conf-rockchip "
     PREFERRED_PROVIDER_android-tools-conf = "android-tools-conf-rockchip"
