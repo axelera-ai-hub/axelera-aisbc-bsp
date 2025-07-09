@@ -11,6 +11,8 @@ IMAGE_FEATURES:append = " splash hwcodecs weston"
 SYSTEMD_DEFAULT_TARGET = "graphical.target"
 
 IMAGE_INSTALL:append = " \
+    weston-xwayland \
+    xwayland \
     wayland \
     xfce4-terminal \
 "
