@@ -13,6 +13,7 @@ SYSTEMD_DEFAULT_TARGET = "graphical.target"
 IMAGE_INSTALL:append = " \
     weston-xwayland \
     xwayland \
+    xhost \
     wayland \
     xfce4-terminal \
 "
