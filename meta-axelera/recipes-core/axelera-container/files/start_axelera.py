@@ -66,6 +66,7 @@ def start(args):
         print("Setting permissions for external weston access...")
         _run(args, 'chmod o=x ${XDG_RUNTIME_DIR}')
         _run(args, 'chmod o=rwx ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}')
+        _run(args, 'xhost +local:docker')
     print(f"Starting container {args.container_name}:{args.version}...")
 
     mount_wayland_display = ''
