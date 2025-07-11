@@ -11,6 +11,7 @@ env:
   WS_USERKEY: ""
   WS_PRODUCTTOKEN: ""
   WS_AGENT_CONFIG: "/work/meta-axelera/conf/axelera.wss.config"
+  JENKINS_BUILD_ID: ""
 
 repos:
   bitbake:
