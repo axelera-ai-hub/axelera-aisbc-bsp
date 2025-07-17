@@ -12,6 +12,7 @@ env:
   WS_PRODUCTTOKEN: ""
   WS_AGENT_CONFIG: "/work/meta-axelera/conf/axelera.wss.config"
   JENKINS_BUILD_ID: ""
+  WS_PRODUCTNAME: "Axelera"
 
 repos:
   bitbake:
@@ -87,4 +88,3 @@ local_conf_header:
     REMOTE_DRIVER := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai/host.pcie-driver.git', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.git', d)}"
     # Mend variables
     WS_WSS_URL = "https://saas-eu.whitesourcesoftware.com/agent"
-    WS_PRODUCTNAME = "Axelera"
