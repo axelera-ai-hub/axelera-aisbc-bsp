@@ -104,6 +104,7 @@ def start(args):
         '--name=axelera-voyager-sdk '
         '--entrypoint=/bin/bash '
         '--network=host '
+        '--ulimit core=0 '
         f'{args.container_name}:{args.version} '
         '-l -c "cd /home/ubuntu/voyager-sdk && . venv/bin/activate && make gst-operators && /bin/bash"',
         capture=False,
