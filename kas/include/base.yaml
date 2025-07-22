@@ -1,5 +1,10 @@
 header:
-  version: 11
+  version: 19
+
+signers:
+  YoctoBuildandRelease:
+    fingerprint: 2AFB13F28FBBB0D1B9DAF63087EB3D32FB631AD9
+    gpg_keyserver: keyserver.ubuntu.com
 
 distro: voyager
 target:
@@ -17,19 +22,29 @@ env:
 repos:
   bitbake:
     url: "https://git.openembedded.org/bitbake"
+    tag: 2022-04.24-kirkstone
     commit: 3f88b005244a0afb5d5c7260e54a94a453ec9b3e
+    signed: true
+    allowed_signers:
+      - YoctoBuildandRelease
     layers:
-      .: excluded
+      .: disabled
 
   openembedded-core:
     url: "https://git.openembedded.org/openembedded-core"
+    tag: 2022-04.24-kirkstone
     commit: a270d4c957259761bcc7382fcc54642a02f9fc7d
+    signed: true
+    allowed_signers:
+      - YoctoBuildandRelease
     layers:
       meta:
 
   meta-openembedded:
     url: "git://git.openembedded.org/meta-openembedded"
+    branch: kirkstone
     commit: de8681b4a2a101b99dd2c48d89a7de2ccd9a961f
+    signed: false
     layers:
       meta-filesystems:
       meta-gnome:
@@ -41,22 +56,30 @@ repos:
 
   meta-virtualization:
     url: "https://git.yoctoproject.org/meta-virtualization"
+    branch: kirkstone
     commit: b5a1645250c17fb657b7f10166f1c665ce192aaf
+    signed: false
 
   meta-arm:
     url: "git://git.yoctoproject.org/meta-arm"
+    branch: kirkstone
     commit: 936c02ec13661bd86a05f7f90e1b920d5092d670
+    signed: false
     layers:
       meta-arm-toolchain:
       meta-arm:
 
   meta-rockchip:
     url: "ssh://gitea@gitea.amarulasolutions.com:38745/axelera/meta-rockchip.git"
+    branch: rk3588
     commit: fb6193a5f5cf80070cf8182c06cb5621433111aa
+    signed: false
 
   meta-mend:
     url: "https://github.com/amarula/meta-mend.git"
+    branch: main
     commit: f0f7498a009a06490fadc8a1e64682a8ddeae76d
+    signed: false
 
   meta-axelera:
     layers:
@@ -65,9 +88,10 @@ repos:
 
   axelera-doc:
     url: "ssh://gitea@gitea.amarulasolutions.com:38745/axelera/axelera-doc.git"
-    branch: "master"
+    branch: master
+    signed: false
     layers:
-      .: excluded
+      .: disabled
 
 local_conf_header:
   meta-axelera: |

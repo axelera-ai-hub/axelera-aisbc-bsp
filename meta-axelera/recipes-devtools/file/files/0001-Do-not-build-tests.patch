@@ -1,0 +1,47 @@
+From a84cd4f337fae1712c242cc654f51f33ec45c5a9 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <adam.duskett@amarulasolutions.com>
+Date: Tue, 22 Jul 2025 11:50:02 +0200
+Subject: [PATCH] Do not build tests
+
+tests aren't needed for building in an embedded environment.
+These tests also do not honor the systems timezone and expect UTC,
+leading to the following error when built with a kas >= 4.8 container:
+
+| test: ERROR: result was (len 130)
+| FIT Map data, unit id 65536, serial 3879446968, Sat May 31 12:00:34 2014, manufacturer 1 (garmin), product 1632, type 4 (Activity)
+| expected (len 131)
+| FIT Map data, unit id 65536, serial 3879446968, Sat May 31 10:00:34 2014, manufacturer 1 (garmin), product 1632, type 4 (Activity)
+
+Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
+---
+ Makefile.am  | 2 +-
+ configure.ac | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index b10b1cb1..89ae19f2 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -2,7 +2,7 @@ ACLOCAL_AMFLAGS = -I m4
+ 
+ EXTRA_DIST = MAINT RELEASE-PROCEDURE README.DEVELOPER m4/visibility.m4
+ 
+-SUBDIRS = src magic tests doc python
++SUBDIRS = src magic doc python
+ 
+ # This variable must have 'exec' in its name, in order to be installed
+ # by 'install-exec' target (instead of default 'install-data')
+diff --git a/configure.ac b/configure.ac
+index ccc57e13..38352f85 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -216,5 +216,5 @@ if  test "$ac_cv_header_lzma_h$ac_cv_lib_lzma_lzma_stream_decoder" = "yesyes"; t
+   AC_DEFINE([XZLIBSUPPORT], 1, [Enable xzlib compression support])
+ fi
+ 
+-AC_CONFIG_FILES([Makefile src/Makefile magic/Makefile tests/Makefile doc/Makefile python/Makefile libmagic.pc])
++AC_CONFIG_FILES([Makefile src/Makefile magic/Makefile doc/Makefile python/Makefile libmagic.pc])
+ AC_OUTPUT
+-- 
+2.50.1
+
