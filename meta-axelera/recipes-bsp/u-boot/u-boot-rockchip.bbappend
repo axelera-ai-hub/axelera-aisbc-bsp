@@ -3,6 +3,7 @@
 
 SOC_FAMILY ?= "rk3588"
 CPU_SERIES = "RK3588"
+PROVIDES += "u-boot"
 
 inherit local-git
 
