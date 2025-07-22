@@ -1,5 +1,6 @@
 # Copyright (C) 2019, Fuzhou Rockchip Electronics Co., Ltd
 # Released under the MIT license (see COPYING.MIT for the terms)
+FILESEXTRAPATHS:prepend:itx-3588j := "${THISDIR}/files:"
 
 SOC_FAMILY ?= "rk3588"
 CPU_SERIES = "RK3588"
@@ -13,6 +14,7 @@ SRCREV_uboot:itx-3588j = "f83f9138f588e918effaa200da488f0eb0d5afc1"
 SRC_URI:itx-3588j = " \
 	git://gitlab.com/firefly-linux/u-boot.git;protocol=https;branch="rk3588/firefly";name=uboot; \
 	git://gitlab.com/firefly-linux/rkbin.git;protocol=https;branch="rk3588/firefly";name=rkbin;destsuffix=rkbin; \
+	file://0001-add-itx-3588j_defconfig.patch; \
 "
 
 SRCREV_rkbin:antelao-3588 = "12660714c81be85350a4092542e2ff599aa5adcb"
