@@ -30,8 +30,8 @@ IMAGE_INSTALL = " \
   clinfo \
   curl \
   docker \
-  e2fsprogs-resize2fs \
   e2fsprogs-mke2fs \
+  e2fsprogs-resize2fs \
   ffmpeg-rockchip \
   gstreamer1.0-libav \
   gstreamer1.0-plugins-bad \
@@ -42,8 +42,8 @@ IMAGE_INSTALL = " \
   gzip \
   htop \
   kernel-module-axelera \
-  kernel-module-usb-f-ss-lb \
   kernel-module-g-zero \
+  kernel-module-usb-f-ss-lb \
   kernel-module-usbtest \
   libdrm \
   lmsensors \
