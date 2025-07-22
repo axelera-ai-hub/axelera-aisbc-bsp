@@ -1,8 +1,8 @@
 # Build a simple, minimal root filesystem with wayland and weston.
 
-SUMMARY = "A voyager image with Wayland and Weston"
+SUMMARY = "Voyager image with Wayland and Weston"
 
-require voyager-image.bb
+require voyager-image.inc
 
 EXTRA_USERS_PARAMS += " usermod -aG docker,axelera weston;"
 
@@ -12,8 +12,6 @@ IMAGE_FEATURES:append = " \
     weston \
 "
 
-SYSTEMD_DEFAULT_TARGET = "graphical.target"
-
 IMAGE_INSTALL:append = " \
     wayland \
     weston-xwayland \
@@ -21,3 +19,5 @@ IMAGE_INSTALL:append = " \
     xhost \
     xwayland \
 "
+
+SYSTEMD_DEFAULT_TARGET = "graphical.target"
