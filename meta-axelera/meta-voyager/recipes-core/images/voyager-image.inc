@@ -89,4 +89,4 @@ do_change_home_ownerships() {
   fi
 }
 
-require recipes-core/images/voyager.inc
+inherit voyager-image
