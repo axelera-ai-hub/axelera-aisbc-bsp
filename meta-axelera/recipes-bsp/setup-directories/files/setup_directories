@@ -2,13 +2,21 @@
 set -e
 
 DATA_DIR="/data"
+OVERLAY_DIR="${DATA_DIR}/overlay"
 
 setup_directory_permissions() {
   chown -R root:axelera "${DATA_DIR}"
   chmod -R 775 "${DATA_DIR}"
 }
 
+setup_overlay_dir() {
+  if [ ! -d "${OVERLAY_DIR}" ]; then
+    mkdir -p "${OVERLAY_DIR}"
+  fi
+}
+
 main() {
+  setup_overlay_dir
   setup_directory_permissions
 }
 

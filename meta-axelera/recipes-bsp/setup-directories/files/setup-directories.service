@@ -1,6 +1,7 @@
 [Unit]
 Description=Setup directories on startup
 After=data.mount
+Before=data-overlay-etc.service data-overlay-home.service
 
 [Service]
 ExecStart=/usr/bin/setup_directories
