@@ -41,7 +41,7 @@ repos:
       meta:
 
   meta-openembedded:
-    url: "git://git.openembedded.org/meta-openembedded"
+    url: "https://git.openembedded.org/meta-openembedded"
     branch: kirkstone
     commit: de8681b4a2a101b99dd2c48d89a7de2ccd9a961f
     signed: false
