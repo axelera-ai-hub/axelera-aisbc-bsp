@@ -11,3 +11,4 @@ part --source rawcopy --sourceparams="file=trust.img" --part-name trust
 part --source rawcopy --sourceparams="file=boot.img" --part-name boot
 part / --source rootfs --fstype ext4 --part-name rootfs --uuid ${RK_ROOTDEV_UUID} --align 8192
 part /factory --ondisk mmcblk0 --fstype ext4 --fixed-size 64M --label factory --align 8192
+part /data --ondisk mmcblk0 --fstype ext4 --size 64M --label data --align 8192
