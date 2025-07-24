@@ -1,0 +1,12 @@
+[Unit]
+Description=Setup directories on startup
+After=data.mount
+
+[Service]
+ExecStart=/usr/bin/setup_directories
+KillSignal=SIGINT
+RemainAfterExit=yes
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+set -e
+
+DATA_DIR="/data"
+
+setup_directory_permissions() {
+  chown -R root:axelera "${DATA_DIR}"
+  chmod -R 775 "${DATA_DIR}"
+}
+
+main() {
+  setup_directory_permissions
+}
+
+main "${@}"
