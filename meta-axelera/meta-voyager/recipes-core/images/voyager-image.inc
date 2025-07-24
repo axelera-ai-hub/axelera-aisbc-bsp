@@ -55,6 +55,7 @@ IMAGE_INSTALL = " \
   rockchip-libmali \
   tar\
   testusb \
+  u-boot-fw-utils \
   udev-conf-axelera \
   usbutils \
   wireguard-tools \
