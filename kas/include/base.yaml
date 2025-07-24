@@ -62,7 +62,7 @@ repos:
 
   meta-arm:
     url: "https://git.yoctoproject.org/meta-arm"
-    branch: kirkstone
+    tag: yocto-4.0.6
     commit: 6b2d97cecd1b0e4bf4caee9a65595d279b57a686
     signed: false
     layers:
