@@ -1,0 +1,13 @@
+HostKey /factory/ssh/ssh_host_rsa_key
+HostKey /factory/ssh/ssh_host_ecdsa_key
+HostKey /factory/ssh/ssh_host_ed25519_key
+
+# Authentication:
+PermitRootLogin yes
+PubkeyAuthentication yes
+AuthorizedKeysFile /factory/ssh/authorized_keys
+PasswordAuthentication yes
+PermitEmptyPasswords yes
+
+# override default of no subsystems
+Subsystem sftp /usr/libexec/sftp-server
