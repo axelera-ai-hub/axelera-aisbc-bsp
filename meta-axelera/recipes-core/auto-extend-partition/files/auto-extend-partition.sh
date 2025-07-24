@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MARKER_FILE="/etc/auto-extend-partition.done"
+MARKER_FILE="/factory/auto-extend-partition.done"
 
 if [ -f "$MARKER_FILE" ]; then
   exit 0;

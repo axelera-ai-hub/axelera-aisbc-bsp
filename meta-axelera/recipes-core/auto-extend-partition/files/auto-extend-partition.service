@@ -1,5 +1,6 @@
 [Unit]
 Description=Run first boot script which extends the data partition
+After=factory.mount
 Before=data.mount
 
 [Service]
