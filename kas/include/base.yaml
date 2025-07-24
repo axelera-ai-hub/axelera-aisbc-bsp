@@ -5,6 +5,9 @@ signers:
   YoctoBuildandRelease:
     fingerprint: 2AFB13F28FBBB0D1B9DAF63087EB3D32FB631AD9
     gpg_keyserver: keyserver.ubuntu.com
+  JonMason:
+    fingerprint: A04F5BF5CDD4D89C57F7C9AA6E664BAC7A8BD223
+    gpg_keyserver: keyserver.ubuntu.com
 
 distro: voyager
 target:
@@ -64,7 +67,9 @@ repos:
     url: "https://git.yoctoproject.org/meta-arm"
     tag: yocto-4.0.6
     commit: 6b2d97cecd1b0e4bf4caee9a65595d279b57a686
-    signed: false
+    signed: true
+    allowed_signers:
+      - JonMason
     layers:
       meta-arm-toolchain:
       meta-arm:
