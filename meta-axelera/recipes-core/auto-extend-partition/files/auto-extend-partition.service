@@ -1,5 +1,6 @@
 [Unit]
-Description=Run first boot script which extends the partition
+Description=Run first boot script which extends the data partition
+Before=data.mount
 
 [Service]
 Type=oneshot
