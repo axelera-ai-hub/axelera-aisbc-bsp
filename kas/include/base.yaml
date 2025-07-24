@@ -104,7 +104,7 @@ local_conf_header:
     USB_DEBUGGING_ENABLED = "1"
     PACKAGE_CLASSES = "package_deb"
     EXTRA_IMAGE_FEATURES = "debug-tweaks package-management"
-    IMAGE_FSTYPES:append = " ${RK_ROOTFS_TYPE} wic wic.gz wic.bmap ext4.gz"
+    IMAGE_FSTYPES:append = " ext4 wic wic.gz wic.bmap ext4.gz"
     RK_ROOTDEV_UUID ?= "614e0000-0000-4b53-8000-1d28000054a9"
     RK_ROOTFS_TYPE ?= "ext4"
     WKS_FILE = "voyager-gptdisk.wks.in"
