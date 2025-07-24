@@ -63,7 +63,7 @@ repos:
   meta-arm:
     url: "https://git.yoctoproject.org/meta-arm"
     branch: kirkstone
-    commit: 936c02ec13661bd86a05f7f90e1b920d5092d670
+    commit: 6b2d97cecd1b0e4bf4caee9a65595d279b57a686
     signed: false
     layers:
       meta-arm-toolchain:
