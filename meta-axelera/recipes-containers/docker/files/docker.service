@@ -1,7 +1,7 @@
 [Unit]
 Description=Docker Application Container Engine
 Documentation=https://docs.docker.com
-After=network.target docker.socket firewalld.service data.mount
+After=network.target docker.socket firewalld.service data.mount data-overlay-etc.service
 Wants=network.target
 Requires=docker.socket
 

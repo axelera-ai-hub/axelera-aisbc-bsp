@@ -180,7 +180,7 @@ def start(args):
         "-v /usr/lib/libmali-hook.so.1:/usr/lib/libmali-hook.so.1 "
         "-v /usr/lib/libmali.so.1:/usr/lib/libmali.so.1 "
         "-v /etc/OpenCL:/etc/OpenCL "
-        "-v /usr/lib/aarch64-linux-gnu/mali:/usr/lib/aarch64-linux-gnu/mali:ro "
+        "-v /data/sdk/container/volumes/usr/lib/aarch64-linux-gnu/mali:/usr/lib/aarch64-linux-gnu/mali:ro "
         "-v /usr/lib/libMaliOpenCL.so.1:/usr/lib/libMaliOpenCL.so.1 "
         f"-v /usr/lib/gstreamer-1.0/:/opt/axelera/runtime-{args.version}-1/lib/gstreamer-1.0 "
         "-v /usr/lib/librockchip_mpp.so.1:/usr/lib/librockchip_mpp.so.1 "
