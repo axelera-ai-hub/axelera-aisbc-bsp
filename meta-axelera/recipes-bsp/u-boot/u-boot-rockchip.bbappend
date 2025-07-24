@@ -15,6 +15,7 @@ SRC_URI:itx-3588j = " \
 	git://gitlab.com/firefly-linux/u-boot.git;protocol=https;branch="rk3588/firefly";name=uboot; \
 	git://gitlab.com/firefly-linux/rkbin.git;protocol=https;branch="rk3588/firefly";name=rkbin;destsuffix=rkbin; \
 	file://0001-add-itx-3588j_defconfig.patch; \
+	file://0002-add-rockchip-environment-support.patch; \
 "
 
 SRCREV_rkbin:antelao-3588 = "12660714c81be85350a4092542e2ff599aa5adcb"
