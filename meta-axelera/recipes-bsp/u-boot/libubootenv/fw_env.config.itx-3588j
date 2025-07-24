@@ -1,0 +1,2 @@
+# device     offset   size
+/dev/mmcblk0 0x3F8000 0x8000
