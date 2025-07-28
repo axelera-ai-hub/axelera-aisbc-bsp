@@ -42,7 +42,7 @@ ExecStart=/usr/bin/weston --modules=systemd-notify.so
 
 # The user to run Weston as.
 User=#WESTON_USER#
-Group=#WESTON_USER#
+Group=axelera
 
 # Make sure the working directory is the users home directory
 WorkingDirectory=/home/#WESTON_USER#
