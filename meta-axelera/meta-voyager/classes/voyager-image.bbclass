@@ -16,3 +16,5 @@ do_fixup_wks() {
     done
 }
 addtask do_fixup_wks after do_write_wks_template before do_image_wic
+
+inherit core-image

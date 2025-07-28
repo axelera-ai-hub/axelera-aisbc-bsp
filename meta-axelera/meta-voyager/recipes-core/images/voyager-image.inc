@@ -76,8 +76,6 @@ IMAGE_LINGUAS = " "
 
 IMAGE_INIT_MANAGER  = "systemd"
 
-inherit core-image
-
 ROOTFS_POSTPROCESS_COMMAND:append = " do_change_home_ownerships; "
 
 do_change_home_ownerships() {
