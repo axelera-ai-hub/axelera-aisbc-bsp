@@ -12,9 +12,8 @@ EXTRA_USERS_PARAMS = "\
 PASSWORD:itx-3588j = "\$1\$moraR.7A\$pfg9OHFPwNoI0xsrPGsHX/"
 PASSWORD:antelao-3588 = "\$1\$fK445h2M\$JFznFB4S6TEAxsGSd/jXE/"
 
-EXTRA_USERS_PARAMS += " useradd -p '${PASSWORD}' ${WESTON_USER}; "
+EXTRA_USERS_PARAMS += " useradd -m -p '${PASSWORD}' -g axelera -G axelera,docker,video,input ${WESTON_USER}; "
 EXTRA_USERS_PARAMS += " usermod -p '\$1\$duJ3gRL2\$Ixot1IIHoh.8B9HqKn1D./' root; "
-EXTRA_USERS_PARAMS += " usermod -aG docker,axelera,video,input ${WESTON_USER}; "
 
 IMAGE_FEATURES:append = " ssh-server-openssh read-only-rootfs"
 
