@@ -79,14 +79,8 @@ IMAGE_INIT_MANAGER  = "systemd"
 ROOTFS_POSTPROCESS_COMMAND:append = " do_change_home_ownerships; "
 
 do_change_home_ownerships() {
-  if [ -d "${IMAGE_ROOTFS}/home/firefly" ]; then
-    chown -R firefly:axelera "${IMAGE_ROOTFS}/home/firefly"
-    chmod 0775 "${IMAGE_ROOTFS}/home/firefly"
-  fi
-  if [ -d "${IMAGE_ROOTFS}/home/antelao" ]; then
-    chown -R antelao:axelera "${IMAGE_ROOTFS}/home/antelao"
-    chmod 0775 "${IMAGE_ROOTFS}/home/antelao"
-  fi
+  chown -R "${WESTON_USER}":axelera "${IMAGE_ROOTFS}/home/${WESTON_USER}"
+  chmod 0775 "${IMAGE_ROOTFS}/home/${WESTON_USER}"
 }
 
 inherit voyager-image
