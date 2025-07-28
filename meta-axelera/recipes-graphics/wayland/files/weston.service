@@ -41,11 +41,11 @@ ExecStart=/usr/bin/weston --modules=systemd-notify.so
 #WatchdogSec=20
 
 # The user to run Weston as.
-User=firefly
-Group=firefly
+User=#WESTON_USER#
+Group=#WESTON_USER#
 
 # Make sure the working directory is the users home directory
-WorkingDirectory=/home/firefly
+WorkingDirectory=/home/#WESTON_USER#
 
 # Set up a full user session for the user, required by Weston.
 PAMName=weston-autologin
