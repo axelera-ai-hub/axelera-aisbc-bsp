@@ -76,11 +76,4 @@ IMAGE_LINGUAS = " "
 
 IMAGE_INIT_MANAGER  = "systemd"
 
-ROOTFS_POSTPROCESS_COMMAND:append = " do_change_home_ownerships; "
-
-do_change_home_ownerships() {
-  chown -R "${WESTON_USER}":axelera "${IMAGE_ROOTFS}/home/${WESTON_USER}"
-  chmod 0775 "${IMAGE_ROOTFS}/home/${WESTON_USER}"
-}
-
 inherit voyager-image
