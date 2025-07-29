@@ -13,6 +13,9 @@ IMAGE_FEATURES:append = " \
 "
 
 IMAGE_INSTALL:append = " \
+    fontconfig \
+    fontconfig-utils \
+    ttf-noto-emoji-color \
     wayland \
     weston-xwayland \
     xfce4-terminal \
