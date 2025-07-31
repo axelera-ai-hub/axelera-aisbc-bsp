@@ -56,6 +56,7 @@ IMAGE_INSTALL = " \
   tar\
   testusb \
   u-boot-fw-utils \
+  u3loop \
   udev-conf-axelera \
   usbutils \
   wireguard-tools \
