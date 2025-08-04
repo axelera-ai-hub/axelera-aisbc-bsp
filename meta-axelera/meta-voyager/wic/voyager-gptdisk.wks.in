@@ -10,5 +10,5 @@ part --source rawcopy --sourceparams="file=uboot.img" --part-name uboot --align 
 part --source rawcopy --sourceparams="file=trust.img" --part-name trust
 part --source rawcopy --sourceparams="file=boot.img" --part-name boot
 part / --source rootfs --fstype ext4 --part-name rootfs --uuid ${RK_ROOTDEV_UUID} --align 8192
-part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/${IMAGE_BASENAME}-factoryimg.img" --part-name factory
-part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/${IMAGE_BASENAME}-dataimg.img" --part-name data
+part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/voyager-factory.img" --part-name "voyager-factory"
+part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/voyager-data.img" --part-name "voyager-data"

@@ -3,11 +3,11 @@ do_fixup_wks[depends] += " \
         virtual/kernel:do_deploy \
         virtual/bootloader:do_deploy \
 "
-# We handle dataimg.img and factoryimg.img separately as they are not yet deployed.
+# We handle the data and factory images separately as they are not yet deployed.
 do_fixup_wks() {
     [ -f "${WKS_FULL_PATH}" ] || return
 
-    IMAGES=$(grep -o "[^=]*\.img" "${WKS_FULL_PATH}" |grep -ve 'factoryimg.img' -ve 'dataimg.img')
+    IMAGES=$(grep -o "[^=]*\.img" "${WKS_FULL_PATH}" |grep -ve 'factory' -ve 'data')
 
     for image in ${IMAGES};do
         if [ ! -f "${DEPLOY_DIR_IMAGE}/${image}" ];then
