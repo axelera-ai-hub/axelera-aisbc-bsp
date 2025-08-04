@@ -3,12 +3,11 @@ do_fixup_wks[depends] += " \
         virtual/kernel:do_deploy \
         virtual/bootloader:do_deploy \
 "
-
-# We handle factoryimg.img separately as it is not yet deployed.
+# We handle dataimg.img and factoryimg.img separately as they are not yet deployed.
 do_fixup_wks() {
     [ -f "${WKS_FULL_PATH}" ] || return
 
-    IMAGES=$(grep -o "[^=]*\.img" "${WKS_FULL_PATH}" |grep -ve 'factoryimg.img')
+    IMAGES=$(grep -o "[^=]*\.img" "${WKS_FULL_PATH}" |grep -ve 'factoryimg.img' -ve 'dataimg.img')
 
     for image in ${IMAGES};do
         if [ ! -f "${DEPLOY_DIR_IMAGE}/${image}" ];then
@@ -20,4 +19,5 @@ do_fixup_wks() {
 addtask do_fixup_wks after do_write_wks_template before do_image_wic
 
 inherit core-image
+inherit voyager-dataimg
 inherit voyager-factoryimg
