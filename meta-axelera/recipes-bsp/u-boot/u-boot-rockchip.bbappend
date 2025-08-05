@@ -1,6 +1,6 @@
 # Copyright (C) 2019, Fuzhou Rockchip Electronics Co., Ltd
 # Released under the MIT license (see COPYING.MIT for the terms)
-FILESEXTRAPATHS:prepend:itx-3588j := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend:itx-3588j := "${THISDIR}/${PN}:"
 
 SOC_FAMILY ?= "rk3588"
 CPU_SERIES = "RK3588"
