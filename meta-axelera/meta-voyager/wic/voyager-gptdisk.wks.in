@@ -9,6 +9,7 @@ part --source rawcopy --sourceparams="file=idblock.img" --align 32 --no-table
 part --source rawcopy --sourceparams="file=uboot.img" --part-name uboot --align 8192
 part --source rawcopy --sourceparams="file=trust.img" --part-name trust
 part --source rawcopy --sourceparams="file=boot.img" --part-name boot
-part / --source rootfs --fstype ext4 --part-name rootfs --uuid ${RK_ROOTDEV_UUID} --align 8192
+part / --source rootfs --fstype ext4 --part-name system_a --uuid ${RK_ROOTDEV_UUID} --align 8192
+part / --source rootfs --fstype ext4 --part-name system_b --uuid ${RK_ROOTDEV_UUID} --align 8192
 part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/voyager-factory.img" --part-name "voyager-factory" --fstype ext4 --align 8192
 part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/voyager-data.img" --part-name "voyager-data" --fstype ext4 --align 8192

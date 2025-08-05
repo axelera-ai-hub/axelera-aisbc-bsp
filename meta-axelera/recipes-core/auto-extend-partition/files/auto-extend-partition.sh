@@ -7,6 +7,6 @@ if [ -f "$MARKER_FILE" ]; then
 fi
 
 echo "auto-extend-partition: Partition extension process starting..." > /dev/kmsg
-/sbin/resize2fs /dev/mmcblk0p5 || { echo "resize2fs command failed in auto-extend-partition script."; exit 1; }
+/sbin/resize2fs /dev/mmcblk0p6 || { echo "resize2fs command failed in auto-extend-partition script."; exit 1; }
 echo "auto-extend-partition: Partition extended successfully." > /dev/kmsg
 touch "$MARKER_FILE"
