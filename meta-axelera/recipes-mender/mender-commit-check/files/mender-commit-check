@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+set -e
+
+MENDER_DIR="/var/lib/mender"
+
+if [ -d "${MENDER_DIR}"/scripts ]; then
+  /usr/bin/mender commit
+
+  # Scripts are packaged with the artifact and are not needed after a
+  # sucessfull boot.
+  rm -rf "${MENDER_DIR}"/scripts
+
+  if  [ -d "${MENDER_DIR}"/modules ]; then
+      rm -rf "${MENDER_DIR}"/modules
+  fi
+
+  rm -rf "${MENDER_DIR}/*.mender"
+fi

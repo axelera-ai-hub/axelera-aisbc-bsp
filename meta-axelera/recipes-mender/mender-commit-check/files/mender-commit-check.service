@@ -1,0 +1,13 @@
+[Unit]
+Description=Auto commit if needed
+After=data.mount factory.mount var-lib.mount
+After=mender-update-verifier.service
+
+[Service]
+ExecStart=/usr/bin/mender-commit-check
+KillSignal=SIGINT
+RemainAfterExit=yes
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target

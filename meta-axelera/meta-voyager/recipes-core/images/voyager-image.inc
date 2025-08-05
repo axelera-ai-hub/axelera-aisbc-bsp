@@ -23,6 +23,7 @@ IMAGE_INSTALL = " \
   libdrm \
   libubootenv \
   lmsensors \
+  mender-commit-check \
   minicom \
   networkmanager \
   networkmanager-nmcli \
