@@ -1,12 +1,13 @@
-FILESEXTRAPATHS:prepend:itx-3588j := "${THISDIR}/libubootenv:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI:append:itx-3588j = " \
-  file://fw_env.config.itx-3588j; \
+SRC_URI:append = " \
+    file://fw_env.config; \
 "
 
-do_install:append:itx-3588j() {
+do_install:append() {
   install -d ${D}${sysconfdir}
-  install -m 0644 ${WORKDIR}/fw_env.config.itx-3588j ${D}${sysconfdir}/fw_env.config
+  install -m 0644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/fw_env.config
 }
 
-FILES:${PN} += " ${sysconfdir}/fw_env.config"
+FILES:${PN} += "${sysconfdir}/fw_env.config"
+COMPATIBLE_MACHINE = "(itx-3588j|antelao-3588)"
