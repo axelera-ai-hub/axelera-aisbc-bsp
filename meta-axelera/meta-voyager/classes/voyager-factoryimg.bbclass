@@ -1,10 +1,9 @@
-IMAGE_CMD:voyager-factoryimg() {
-    image_name="voyager-factory"
-    dd if=/dev/zero of="${WORKDIR}/${image_name}.ext4" count=0 bs=1M seek=64
-    mkfs.ext4 -F "${WORKDIR}/${image_name}.ext4" -L "factory"
-    mv "${WORKDIR}/${image_name}.ext4" "${IMGDEPLOYDIR}/${image_name}.img"
-    chmod 0644 "${IMGDEPLOYDIR}/${image_name}.img"
-}
+# This is needed for the rockchip-image.bbclass that only processes .img
+# files and mender creates a .factoryimg file.
+# Name the image "voyager-factory.img to avoid having to change the wic file.
+IMAGE_CLASSES += "mender-factoryimg"
 
-IMAGE_CLASSES += "voyager-factoryimg"
-IMAGE_TYPEDEP:wic:append = " voyager-factoryimg"
+IMAGE_CMD:factoryimg:append() {
+    cd "${IMGDEPLOYDIR}"
+    mv "${IMGDEPLOYDIR}/${IMAGE_NAME}.factoryimg" "${IMGDEPLOYDIR}/voyager-factory.img"
+}

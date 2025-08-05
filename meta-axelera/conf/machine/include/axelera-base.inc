@@ -1,5 +1,6 @@
 # Machine configuration for the Firefly ITX-RK3588J product.
 require conf/machine/include/rk3588.inc
+require conf/machine/include/mender.inc
 
 PREFERRED_VERSION_linux-rockchip = "6.1%"
 LINUXLIBCVERSION = "6.1-custom%"

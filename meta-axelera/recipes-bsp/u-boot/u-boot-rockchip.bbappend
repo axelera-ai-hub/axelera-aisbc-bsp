@@ -29,3 +29,5 @@ ${@bb.utils.contains('CPU_SERIES', 'RK356X', 'file://${CURDIR}/rk356x/0002-remov
 SRC_URI:remove = " ${@bb.utils.contains('SOC_FAMILY', 'rk3399', 'file://${CURDIR}/u-boot/0001-HACK-Support-python3-for-dtoc.patch', '', d)} "
 
 COMPATIBLE_MACHINE = "(itx-3588j|antelao-3588)"
+
+include ${@mender_feature_is_enabled("mender-uboot","recipes-bsp/u-boot/u-boot-mender.inc","",d)}

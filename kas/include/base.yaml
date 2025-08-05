@@ -79,6 +79,14 @@ repos:
     commit: fb6193a5f5cf80070cf8182c06cb5621433111aa
     signed: false
 
+  meta-mender:
+    url: "https://github.com/amarula/meta-mender.git"
+    branch: kirkstone-rk3588
+    commit: 5fcead6bb0301f512e0247c17ff611f5b2f7c1cb
+    signed: false
+    layers:
+      meta-mender-core:
+
   meta-mend:
     url: "https://github.com/amarula/meta-mend.git"
     branch: main
