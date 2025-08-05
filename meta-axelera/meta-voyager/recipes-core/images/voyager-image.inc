@@ -1,7 +1,6 @@
 IMAGE_FEATURES:append = " ssh-server-openssh read-only-rootfs"
 
 IMAGE_INSTALL = " \
-  auto-extend-partition \
   axelera-container \
   clinfo \
   curl \
