@@ -1,5 +1,6 @@
 # Copyright (C) 2019, Fuzhou Rockchip Electronics Co., Ltd
 # Released under the MIT license (see COPYING.MIT for the terms)
+FILESEXTRAPATHS:prepend:antelao-3588 := "${THISDIR}/${PN}:"
 FILESEXTRAPATHS:prepend:itx-3588j := "${THISDIR}/${PN}:"
 
 SOC_FAMILY ?= "rk3588"
@@ -24,6 +25,7 @@ SRCREV_uboot:antelao-3588 = "4cb81ad5558dec446092422d4590d700d9815c7c"
 SRC_URI:antelao-3588 = " \
 	${REMOTE_REPOS_PREFIX}uboot-rockchip.git;protocol=ssh;branch=rk3588;name=uboot; \
 	${REMOTE_REPOS_PREFIX}rk-binary-native.git;protocol=ssh;branch=rk3588;name=rkbin;destsuffix=rkbin; \
+	file://0001-add-rockchip-environment-support.patch; \
 "
 
 SRC_URI:append = " ${@bb.utils.contains('CPU_SERIES', 'RK356X', 'file://${CURDIR}/rk356x/0001-add-firefly-rk3566_defconfig.patch', '', d)} \

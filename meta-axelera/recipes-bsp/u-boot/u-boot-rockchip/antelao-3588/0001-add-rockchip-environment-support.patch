@@ -1,0 +1,42 @@
+From 8125d2f93b56427267171d13a0a45e5602d4fb36 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <adam.duskett@amarulasolutions.com>
+Date: Thu, 24 Jul 2025 10:48:19 +0200
+Subject: [PATCH] add rockchip environment support
+
+Enable environment support for rockchip boards. This is needed
+to read and write bootloader environment variables from userspace
+and is needed for A/B updates and rollbacks.
+
+Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
+---
+ env/Kconfig                       | 1 +
+ include/configs/rockchip-common.h | 3 +++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/env/Kconfig b/env/Kconfig
+index 86afc2a2e6..7954049059 100644
+--- a/env/Kconfig
++++ b/env/Kconfig
+@@ -5,6 +5,7 @@ choice
+ 	default ENV_IS_IN_MMC if ARCH_SUNXI
+ 	default ENV_IS_IN_MMC if ARCH_UNIPHIER
+ 	default ENV_IS_IN_MMC if ARCH_EXYNOS4
++	default ENV_IS_IN_MMC if ARCH_ROCKCHIP
+ 	default ENV_IS_IN_MMC if MX6SX || MX7D
+ 	default ENV_IS_IN_MMC if TEGRA30 || TEGRA124
+ 	default ENV_IS_IN_MMC if TEGRA_ARMV8_COMMON
+diff --git a/include/configs/rockchip-common.h b/include/configs/rockchip-common.h
+index d897d8baff..0ed13e1457 100644
+--- a/include/configs/rockchip-common.h
++++ b/include/configs/rockchip-common.h
+@@ -191,4 +191,7 @@
+ "ERROR: Please disable CONFIG_OPTEE_CLIENT when #define CONFIG_SYS_DCACHE_OFF !"
+ #endif
+ 
++/*Environment defines*/
++#define CONFIG_SYS_MMC_ENV_PART 0
++
+ #endif /* _ROCKCHIP_COMMON_H_ */
+-- 
+2.50.1
+
