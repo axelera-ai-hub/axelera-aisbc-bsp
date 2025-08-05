@@ -1,0 +1,43 @@
+From 31fe0b64e8276a77d8ed361e971b43d4f6436378 Mon Sep 17 00:00:00 2001
+From: Michael Trimarchi <michael@amarulasolutions.com>
+Date: Fri, 22 Aug 2025 12:09:25 +0200
+Subject: [PATCH] env: Kconfig: Make ENV_OFFSET_REDUND always available
+
+The function to load the redundant env from mmc in `env/mmc.c` is not
+compiled unless ENV_OFFSET_REDUND is defined.
+
+It can happen that the option is not selectable with this u-boot
+version, effectively breaking mender integration.
+
+Move this if ENVF condition such that it is always possible to select
+this redundant option.
+
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
+---
+ env/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/env/Kconfig b/env/Kconfig
+index 7954049059..8ef10c4570 100644
+--- a/env/Kconfig
++++ b/env/Kconfig
+@@ -524,7 +524,6 @@ config ENV_SIZE
+ 	help
+ 	  Size of the environment storage area
+ 
+-if ENVF
+ config ENV_OFFSET_REDUND
+ 	hex "Environment redundant(backup) offset"
+ 	default ENV_OFFSET
+@@ -532,6 +531,7 @@ config ENV_OFFSET_REDUND
+ 	  Redundant(backup) offset from the start of the device (or partition),
+ 	  this size must be ENV_SIZE.
+ 
++if ENVF
+ if CMD_NAND || MTD_SPI_NAND
+ config ENV_NAND_OFFSET
+ 	hex "Environment offset in Nand"
+-- 
+2.43.0
+

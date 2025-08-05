@@ -17,6 +17,9 @@ SRC_URI = " \
 	file://0001-add-itx-3588j_defconfig.patch; \
 	file://0002-add-rockchip-environment-support.patch; \
 	file://0003-use-root-instead-of-uuid-in-kernel-cmdline.patch; \
+	file://0004-mender-integration-changes.patch; \
+	file://0005-env-Kconfig-Make-ENV_OFFSET_REDUND-always-available.patch \
+	file://environment.cfg; \
 "
 
 SRC_URI:append = " ${@bb.utils.contains('CPU_SERIES', 'RK356X', 'file://${CURDIR}/rk356x/0001-add-firefly-rk3566_defconfig.patch', '', d)} \

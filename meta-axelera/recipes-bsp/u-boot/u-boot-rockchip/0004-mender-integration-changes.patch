@@ -1,0 +1,29 @@
+From 957ec5434007a109116b509684d18790e5dcc441 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <adam.duskett@amarulasolutions.com>
+Date: Tue, 5 Aug 2025 11:53:47 +0200
+Subject: [PATCH] mender integration changes
+
+Add mandatory mender definitions.
+
+Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
+---
+ include/configs/rockchip-common.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/include/configs/rockchip-common.h b/include/configs/rockchip-common.h
+index c70e82a9c0..7aa826ed75 100644
+--- a/include/configs/rockchip-common.h
++++ b/include/configs/rockchip-common.h
+@@ -194,4 +194,9 @@
+ /*Environment defines*/
+ #define CONFIG_SYS_MMC_ENV_PART 0
+ 
++/* Mender defines */
++#define CONFIG_BOOTCOUNT_ENV
++#define CONFIG_BOOTCOUNT_LIMIT
++#define CONFIG_SYS_REDUNDAND_ENVIRONMENT
++
+ #endif /* _ROCKCHIP_COMMON_H_ */
+-- 
+2.50.1
+
