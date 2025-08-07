@@ -1,6 +1,6 @@
 [Unit]
 Description=Check for PCIe devices with vendor ID 1f9d and reboot once if not found
-After=network.target
+After=network.target data.mount
 Requires=network.target
 
 [Service]
