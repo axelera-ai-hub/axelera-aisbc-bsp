@@ -10,10 +10,12 @@ BUGTRACKER = "https://github.com/axelera-ai/host.pcie-driver/issues"
 SECTION = "kernel-modules"
 CVE_PRODUCT = "axelera"
 LICENSE = "GPL-2.0-only"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=4641e94ec96f98fabc56ff9cc48be14b"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=146ead9d11d793524847e5b843904b51"
+
+PV = "1.4.0-rc2"
 
 SRC_URI = " \
-    ${REMOTE_DRIVER};protocol=ssh;branch=release/v1.3 \
+    ${REMOTE_DRIVER};protocol=ssh;branch=release/v1.4 \
     file://0001-cross-compile-fixups.patch \
 "
 
@@ -23,8 +25,8 @@ SRC_URI:append:antelao-3588 = " \
 "
 
 SRC_URI[sha256sum] = "ad2598304a8af697d0c335a50a3e5a1ba06c82d9b63ef5f9d3e730b54cf9148a"
-SRCREV = "590e3f42b622d3bf89f41011890938a3549ac62f"
-S = "${WORKDIR}/git/os/driver"
+SRCREV = "18c4ac6b4a4d61cc413b30d814ebb3e0e6433011"
+S = "${WORKDIR}/git"
 
 EXTRA_OEMAKE = "CROSS_COMPILE=${TARGET_PREFIX} SYSROOT=${STAGING_DIR_TARGET}"
 INHIBIT_PACKAGE_STRIP = "1"
@@ -32,9 +34,15 @@ export KERNEL_PATH="${STAGING_KERNEL_DIR}"
 
 inherit module
 
+do_compile:prepend() {
+    unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
+    oe_runmake generate_version_header
+    cd os/driver
+}
+
 do_install() {
     install -d ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/axelera
-    install -m 644 ${S}/*.ko ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/axelera/
+    install -m 644 ${S}/os/driver/*.ko ${D}${nonarch_base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/axelera/
 
 }
 

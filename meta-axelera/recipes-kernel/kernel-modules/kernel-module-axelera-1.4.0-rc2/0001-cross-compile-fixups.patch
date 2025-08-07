@@ -18,8 +18,8 @@ Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
 
 diff --git a/os/driver/Makefile b/os/driver/Makefile
 index b3d63f4..ed320ec 100755
---- a/Makefile
-+++ b/Makefile
+--- a/os/driver/Makefile
++++ b/os/driver/Makefile
 @@ -1,5 +1,5 @@
 -
  # Copyright (c) 2023 Axelera AI. All rights reserved.
