@@ -16,9 +16,14 @@ EXTRA_USERS_PARAMS += " useradd -m -p '${PASSWORD}' -g axelera -G axelera,docker
 EXTRA_USERS_PARAMS += " usermod -p '\$1\$duJ3gRL2\$Ixot1IIHoh.8B9HqKn1D./' root; "
 
 
+do_create_mount_points() {
+    mkdir -p ${IMAGE_ROOTFS}/data
+    mkdir -p ${IMAGE_ROOTFS}/factory
+}
+
 do_change_home_ownerships() {
     chown -R "${WESTON_USER}":axelera "${IMAGE_ROOTFS}/home/${WESTON_USER}"
     chmod 0775 "${IMAGE_ROOTFS}/home/${WESTON_USER}"
 }
 
-ROOTFS_POSTPROCESS_COMMAND:append = " do_change_home_ownerships; "
+ROOTFS_POSTPROCESS_COMMAND:append = " do_change_home_ownerships; do_create_mount_points; "
