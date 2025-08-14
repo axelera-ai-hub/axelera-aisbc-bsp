@@ -9,14 +9,7 @@ setup_directory_permissions() {
   chmod -R 775 "${DATA_DIR}"
 }
 
-setup_overlay_dir() {
-  if [ ! -d "${OVERLAY_DIR}" ]; then
-    mkdir -p "${OVERLAY_DIR}"
-  fi
-}
-
 main() {
-  setup_overlay_dir
   setup_directory_permissions
 }
 

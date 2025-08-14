@@ -10,6 +10,11 @@ IMAGE_FEATURES:append = " \
     hwcodecs \
     splash \
     weston \
+    overlayfs-etc \
+"
+
+IMAGE_FEATURES:remove = " \
+    package-management \
 "
 
 IMAGE_INSTALL:append = " \
