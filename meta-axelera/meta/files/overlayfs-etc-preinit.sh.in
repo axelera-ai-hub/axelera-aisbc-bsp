@@ -4,6 +4,8 @@ echo "PREINIT: Start"
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
+mount -o remount,ro /
+
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
 
