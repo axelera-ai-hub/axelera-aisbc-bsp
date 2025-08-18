@@ -6,6 +6,8 @@ SRC_URI = "file://auto-extend-partition.sh \
 
 S = "${WORKDIR}"
 
+RDEPENDS:${PN} = "e2fsprogs-resize2fs"
+
 inherit systemd
 
 do_install() {
