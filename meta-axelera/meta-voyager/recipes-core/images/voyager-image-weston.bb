@@ -13,10 +13,6 @@ IMAGE_FEATURES:append = " \
     overlayfs-etc \
 "
 
-IMAGE_FEATURES:remove = " \
-    package-management \
-"
-
 IMAGE_INSTALL:append = " \
     fontconfig \
     fontconfig-utils \
