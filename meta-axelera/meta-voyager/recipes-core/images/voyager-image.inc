@@ -24,6 +24,7 @@ IMAGE_INSTALL = " \
   libubootenv \
   lmsensors \
   mender-commit-check \
+  mender-files-setup \
   minicom \
   networkmanager \
   networkmanager-nmcli \
