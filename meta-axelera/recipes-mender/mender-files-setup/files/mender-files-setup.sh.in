@@ -1,0 +1,24 @@
+#!/bin/sh
+
+MENDER_DATA_DIR="@@MENDER_DATA_DIR@@"
+MENDER_FACTORY_DIR="@@MENDER_FACTORY_DIR@@"
+
+# First run of mender will process and remove bootstrap.mender
+if [ -e "${MENDER_DATA_DIR}/bootstrap.mender" ]; then
+  mender show-provides > /dev/null
+fi
+
+# If mender-store doesn't exist in the /data/mender directory, check
+# if there is a backup copy in /factory/mender and restore it if so.
+# Running "mender show-provides" for the first time will autogenerate
+# /data/mender/mender-store.
+if [ ! -e "${MENDER_DATA_DIR}/mender-store" ]; then
+  cp -drf "${MENDER_FACTORY_DIR}/mender-store" "${MENDER_DATA_DIR}/mender-store"
+fi
+
+# Likewise, create a backup of mender-store if it doesn't exist in the
+# /factory/mender directory. This should only happen on first boot, as the
+# /factory partition should never be erased.
+if [ ! -e "${MENDER_FACTORY_DIR}/mender-store" ]; then
+  cp -drf "${MENDER_DATA_DIR}/mender-store" "${MENDER_FACTORY_DIR}/mender-store"
+fi

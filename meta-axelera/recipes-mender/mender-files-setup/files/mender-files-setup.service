@@ -1,0 +1,11 @@
+[Unit]
+Description=Run script which sets up mender files
+After=factory.mount data.mount
+Require=factory.mount data.mount
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/mender-files-setup.sh
+
+[Install]
+WantedBy=multi-user.target
