@@ -1,0 +1,14 @@
+[Unit]
+Description=Grow File System on /data
+DefaultDependencies=no
+BindsTo=data.mount
+Conflicts=shutdown.target
+After=data.mount systemd-udev-settle.service
+Requires=data.mount systemd-udev-settle.service
+Before=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/lib/systemd/systemd-growfs /data
+TimeoutSec=0
