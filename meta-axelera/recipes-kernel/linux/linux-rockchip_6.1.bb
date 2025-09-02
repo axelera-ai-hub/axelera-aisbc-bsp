@@ -7,9 +7,9 @@ require linux-rockchip.inc
 
 inherit local-git
 
-SRCREV = "2c9d4397a8fbea9c122fd31865c36508d38d1b8c"
+SRCREV = "6e596136ea94a9e43016044310e52df1b450d5ee"
 SRC_URI = " \
-	${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=ssh;branch=rk3588; \
+	${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=ssh;branch=rk3588-v6.1.148; \
 	file://${THISDIR}/files/cgroups.cfg \
 	file://${THISDIR}/files/axelera.cfg \
 "
@@ -21,7 +21,7 @@ SRC_URI:append:itx-3588j = " \
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 KERNEL_VERSION_SANITY_SKIP = "1"
-LINUX_VERSION ?= "6.1.84"
+LINUX_VERSION ?= "6.1.148"
 
 SRC_URI:append = " ${@bb.utils.contains('IMAGE_FSTYPES', 'ext4', \
 		   'file://${THISDIR}/files/ext4.cfg', \
