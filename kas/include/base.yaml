@@ -14,6 +14,7 @@ target:
   - voyager-image-weston
 
 env:
+  MEND_EMAIL: ""
   WS_APIKEY: ""
   WS_USERKEY: ""
   WS_PRODUCTTOKEN: ""
@@ -90,7 +91,7 @@ repos:
   meta-mend:
     url: "https://github.com/amarula/meta-mend.git"
     branch: main
-    commit: f0f7498a009a06490fadc8a1e64682a8ddeae76d
+    commit: 42600e6e32c32a7207a848031070d28ceabc14ff
     signed: false
 
   meta-axelera:
@@ -121,4 +122,4 @@ local_conf_header:
     REMOTE_REPOS_PREFIX := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai/aisbc.', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/', d)}"
     REMOTE_DRIVER := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai/host.pcie-driver.git', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.git', d)}"
     # Mend variables
-    WS_WSS_URL = "https://saas-eu.whitesourcesoftware.com/agent"
+    MEND_URL = "https://saas-eu.whitesourcesoftware.com/"
