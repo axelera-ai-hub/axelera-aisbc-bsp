@@ -123,3 +123,7 @@ local_conf_header:
     REMOTE_DRIVER := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai/host.pcie-driver.git', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.git', d)}"
     # Mend variables
     MEND_URL = "https://saas-eu.whitesourcesoftware.com/"
+
+  sdk options: |
+    # Include the kernel devsrc in the sdk for out of tree kernel and module development.
+    TOOLCHAIN_TARGET_TASK:append = " kernel-devsrc"
