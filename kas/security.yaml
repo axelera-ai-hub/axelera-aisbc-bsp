@@ -4,3 +4,4 @@ header:
 local_conf_header:
   security: |
     INHERIT += " mend cve-check"
+    WS_ENABLE_PDF_REPORT = "1"
