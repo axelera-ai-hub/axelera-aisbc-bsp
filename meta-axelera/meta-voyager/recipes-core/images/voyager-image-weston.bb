@@ -16,6 +16,7 @@ IMAGE_FEATURES:append = " \
 IMAGE_INSTALL:append = " \
     fontconfig \
     fontconfig-utils \
+    stress-ng \
     ttf-noto-emoji-color \
     wayland \
     weston-xwayland \
