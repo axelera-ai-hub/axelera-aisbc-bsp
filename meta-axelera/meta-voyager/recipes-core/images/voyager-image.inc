@@ -1,5 +1,7 @@
 IMAGE_FEATURES:append = " ssh-server-openssh read-only-rootfs"
 
+IMAGE_LINK_NAME = "${IMAGE_BASENAME}-${MACHINE}-${DISTRO_VERSION}"
+
 IMAGE_INSTALL = " \
   axelera-container \
   clinfo \
