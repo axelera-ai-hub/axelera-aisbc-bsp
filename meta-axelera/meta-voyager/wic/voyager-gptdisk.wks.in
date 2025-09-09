@@ -12,5 +12,6 @@ part --source rawcopy --sourceparams="file=boot.img" --part-name boot
 # Note fixed-size should == MENDER_STORAGE_TOTAL_SIZE_MB / 2
 part / --source rootfs --fstype ext4 --part-name system_a --uuid ${RK_ROOTDEV_UUID} --align 8192 --fixed-size 1024M
 part / --source rootfs --fstype ext4 --part-name system_b --uuid ${RK_ROOTDEV_UUID} --align 8192 --fixed-size 1024M
-part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/voyager-factory.img" --part-name "voyager-factory" --fstype ext4 --align 8192
+# Note fixed-size should >= voyager-factory.img file
+part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/voyager-factory.img" --part-name "voyager-factory" --fstype ext4 --align 8192 --fixed-size 128M
 part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/voyager-data.img" --part-name "voyager-data" --fstype ext4 --align 8192
