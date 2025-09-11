@@ -2,6 +2,9 @@
 require conf/machine/include/rk3588.inc
 require conf/machine/include/mender.inc
 
+# Override Mali Version
+MALI_VERSION := "g13p0"
+
 PREFERRED_VERSION_linux-rockchip = "6.1%"
 LINUXLIBCVERSION = "6.1-custom%"
 SERIAL_CONSOLES = "115200;ttyFIQ0"
