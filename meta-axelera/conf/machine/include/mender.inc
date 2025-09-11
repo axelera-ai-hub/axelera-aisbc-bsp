@@ -12,8 +12,8 @@ MENDER_ROOTFS_PART_B_NUMBER = "4"
 MENDER_DATA_PART_SIZE_MB = "128"
 AXELERA_MENDER_FACTORY_PART_SIZE_MB = "128"
 
-# Total size for BOTH partitions. 2048 == 1024 Megabytes (1 Gigabyte) per rootfs.
-MENDER_STORAGE_TOTAL_SIZE_MB = "2048"
+# Total size for BOTH partitions. 4096 == 2048 Megabytes (2 Gigabytes) per rootfs.
+MENDER_STORAGE_TOTAL_SIZE_MB = "4096"
 
 # Do not add padding.
 IMAGE_OVERHEAD_FACTOR = "1.0"
