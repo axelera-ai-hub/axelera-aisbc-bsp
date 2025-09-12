@@ -6,47 +6,89 @@ import sys
 import time
 
 
+# Color codes for terminal output
+class Colors:
+    RED = "\033[91m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    MAGENTA = "\033[95m"
+    CYAN = "\033[96m"
+    BOLD = "\033[1m"
+    RESET = "\033[0m"
+
+
+def print_info(message):
+    print(f"{Colors.CYAN}[INFO]{Colors.RESET} {message}")
+
+
+def print_warning(message):
+    print(f"{Colors.YELLOW}[WARNING]{Colors.RESET} {message}")
+
+
+def print_error(message):
+    print(f"{Colors.RED}[ERROR]{Colors.RESET} {message}")
+
+
+def print_critical(message):
+    print(
+        f"{Colors.RED}{Colors.BOLD}[CRITICAL]{Colors.RESET} {Colors.BOLD}{message}{Colors.RESET}"
+    )
+
+
+def print_debug(message):
+    print(f"{Colors.MAGENTA}[DEBUG]{Colors.RESET} {message}")
+
+
 # Custom parser to improve error messaging
 class CustomArgumentParser(argparse.ArgumentParser):
     def error(self, message):
-        sys.stderr.write(f"\n❌ Error: {message}\n")
+        sys.stderr.write(f"\n{Colors.RED}ERROR:{Colors.RESET} {message}\n")
         sys.stderr.write(
-            "👉 Try: python3 start_axelera.py start --container-name <name> --version <tag>\n"
+            "\nUSAGE: python3 start_axelera.py start --container-name <name> --version <tag>\n"
+            "For detailed usage information, run: python3 start_axelera.py --help\n"
         )
         sys.exit(2)
 
 
 parser = CustomArgumentParser(
-    description="🛠️ Axelera AI - Metis Compute Board Utility\n\n",
+    description="Axelera AI - Metis Compute Board Utility\n\n",
     formatter_class=argparse.RawTextHelpFormatter,
     add_help=False,
 )
 
 CUSTOM_HELP = """
-🛠️ Axelera AI - Metis Compute Board Utility
-A command-line tool to manage and launch Voyager SDK containers on the Metis Compute Board.
+AXELERA AI - METIS COMPUTE BOARD UTILITY
+========================================
 
-📌 Usage:
+DESCRIPTION:
+  Command-line utility for managing Voyager SDK containers on Axelera AI Metis
+  Compute Boards. Supports automated display detection and configuration for
+  optimal GUI application performance.
+
+USAGE:
   start_axelera.py <command> [options]
 
-📂 Available Commands:
-  start       Start a new or existing Voyager SDK container.
-  rescan-pci  Perform a PCIe bus rescan (requires root privileges).
+COMMANDS:
+  start       Launch a Voyager SDK container with automatic display configuration
+  rescan-pci  Perform PCIe bus rescan to detect hardware changes (root required)
 
-🔧 Command: start
-  --container-name   Name of the docker container
-  --version          Voyager SDK version tag (e.g., 1.3.3)
+COMMAND: start
+  --container-name   Docker container identifier (alphanumeric, hyphens, periods, underscores)
+  --version          Voyager SDK version tag (e.g., 1.4.0)
+
   Example:
-    👉 python3 start_axelera.py start --container-name axelera-voyager-sdk --version 1.3.3 👈
+    python3 start_axelera.py start --container-name axelera-voyager-sdk --version 1.4.0
 
-🔧 Command: rescan-pci
-  Rescan the PCIe bus to detect hardware changes. Must be run as root.
+COMMAND: rescan-pci
+  Performs a complete PCIe bus rescan to detect hardware topology changes.
+  Requires root privileges for direct hardware access.
+
   Example:
-    👉 sudo python3 start_axelera.py rescan-pci 👈
+    python3 start_axelera.py rescan-pci
 
-🗨️ Global Options:
-  -v, --verbose      Increase output verbosity (use -vv for more)
-  -h, --help         Show this help message and exit
+GLOBAL OPTIONS:
+  -v, --verbose      Enable verbose logging (use -vv for detailed diagnostics)
+  -h, --help         Display this help information and exit
 """
 
 parser.add_argument("-v", "--verbose", action="count", default=0, help="Verbose output")
@@ -104,7 +146,7 @@ def container_exists(name):
         )
         return name in result.stdout.strip().splitlines()
     except Exception as e:
-        print(f"[ERROR] Failed to check container existence: {e}")
+        print_error(f"Failed to check container existence: {e}")
         return False
 
 
@@ -126,8 +168,9 @@ def start(args):
     """Start the docker container."""
     image_tag = f"axelera-sdk-ubuntu-2204-arm64:{args.version}"
     if not image_exists_locally(image_tag):
-        print(
-            f"❌ Docker image '{image_tag}' not found locally. Please load or pull the image first."
+        print_error(f"Required Docker image '{image_tag}' is not available locally.")
+        print_info(
+            "Please ensure the Voyager SDK image is properly installed before proceeding."
         )
         sys.exit(1)
 
