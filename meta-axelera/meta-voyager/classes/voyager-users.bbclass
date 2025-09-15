@@ -26,4 +26,8 @@ do_change_home_ownerships() {
     chmod 0775 "${IMAGE_ROOTFS}/home/${WESTON_USER}"
 }
 
-ROOTFS_POSTPROCESS_COMMAND:append = " do_change_home_ownerships; do_create_mount_points; "
+do_set_extra_path() {
+    echo 'export PATH="$PATH:/usr/local/bin:/usr/sbin:/sbin"' >> "${IMAGE_ROOTFS}/etc/profile"
+}
+
+ROOTFS_POSTPROCESS_COMMAND:append = " do_change_home_ownerships; do_create_mount_points; do_set_extra_path;"
