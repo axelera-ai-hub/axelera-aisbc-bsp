@@ -25,4 +25,9 @@ IMAGE_INSTALL:append = " \
     xwayland \
 "
 
+# tools for automatic testing
+IMAGE_INSTALL:append = " \
+    iperf3 \
+"
+
 SYSTEMD_DEFAULT_TARGET = "graphical.target"
