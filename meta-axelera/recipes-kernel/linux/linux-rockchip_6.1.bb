@@ -7,7 +7,7 @@ require linux-rockchip.inc
 
 inherit local-git
 
-SRCREV = "6e596136ea94a9e43016044310e52df1b450d5ee"
+SRCREV = "bd3f21566afc71dc63c17deb0b437239f91a3243"
 SRC_URI = " \
 	${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=ssh;branch=rk3588-v6.1.148; \
 	file://${THISDIR}/files/cgroups.cfg \
