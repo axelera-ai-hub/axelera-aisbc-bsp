@@ -24,6 +24,11 @@ IMAGE_INSTALL:append = " \
     xwayland \
 "
 
+# security tools
+IMAGE_INSTALL:append = " \
+    clamav \
+"
+
 # tools for automatic testing
 IMAGE_INSTALL:append = " \
     stress-ng \
