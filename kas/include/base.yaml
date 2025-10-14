@@ -52,10 +52,17 @@ repos:
       meta-filesystems:
       meta-gnome:
       meta-oe:
+      meta-perl:
       meta-python:
       meta-networking:
       meta-multimedia:
       meta-xfce:
+
+  meta-security:
+    url: "https://git.yoctoproject.org/meta-security"
+    branch: kirkstone
+    commit: b9cf9cd639bc8d1b4828eb0bd012b71486d35176
+    signed: false
 
   meta-virtualization:
     url: "https://git.yoctoproject.org/meta-virtualization"
