@@ -1,0 +1,78 @@
+From d91fed1b5007bb3f928fe5a7f5feece33b7a3589 Mon Sep 17 00:00:00 2001
+From: Michael Trimarchi <michael@amarulasolutions.com>
+Date: Wed, 22 Oct 2025 15:40:43 +0200
+Subject: [PATCH] common: image-android: Boot from right boot partiong under
+ mender
+
+Select the right boot partition according to the one flashed by
+mender
+
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+
+%% original patch: 0006-common-image-android-Boot-from-right-boot-partiong-u.patch
+---
+ arch/arm/mach-rockchip/fit.c | 18 +++++++++++++++++-
+ common/image-android.c       |  9 ++++++++-
+ 2 files changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-rockchip/fit.c b/arch/arm/mach-rockchip/fit.c
+index c15c9a4498..e434814b2b 100644
+--- a/arch/arm/mach-rockchip/fit.c
++++ b/arch/arm/mach-rockchip/fit.c
+@@ -142,9 +142,25 @@ static void *fit_get_blob(struct blk_desc *dev_desc,
+ {
+ 	__maybe_unused int conf_noffset;
+ 	disk_partition_t part;
+-	char *part_name = PART_BOOT;
++	char *part_name;
+ 	void *fit, *fdt;
+ 	int blk_num;
++	ulong part_num;
++
++	/* Initialize the env early because we need to choose boot image */
++	env_init();
++	env_load();
++
++	part_num = env_get_ulong("mender_boot_part", 10, MENDER_ROOTFS_PART_A_NUMBER);
++
++	printf("Booting From: %d PART_A_NUMBER = %d  PART_B_NUMBER = %d\n",
++		(int)part_num, MENDER_ROOTFS_PART_A_NUMBER,
++		MENDER_ROOTFS_PART_B_NUMBER);
++
++	if (part_num == MENDER_ROOTFS_PART_B_NUMBER)
++		part_name = "boot_b";
++	else
++		part_name = "boot_a";
+ 
+ #ifndef CONFIG_ANDROID_AB
+ 	if (rockchip_get_boot_mode() == BOOT_MODE_RECOVERY)
+diff --git a/common/image-android.c b/common/image-android.c
+index c2703b5ea3..464934876b 100644
+--- a/common/image-android.c
++++ b/common/image-android.c
+@@ -106,14 +106,21 @@ int android_image_init_resource(struct blk_desc *desc,
+ 				ulong *out_blk_offset)
+ {
+ 	struct andr_img_hdr *hdr = NULL;
+-	const char *part_name = ANDROID_PARTITION_BOOT;
++	char *part_name;
+ 	disk_partition_t part;
+ 	ulong offset;
+ 	int ret = 0;
++	ulong part_num;
+ 
+ 	if (!desc)
+ 		return -ENODEV;
+ 
++	part_num = env_get_ulong("mender_boot_part", 10, MENDER_ROOTFS_PART_A_NUMBER);
++	if (part_num == MENDER_ROOTFS_PART_B_NUMBER)
++		part_name = "boot_b";
++	else
++		part_name = "boot_a";
++
+ #ifndef CONFIG_ANDROID_AB
+ 	if (rockchip_get_boot_mode() == BOOT_MODE_RECOVERY)
+ 		part_name = ANDROID_PARTITION_RECOVERY;
+-- 
+2.43.0
+

@@ -19,6 +19,7 @@ SRC_URI = " \
 	file://0003-use-root-instead-of-uuid-in-kernel-cmdline.patch; \
 	file://0004-mender-integration-changes.patch; \
 	file://0005-env-Kconfig-Make-ENV_OFFSET_REDUND-always-available.patch \
+	file://0006-common-image-android-Boot-from-right-boot-partiong-u.patch \
 	file://environment.cfg; \
 "
 

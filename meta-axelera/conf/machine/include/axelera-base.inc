@@ -17,7 +17,7 @@ WKS_FILE_CHECKSUM = "sha256:6f4ca85eb6a09bb4ff244f1cfe7029f52215a230780533658b8b
 
 # /etc overlayfs configuration
 OVERLAYFS_ETC_MOUNT_POINT = "/data"
-OVERLAYFS_ETC_DEVICE = "/dev/mmcblk0p6"
+OVERLAYFS_ETC_DEVICE = "/dev/mmcblk0p7"
 OVERLAYFS_ETC_FSTYPE ?= "ext4"
 OVERLAYFS_ETC_MOUNT_OPTIONS = "defaults,noatime"
 OVERLAYFS_ETC_INIT_TEMPLATE = "${TOPDIR}/../meta-axelera/meta/files/overlayfs-etc-preinit.sh.in"
