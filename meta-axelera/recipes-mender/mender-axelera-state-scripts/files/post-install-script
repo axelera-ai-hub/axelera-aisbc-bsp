@@ -1,0 +1,112 @@
+#!/bin/bash
+
+# Mender Boot Image Flasher Script
+# This script reads the 'mender_boot_part' environment variable using fw_printenv,
+# mounts the corresponding rootfs partition (p4 or p5), extracts 'boot.img',
+# flashes it to the correct boot partition (p2 or p3), and cleans up.
+
+set -euo pipefail # Exit immediately if a command exits with a non-zero status,
+                  # fail if any command in a pipeline fails, and treat unset variables as an error.
+
+# --- Configuration ---
+MNT_POINT="/home/mender_flash"
+ROOT_DEVICE="/dev/mmcblk0"
+FW_PRINTENV_BIN="/usr/bin/fw_printenv"
+
+echo "--- Starting Boot Image Flashing Procedure ---"
+
+# 1. Check dependencies
+if [[ -z "${FW_PRINTENV_BIN}" ]]; then
+    echo "ERROR: 'fw_printenv' tool not found. Ensure it is installed and in your PATH." >&2
+    exit 1
+fi
+
+# 2. Retrieve Mender environment variable
+echo "Retrieving 'mender_boot_part' from U-Boot environment..."
+# fw_printenv output format is usually "variable=value". We extract the value.
+MENDER_PART_NUMBER=$("${FW_PRINTENV_BIN}" mender_boot_part | awk -F'=' '{print $2}' 2>/dev/null)
+
+if [[ -z "${MENDER_PART_NUMBER}" ]]; then
+    echo "ERROR: Could not retrieve 'mender_boot_part' value or it is empty." >&2
+    exit 1
+fi
+
+echo "Mender target partition number detected: ${MENDER_PART_NUMBER}"
+
+# 3. Determine source and target partitions based on the Mender value
+SOURCE_PART=""
+TARGET_BOOT_PART=""
+
+case "${MENDER_PART_NUMBER}" in
+    4)
+        # Target rootfs is p4. Source for boot.img is /dev/mmcblk0p4.
+        # Target boot partition for flashing is p2.
+        SOURCE_PART="${ROOT_DEVICE}p4"
+        TARGET_BOOT_PART="${ROOT_DEVICE}p2"
+        ;;
+    5)
+        # Target rootfs is p5. Source for boot.img is /dev/mmcblk0p5.
+        # Target boot partition for flashing is p3.
+        SOURCE_PART="${ROOT_DEVICE}p5"
+        TARGET_BOOT_PART="${ROOT_DEVICE}p3"
+        ;;
+    *)
+        echo "ERROR: Invalid or unsupported mender_boot_part value: ${MENDER_PART_NUMBER}. Expected 4 or 5." >&2
+        exit 1
+        ;;
+esac
+
+echo "Source (containing boot.img): ${SOURCE_PART}"
+echo "Target (for flashing boot.img): ${TARGET_BOOT_PART}"
+
+# --- Main Flashing Logic ---
+
+# Ensure cleanup happens even if script is interrupted
+cleanup() {
+    # Check if the mount point is busy before trying to unmount
+    if mountpoint -q "${MNT_POINT}"; then
+        echo "Attempting to unmount ${MNT_POINT}..."
+        if ! umount "${MNT_POINT}"; then
+            echo "WARNING: Failed to unmount ${MNT_POINT}." >&2
+        else
+            echo "Successfully unmounted ${SOURCE_PART}."
+        fi
+    fi
+    # Remove the mount directory if desired, but often best to leave it.
+    rm -rf "${MNT_POINT}"
+}
+trap cleanup EXIT # Ensure cleanup runs on exit
+
+# 4. Prepare mount point
+if [[ ! -d "${MNT_POINT}" ]]; then
+    echo "Creating mount point ${MNT_POINT}..."
+    mkdir -p "${MNT_POINT}"
+fi
+
+# 5. Mount the source partition
+echo "Mounting source partition ${SOURCE_PART}..."
+mount -o ro "${SOURCE_PART}" "${MNT_POINT}"
+
+# 6. Verify boot.img existence
+BOOT_IMG_PATH="${MNT_POINT}/boot/boot.img"
+if [[ ! -f "${BOOT_IMG_PATH}" ]]; then
+    echo "ERROR: boot.img not found at ${BOOT_IMG_PATH}" >&2
+    exit 1
+fi
+
+echo "Found ${BOOT_IMG_PATH}. Starting flashing to ${TARGET_BOOT_PART}..."
+
+# 7. Flash boot.img to the target boot partition using dd
+# Use bs=4M for faster I/O.
+if ! dd if="${BOOT_IMG_PATH}" of="${TARGET_BOOT_PART}" bs=4M; then
+    echo "ERROR: Flashing operation (dd) failed." >&2
+    exit 1
+fi
+sync
+
+echo "Flashing successful! boot.img from $(basename "${SOURCE_PART}") written to $(basename "${TARGET_BOOT_PART}")."
+
+# The cleanup trap handles unmounting and final messages.
+
+echo "--- Boot Image Flashing Complete ---"
+exit 0

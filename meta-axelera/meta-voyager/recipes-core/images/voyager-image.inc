@@ -27,6 +27,7 @@ IMAGE_INSTALL = " \
   lmsensors \
   mender-commit-check \
   mender-files-setup \
+  mender-axelera-state-scripts \
   minicom \
   networkmanager \
   networkmanager-nmcli \
