@@ -11,6 +11,8 @@ inherit local-git
 SRCREV_rkbin = "12660714c81be85350a4092542e2ff599aa5adcb"
 SRCREV_uboot = "4cb81ad5558dec446092422d4590d700d9815c7c"
 
+DEPENDS += "u-boot-tools-native"
+
 SRC_URI = " \
     ${REMOTE_REPOS_PREFIX}uboot-rockchip.git;protocol=ssh;branch=rk3588;name=uboot; \
     ${REMOTE_REPOS_PREFIX}rk-binary-native.git;protocol=ssh;branch=rk3588;name=rkbin;destsuffix=rkbin; \
@@ -20,6 +22,8 @@ SRC_URI = " \
     file://0004-mender-integration-changes.patch; \
     file://0005-env-Kconfig-Make-ENV_OFFSET_REDUND-always-available.patch \
     file://0006-common-image-android-Boot-from-right-boot-partiong-u.patch \
+    file://0007-tools-rockchip-Fix-string-truncation.patch \
+    file://0009-common-bootm-Check-devtype-enviroment-before-strcmp.patch \
     file://environment.cfg; \
 "
 
@@ -33,4 +37,12 @@ COMPATIBLE_MACHINE = "(itx-3588j|antelao-3588)"
 
 include ${@mender_feature_is_enabled("mender-uboot","recipes-bsp/u-boot/u-boot-mender.inc","",d)}
 
-SRC_URI:append:mender-uboot = " file://0007-Change-boot-strategy.patch"
+SRC_URI:append:mender-uboot = " file://0008-Change-boot-strategy.patch"
+
+do_deploy:append() {
+    UBOOT_ENV_SIZE="$(cat ${B}/.config | grep "^CONFIG_ENV_SIZE=" | cut -d'=' -f2)"
+    mkenvimage -s ${UBOOT_ENV_SIZE} ${B}/u-boot-initial-env -o ${WORKDIR}/u-boot-env.img
+
+    install -d ${DEPLOYDIR}
+    install -m 0644 ${WORKDIR}/u-boot-env.img ${DEPLOYDIR}
+}

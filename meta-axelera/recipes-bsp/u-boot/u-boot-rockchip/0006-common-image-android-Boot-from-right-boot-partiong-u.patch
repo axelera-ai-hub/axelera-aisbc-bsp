@@ -1,4 +1,4 @@
-From d91fed1b5007bb3f928fe5a7f5feece33b7a3589 Mon Sep 17 00:00:00 2001
+From 6ad6e7f50c69b538fb88c69e32bd64ce8b76bb69 Mon Sep 17 00:00:00 2001
 From: Michael Trimarchi <michael@amarulasolutions.com>
 Date: Wed, 22 Oct 2025 15:40:43 +0200
 Subject: [PATCH] common: image-android: Boot from right boot partiong under
@@ -8,18 +8,25 @@ Select the right boot partition according to the one flashed by
 mender
 
 Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
-
-%% original patch: 0006-common-image-android-Boot-from-right-boot-partiong-u.patch
 ---
- arch/arm/mach-rockchip/fit.c | 18 +++++++++++++++++-
+ arch/arm/mach-rockchip/fit.c | 19 ++++++++++++++++++-
+ common/android_bootloader.c  |  8 +++++++-
  common/image-android.c       |  9 ++++++++-
- 2 files changed, 25 insertions(+), 2 deletions(-)
+ 3 files changed, 33 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm/mach-rockchip/fit.c b/arch/arm/mach-rockchip/fit.c
-index c15c9a4498..e434814b2b 100644
+index c15c9a4498..c0cdde312e 100644
 --- a/arch/arm/mach-rockchip/fit.c
 +++ b/arch/arm/mach-rockchip/fit.c
-@@ -142,9 +142,25 @@ static void *fit_get_blob(struct blk_desc *dev_desc,
+@@ -5,6 +5,7 @@
+  */
+ #include <common.h>
+ #include <boot_rkimg.h>
++#include <environment.h>
+ #include <image.h>
+ #include <malloc.h>
+ #include <sysmem.h>
+@@ -142,9 +143,25 @@ static void *fit_get_blob(struct blk_desc *dev_desc,
  {
  	__maybe_unused int conf_noffset;
  	disk_partition_t part;
@@ -46,6 +53,25 @@ index c15c9a4498..e434814b2b 100644
  
  #ifndef CONFIG_ANDROID_AB
  	if (rockchip_get_boot_mode() == BOOT_MODE_RECOVERY)
+diff --git a/common/android_bootloader.c b/common/android_bootloader.c
+index 9107d4af72..c53bbaa3ef 100644
+--- a/common/android_bootloader.c
++++ b/common/android_bootloader.c
+@@ -1224,7 +1224,13 @@ int android_bootloader_boot_flow(struct blk_desc *dev_desc,
+ 	char *command_line;
+ 	char slot_suffix[3] = {0};
+ 	const char *mode_cmdline = NULL;
+-	char *boot_partname = ANDROID_PARTITION_BOOT;
++	char *boot_partname;
++
++	part_num = env_get_ulong("mender_boot_part", 10, MENDER_ROOTFS_PART_A_NUMBER);
++	if (part_num == MENDER_ROOTFS_PART_B_NUMBER)
++		boot_partname = "boot_b";
++	else
++		boot_partname = "boot_a";
+ 
+ 	/*
+ 	 * 1. Load MISC partition and determine the boot mode
 diff --git a/common/image-android.c b/common/image-android.c
 index c2703b5ea3..464934876b 100644
 --- a/common/image-android.c
@@ -74,5 +100,5 @@ index c2703b5ea3..464934876b 100644
  	if (rockchip_get_boot_mode() == BOOT_MODE_RECOVERY)
  		part_name = ANDROID_PARTITION_RECOVERY;
 -- 
-2.43.0
+2.39.5
 

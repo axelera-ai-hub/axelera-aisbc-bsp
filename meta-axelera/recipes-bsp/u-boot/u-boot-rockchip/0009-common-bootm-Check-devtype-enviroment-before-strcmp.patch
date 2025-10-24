@@ -1,0 +1,35 @@
+From 758875d9e7a64ec7a86254c6ec18e4ffa8e3458d Mon Sep 17 00:00:00 2001
+From: Michael Trimarchi <michael@amarulasolutions.com>
+Date: Mon, 27 Oct 2025 12:57:10 +0100
+Subject: [PATCH] common: bootm: Check devtype enviroment before strcmp
+
+This change of rockchip pretend to have the devtype defined.
+
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+---
+ common/bootm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/common/bootm.c b/common/bootm.c
+index 1bc426b45f..1892ebfa15 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -561,12 +561,14 @@ static int bootm_load_os(bootm_headers_t *images, unsigned long *load_end,
+ ulong bootm_disable_interrupts(void)
+ {
+ 	ulong iflag;
++	const char *env;
+ 
+ 	/*
+ 	 * Do not go further if usb is boot device,
+ 	 * We may access usb at late sequence.
+ 	 */
+-	if (!strcmp(env_get("devtype"), "usb"))
++	env = env_get("devtype");
++	if (env && !strcmp(env, "usb"))
+ 		return 0;
+ 
+ 	/*
+-- 
+2.43.0
+

@@ -1,0 +1,37 @@
+From bc9a904fa6e079de89a9690a270477ec585075e4 Mon Sep 17 00:00:00 2001
+From: Michael Trimarchi <michael@amarulasolutions.com>
+Date: Fri, 24 Oct 2025 21:16:00 +0200
+Subject: [PATCH] tools: rockchip: Fix string truncation
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+tools/rockchip/bmp2gray16.c:121:25: warning: ‘%s’ directive argument \
+is not a nul-terminated string [-Wformat-overflow=]
+printf("Version %s (zwp@rock-chips.com)\n", version);
+                ^~                          ~~~~~~~
+tools/rockchip/bmp2gray16.c:109:19: note: referenced argument declared here
+static const char version[4] = "1.00";
+|                   ^~~~~~~
+
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+---
+ tools/rockchip/bmp2gray16.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/rockchip/bmp2gray16.c b/tools/rockchip/bmp2gray16.c
+index a331d14397..84fb305373 100644
+--- a/tools/rockchip/bmp2gray16.c
++++ b/tools/rockchip/bmp2gray16.c
+@@ -106,7 +106,7 @@ struct input_img_info {
+ struct input_img_info in_img_info[16];
+ uint32_t screen_w;
+ uint32_t screen_h;
+-static const char version[4] = "1.00";
++static const char version[5] = "1.00";
+ static const char *PROG;
+ 
+ static const char *fix_path(const char *path)
+-- 
+2.43.0
+

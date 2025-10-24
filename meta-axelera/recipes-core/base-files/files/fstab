@@ -3,5 +3,5 @@ proc                 /proc                proc       defaults                   
 devpts               /dev/pts             devpts     mode=0620,ptmxmode=0666,gid=5        0  0
 tmpfs                /run                 tmpfs      mode=0755,nodev,nosuid,strictatime   0  0
 tmpfs                /var/volatile        tmpfs      defaults                             0  0
-/dev/mmcblk0p6       /factory             ext4       defaults                             0  2
-/dev/mmcblk0p7       /data                ext4       defaults                             0  2
+/dev/mmcblk0p8       /factory             ext4       defaults                             0  2
+/dev/mmcblk0p9       /data                ext4       defaults                             0  2

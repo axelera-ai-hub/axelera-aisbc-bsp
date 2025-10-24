@@ -2,7 +2,7 @@
 
 # Mender Boot Image Flasher Script
 # This script reads the 'mender_boot_part' environment variable using fw_printenv,
-# mounts the corresponding rootfs partition (p4 or p5), extracts 'boot.img',
+# mounts the corresponding rootfs partition (p6 or p7), extracts 'boot.img',
 # flashes it to the correct boot partition (p2 or p3), and cleans up.
 
 set -euo pipefail # Exit immediately if a command exits with a non-zero status,
@@ -38,20 +38,20 @@ SOURCE_PART=""
 TARGET_BOOT_PART=""
 
 case "${MENDER_PART_NUMBER}" in
-    4)
-        # Target rootfs is p4. Source for boot.img is /dev/mmcblk0p4.
+    6)
+        # Target rootfs is p6. Source for boot.img is /dev/mmcblk0p6.
         # Target boot partition for flashing is p2.
-        SOURCE_PART="${ROOT_DEVICE}p4"
+        SOURCE_PART="${ROOT_DEVICE}p6"
         TARGET_BOOT_PART="${ROOT_DEVICE}p2"
         ;;
-    5)
-        # Target rootfs is p5. Source for boot.img is /dev/mmcblk0p5.
+    7)
+        # Target rootfs is p7. Source for boot.img is /dev/mmcblk0p7.
         # Target boot partition for flashing is p3.
-        SOURCE_PART="${ROOT_DEVICE}p5"
+        SOURCE_PART="${ROOT_DEVICE}p7"
         TARGET_BOOT_PART="${ROOT_DEVICE}p3"
         ;;
     *)
-        echo "ERROR: Invalid or unsupported mender_boot_part value: ${MENDER_PART_NUMBER}. Expected 4 or 5." >&2
+        echo "ERROR: Invalid or unsupported mender_boot_part value: ${MENDER_PART_NUMBER}. Expected 6 or 7." >&2
         exit 1
         ;;
 esac
