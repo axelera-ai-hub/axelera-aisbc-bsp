@@ -32,3 +32,5 @@ SRC_URI:remove = " ${@bb.utils.contains('SOC_FAMILY', 'rk3399', 'file://${CURDIR
 COMPATIBLE_MACHINE = "(itx-3588j|antelao-3588)"
 
 include ${@mender_feature_is_enabled("mender-uboot","recipes-bsp/u-boot/u-boot-mender.inc","",d)}
+
+SRC_URI:append:mender-uboot = " file://0007-Change-boot-strategy.patch"

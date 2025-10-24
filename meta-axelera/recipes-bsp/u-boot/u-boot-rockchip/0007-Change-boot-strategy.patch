@@ -1,0 +1,39 @@
+From 5c38f28934ee3c1b5a07606ee6578f5ae5ebf733 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <adam.duskett@amarulasolutions.com>
+Date: Mon, 27 Oct 2025 10:42:54 +0100
+Subject: [PATCH] Change boot strategy
+
+Optimize the booting command strategy to using booting_android
+instead and load bootm.
+
+Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
+---
+ include/env_mender.h | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/include/env_mender.h b/include/env_mender.h
+index 261775afd5..8aec24298c 100644
+--- a/include/env_mender.h
++++ b/include/env_mender.h
+@@ -138,17 +138,13 @@
+ # define MENDER_BOOTARGS                                                \
+     "setenv bootargs root=${mender_kernel_root} ${bootargs}; "
+ # define MENDER_LOAD_KERNEL_AND_FDT                                     \
+-    "if test \"${fdt_addr_r}\" != \"\"; then "                          \
+-    "load ${mender_uboot_root} ${fdt_addr_r} /boot/${mender_dtb_name}; " \
+-    "fi; "                                                              \
+-    "load ${mender_uboot_root} ${kernel_addr_r} /boot/${mender_kernel_name}; "
++    "boot_android mmc 0; "
+ #endif
+ 
+ #define CONFIG_MENDER_BOOTCOMMAND                                       \
+     "run mender_setup; "                                                \
+     MENDER_BOOTARGS                                                     \
+     MENDER_LOAD_KERNEL_AND_FDT                                          \
+-    "${mender_boot_kernel_type} ${kernel_addr_r} - ${fdt_addr_r}; "     \
+     "run mender_try_to_recover"
+ 
+ #endif /* !MENDER_AUTO_PROBING */
+-- 
+2.51.1
+
