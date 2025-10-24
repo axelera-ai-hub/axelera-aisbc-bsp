@@ -12,15 +12,15 @@ SRCREV_rkbin = "12660714c81be85350a4092542e2ff599aa5adcb"
 SRCREV_uboot = "4cb81ad5558dec446092422d4590d700d9815c7c"
 
 SRC_URI = " \
-	${REMOTE_REPOS_PREFIX}uboot-rockchip.git;protocol=ssh;branch=rk3588;name=uboot; \
-	${REMOTE_REPOS_PREFIX}rk-binary-native.git;protocol=ssh;branch=rk3588;name=rkbin;destsuffix=rkbin; \
-	file://0001-add-itx-3588j_defconfig.patch; \
-	file://0002-add-rockchip-environment-support.patch; \
-	file://0003-use-root-instead-of-uuid-in-kernel-cmdline.patch; \
-	file://0004-mender-integration-changes.patch; \
-	file://0005-env-Kconfig-Make-ENV_OFFSET_REDUND-always-available.patch \
-	file://0006-common-image-android-Boot-from-right-boot-partiong-u.patch \
-	file://environment.cfg; \
+    ${REMOTE_REPOS_PREFIX}uboot-rockchip.git;protocol=ssh;branch=rk3588;name=uboot; \
+    ${REMOTE_REPOS_PREFIX}rk-binary-native.git;protocol=ssh;branch=rk3588;name=rkbin;destsuffix=rkbin; \
+    file://0001-add-itx-3588j_defconfig.patch; \
+    file://0002-add-rockchip-environment-support.patch; \
+    file://0003-use-root-instead-of-uuid-in-kernel-cmdline.patch; \
+    file://0004-mender-integration-changes.patch; \
+    file://0005-env-Kconfig-Make-ENV_OFFSET_REDUND-always-available.patch \
+    file://0006-common-image-android-Boot-from-right-boot-partiong-u.patch \
+    file://environment.cfg; \
 "
 
 SRC_URI:append = " ${@bb.utils.contains('CPU_SERIES', 'RK356X', 'file://${CURDIR}/rk356x/0001-add-firefly-rk3566_defconfig.patch', '', d)} \
