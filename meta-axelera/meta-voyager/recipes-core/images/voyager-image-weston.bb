@@ -25,9 +25,9 @@ IMAGE_INSTALL:append = " \
 "
 
 # security tools
-IMAGE_INSTALL:append = " \
-    clamav \
-"
+#IMAGE_INSTALL:append = " \
+#    clamav \
+#"
 
 # tools for automatic testing
 IMAGE_INSTALL:append = " \
