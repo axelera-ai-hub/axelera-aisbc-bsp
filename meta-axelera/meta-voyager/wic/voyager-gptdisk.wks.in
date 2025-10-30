@@ -6,9 +6,9 @@
 # 0~32K: gpt
 bootloader --ptable gpt
 part --source rawcopy --sourceparams="file=idblock.img" --align 32 --no-table
-part --source rawcopy --sourceparams="file=uboot.img" --part-name uboot --align 8192
-part --source rawcopy --sourceparams="file=boot.img" --part-name boot_a --fixed-size 24M
-part --source rawcopy --sourceparams="file=boot.img" --part-name boot_b --fixed-size 24M
+part --source rawcopy --sourceparams="file=uboot.img" --part-name uboot --align 8192 --fixed-size 12M
+part --source rawcopy --sourceparams="file=boot.img" --part-name boot_a --fixed-size 32M
+part --source rawcopy --sourceparams="file=boot.img" --part-name boot_b --fixed-size 32M
 part --source rawcopy --sourceparams="file=u-boot-env.img" --part-name env_a --fixed-size 128K
 part --source rawcopy --sourceparams="file=u-boot-env.img" --part-name env_b --fixed-size 128K
 # Note fixed-size should == MENDER_STORAGE_TOTAL_SIZE_MB / 2
