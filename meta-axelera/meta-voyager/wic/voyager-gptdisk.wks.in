@@ -7,7 +7,6 @@
 bootloader --ptable gpt
 part --source rawcopy --sourceparams="file=idblock.img" --align 32 --no-table
 part --source rawcopy --sourceparams="file=uboot.img" --part-name uboot --align 8192
-part --source rawcopy --sourceparams="file=trust.img" --part-name trust --fixed-size 8M
 part --source rawcopy --sourceparams="file=boot.img" --part-name boot_a --fixed-size 24M
 part --source rawcopy --sourceparams="file=boot.img" --part-name boot_b --fixed-size 24M
 part --source rawcopy --sourceparams="file=u-boot-env.img" --part-name env_a --fixed-size 128K
