@@ -14,6 +14,7 @@ IMAGE_FEATURES:append = " \
 "
 
 IMAGE_INSTALL:append = " \
+    alsa-utils \
     fontconfig \
     fontconfig-utils \
     ttf-noto-emoji-color \
