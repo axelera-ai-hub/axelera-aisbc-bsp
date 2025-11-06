@@ -10,6 +10,7 @@ IMAGE_INSTALL = " \
   e2fsprogs-mke2fs \
   e2fsprogs-resize2fs \
   ffmpeg-rockchip \
+  fio \
   gstreamer1.0-libav \
   gstreamer1.0-plugins-bad \
   gstreamer1.0-plugins-base \
