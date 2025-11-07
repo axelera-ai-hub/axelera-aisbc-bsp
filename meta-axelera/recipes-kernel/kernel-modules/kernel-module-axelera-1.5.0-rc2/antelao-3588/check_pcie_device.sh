@@ -14,7 +14,7 @@ fi
 # Check for the PCIe device
 if lspci -nn | grep -qi "1f9d"; then
   echo "PCIe device with vendor ID 1f9d found. No action required."
-  echo 1 > /sys/bus/pci/devices/0000:01:00.0/triton_restore
+  echo 1 > /sys/bus/pci/devices/0000:01:00.0/axlaipu_restore
 else
   echo "PCIe device with vendor ID 1f9d not found. Initiating a single reboot."
   touch "$TRACK_FILE"
