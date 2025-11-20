@@ -12,20 +12,17 @@ CVE_PRODUCT = "axelera"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=146ead9d11d793524847e5b843904b51"
 
-PV = "1.5.0-rc2"
+PV = "1.5.0-rc6"
 
 SRC_URI = " \
     ${REMOTE_DRIVER};protocol=ssh;branch=release/v1.5 \
     file://0001-cross-compile-fixups.patch \
-"
-
-SRC_URI:append:antelao-3588 = " \
     file://check_pcie_device.sh \
     file://pcie-check.service \
 "
 
 SRC_URI[sha256sum] = "ad2598304a8af697d0c335a50a3e5a1ba06c82d9b63ef5f9d3e730b54cf9148a"
-SRCREV = "a8b7c5bea92abfab92ee184373086bb20bc750e2"
+SRCREV = "476260dcc6f4a4f2f5e8d85803a8447e34d6c636"
 S = "${WORKDIR}/git"
 
 EXTRA_OEMAKE = "CROSS_COMPILE=${TARGET_PREFIX} SYSROOT=${STAGING_DIR_TARGET}"
