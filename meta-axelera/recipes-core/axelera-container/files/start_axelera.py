@@ -74,6 +74,7 @@ COMMANDS:
 
 COMMAND: start
   --container-name   Docker container identifier (alphanumeric, hyphens, periods, underscores)
+  --detach           Start container in detach mode to allow to run command using exec (Mostly used for testing)
   --version          Voyager SDK version tag (e.g., 1.4.0)
 
   Example:
@@ -121,6 +122,12 @@ def _subcommand(func):
             "--version",
             required=True,
             help="Version tag of the Voyager SDK container (e.g., 1.4.0)",
+        )
+        subparser.add_argument(
+            "--detach",
+            required=False,
+            action="store_true",
+            help="Start container in detach mode",
         )
 
     return subparser
@@ -515,9 +522,13 @@ def start(args):
     print("=" * 80)
     print()
 
+    docker_param = '-it'
+    if args.detach:
+        docker_param = '-itd'
+
     # Build Docker run command with appropriate display configuration
     docker_cmd = (
-        "docker run -it --privileged "
+        f"docker run {docker_param} --privileged "
         "-v $(pwd)/shared:/home/ubuntu/shared/ "
         "-v /usr/lib/libmali-hook.so.1:/usr/lib/libmali-hook.so.1 "
         "-v /usr/lib/libmali.so.1:/usr/lib/libmali.so.1 "
