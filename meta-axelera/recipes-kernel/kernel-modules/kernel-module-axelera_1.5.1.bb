@@ -12,7 +12,7 @@ CVE_PRODUCT = "axelera"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=146ead9d11d793524847e5b843904b51"
 
-PV = "1.5.0-rc6"
+PV = "1.5.1"
 
 SRC_URI = " \
     ${REMOTE_DRIVER};protocol=ssh;branch=release/v1.5 \
