@@ -81,6 +81,12 @@ repos:
       meta-arm-toolchain:
       meta-arm:
 
+  meta-qt6:
+    url: "git://code.qt.io/yocto/meta-qt6.git"
+    branch: "6.5"
+    commit: a745b50e63859873a63a8484715e7915f97a626e
+    signed: false
+
   meta-rockchip:
     url: "ssh://gitea@gitea.amarulasolutions.com:38745/axelera/meta-rockchip.git"
     branch: rk3588
