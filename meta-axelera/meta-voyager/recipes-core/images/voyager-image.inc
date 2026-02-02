@@ -25,6 +25,7 @@ IMAGE_INSTALL = " \
   kernel-module-usbtest \
   libdrm \
   libubootenv \
+  libzip \
   lmsensors \
   mender-commit-check \
   mender-files-setup \
