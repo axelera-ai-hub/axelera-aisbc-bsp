@@ -50,3 +50,16 @@ kas-container build
 # Build the host sdk
 
 kas-container shell .config.yaml -c "bitbake -fc populate\_sdk voyager-image"
+
+# User guide on product usage
+
+The User Guide provides instructions on how to use the product including the
+Board Support Package (BSP) and covers flashing the Antelao board with the latest
+BSP release, setting up the system and installing Axelera AI Voyager SDK to run our
+application.
+
+Prerequisite to access user guide:
+To be registered on Axelera support platform.
+
+Link:
+[Axelera User Guide](https://support.axelera.ai/hc/en-us/article_attachments/31913266406034)
