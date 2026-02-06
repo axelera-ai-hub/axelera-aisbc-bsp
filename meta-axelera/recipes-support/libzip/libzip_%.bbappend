@@ -1,4 +1,4 @@
-do_install:append() {
+do_install:append:axelera-machine() {
     ln -s libzip.so.5 ${D}${libdir}/libzip.so.4
 }
 

@@ -5,7 +5,7 @@ do_download_latest_pciids() {
 
 addtask do_download_latest_pciids after do_unpack before do_install
 
-do_install:append() {
+do_install:append:axelera-machine() {
     if ! zcat ${WORKDIR}/pci.ids.gz.latest | grep -q "^C "; then
         bbfatal "Downloaded pci.ids.gz appears to be truncated or invalid (missing class info)."
     fi

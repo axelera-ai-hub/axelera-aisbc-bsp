@@ -1,1 +1,1 @@
-PACKAGECONFIG:append = " alsa"
+PACKAGECONFIG:append:axelera-machine = " alsa"

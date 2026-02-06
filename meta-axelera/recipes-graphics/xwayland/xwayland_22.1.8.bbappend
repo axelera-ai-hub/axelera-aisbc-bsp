@@ -1,1 +1,1 @@
-DEPENDS += " libtirpc"
+DEPENDS:append:axelera-machine = " libtirpc"

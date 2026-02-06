@@ -1,1 +1,1 @@
-PACKAGECONFIG:append = " opencv"
+PACKAGECONFIG:append:axelera-machine = " opencv"

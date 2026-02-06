@@ -1,1 +1,1 @@
-PACKAGECONFIG:append = " gstreamer opencl python3 dnn"
+PACKAGECONFIG:append:axelera-machine = " gstreamer opencl python3 dnn"
