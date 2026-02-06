@@ -6,6 +6,7 @@ Subject: [PATCH] Change boot strategy
 Optimize the booting command strategy to using booting_android
 instead and load bootm.
 
+Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
 ---
  include/env_mender.h | 6 +-----

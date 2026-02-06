@@ -6,6 +6,7 @@ Subject: [PATCH] add itx-3588j_defconfig
 Needed so mender does not throw an error about more than one
 machine specified in UBOOT_MACHINE
 
+Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
 ---
  configs/itx-3588j_defconfig | 248 ++++++++++++++++++++++++++++++++++++

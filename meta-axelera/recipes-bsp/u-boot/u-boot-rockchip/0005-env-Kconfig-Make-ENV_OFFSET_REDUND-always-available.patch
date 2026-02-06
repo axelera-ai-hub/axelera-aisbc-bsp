@@ -12,6 +12,7 @@ version, effectively breaking mender integration.
 Move this if ENVF condition such that it is always possible to select
 this redundant option.
 
+Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
 Signed-off-by: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
 ---

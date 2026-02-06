@@ -3,6 +3,7 @@ From: Michael Trimarchi <michael@amarulasolutions.com>
 Date: Mon, 10 Feb 2025 14:31:43 +0000
 Subject: [PATCH] docker.service: Drop the dependency from network-wait-online
 
+Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
 ---
  contrib/init/systemd/docker.service | 4 ++--

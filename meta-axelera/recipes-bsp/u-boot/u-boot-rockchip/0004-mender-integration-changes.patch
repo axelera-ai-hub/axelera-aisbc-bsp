@@ -5,6 +5,7 @@ Subject: [PATCH] mender integration changes
 
 Add mandatory mender definitions.
 
+Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
 ---
  include/configs/rockchip-common.h | 5 +++++

@@ -5,6 +5,7 @@ Subject: [PATCH] common: bootm: Check devtype enviroment before strcmp
 
 This change of rockchip pretend to have the devtype defined.
 
+Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
 ---
  common/bootm.c | 4 +++-

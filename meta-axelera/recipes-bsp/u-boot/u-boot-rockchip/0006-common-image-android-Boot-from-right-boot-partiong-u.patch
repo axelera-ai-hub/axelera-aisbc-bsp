@@ -7,6 +7,7 @@ Subject: [PATCH] common: image-android: Boot from right boot partiong under
 Select the right boot partition according to the one flashed by
 mender
 
+Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
 ---
  arch/arm/mach-rockchip/fit.c | 19 ++++++++++++++++++-

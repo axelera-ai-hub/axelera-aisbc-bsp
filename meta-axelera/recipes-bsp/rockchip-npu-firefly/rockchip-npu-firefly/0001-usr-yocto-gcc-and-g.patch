@@ -3,6 +3,9 @@ From: lvsx <lvsx@t-chip.com.cn>
 Date: Thu, 13 Jun 2024 16:18:57 +0800
 Subject: [PATCH] usr yocto gcc and g++
 
+Upstream-Status: Inappropriate [oe-specific]
+
+Signed-off-by: lvsx <lvsx@t-chip.com.cn>
 ---
  examples/rknn_yolov5_demo/build-linux_RK3588.sh | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)

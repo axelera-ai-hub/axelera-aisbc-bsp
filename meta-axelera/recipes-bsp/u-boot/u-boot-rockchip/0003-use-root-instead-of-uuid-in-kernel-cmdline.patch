@@ -8,6 +8,7 @@ instead of the part uuid. The reason for this change is mender sets
 root=/dev/mmcblk0pX. Without this change, the root= line is ignored,
 causing /dev/mmcblk0p3 to always be the root partition when booting.
 
+Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
 ---
  arch/arm/mach-rockchip/board.c | 2 +-

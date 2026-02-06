@@ -7,6 +7,7 @@ Enable environment support for rockchip boards. This is needed
 to read and write bootloader environment variables from userspace
 and is needed for A/B updates and rollbacks.
 
+Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
 ---
  env/Kconfig                       | 1 +
