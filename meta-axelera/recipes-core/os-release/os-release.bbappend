@@ -6,7 +6,7 @@ OS_RELEASE_UNQUOTED_FIELDS:append = " BOARD_TYPE"
 BOARD_TYPE = "${MACHINE}"
 BUILD_ID = "${@d.getVar('JENKINS_BUILD_ID') or d.getVar('DATETIME')}"
 
-python do_compile:prepend:axelera-device () {
+python do_compile:prepend:axelera-machine () {
     import git
     bblayers = d.getVar('BBLAYERS').split()
     index = [idx for idx, s in enumerate(bblayers) if 'meta-axelera' in s][0]

@@ -6,7 +6,7 @@ require conf/machine/include/mender.inc
 MALI_VERSION := "g13p0"
 
 # Common machine for all Axelera devices
-MACHINEOVERRIDES =. "axelera-device:"
+MACHINEOVERRIDES =. "axelera-machine:"
 
 PREFERRED_VERSION_linux-rockchip = "6.1%"
 LINUXLIBCVERSION = "6.1-custom%"
