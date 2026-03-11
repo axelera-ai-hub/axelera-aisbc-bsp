@@ -41,6 +41,7 @@ IMAGE_INSTALL = " \
   python3 \
   python3-pip \
   rockchip-libmali \
+  strace \
   tar\
   testusb \
   u-boot-fw-utils \
