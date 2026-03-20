@@ -1,0 +1,102 @@
+header:
+  version: 11
+
+signers:
+  YoctoBuildandRelease:
+    fingerprint: 2AFB13F28FBBB0D1B9DAF63087EB3D32FB631AD9
+    gpg_keyserver: keyserver.ubuntu.com
+  JonMason:
+    fingerprint: A04F5BF5CDD4D89C57F7C9AA6E664BAC7A8BD223
+    gpg_keyserver: keyserver.ubuntu.com
+
+distro: voyager-minimal
+target:
+  - voyager-image-upstream-minimal
+
+repos:
+  bitbake:
+    url: "https://git.openembedded.org/bitbake"
+    tag: 2022-04.33-kirkstone
+    commit: 8e2d1f8de055549b2101614d85454fcd1d0f94b2
+    signed: true
+    allowed_signers:
+      - YoctoBuildandRelease
+    layers:
+      .: disabled
+
+  openembedded-core:
+    url: "https://git.openembedded.org/openembedded-core"
+    tag: 2022-04.33-kirkstone
+    commit: 036f76ea35c49a78d612093dcd8eb1fac7ded8d7
+    signed: true
+    allowed_signers:
+      - YoctoBuildandRelease
+    layers:
+      meta:
+
+  meta-openembedded:
+    url: "https://git.openembedded.org/meta-openembedded"
+    branch: kirkstone
+    commit: de8681b4a2a101b99dd2c48d89a7de2ccd9a961f
+    signed: false
+    layers:
+      meta-filesystems:
+      meta-gnome:
+      meta-oe:
+      meta-perl:
+      meta-python:
+      meta-networking:
+      meta-multimedia:
+      meta-xfce:
+
+  meta-arm:
+    url: "git://git.yoctoproject.org/meta-arm"
+    tag: yocto-4.0.7
+    commit: c3e9fb12aa31d25e33d8392c4a233ed1275a3278
+    signed: true
+    allowed_signers:
+      - JonMason
+    layers:
+      meta-arm-toolchain:
+      meta-arm:
+
+  meta-virtualization:
+    url: "https://git.yoctoproject.org/meta-virtualization"
+    branch: kirkstone
+    commit: b5a1645250c17fb657b7f10166f1c665ce192aaf
+    signed: false
+
+  meta-rockchip:
+    url: "git://git.yoctoproject.org/meta-rockchip"
+    branch: kirkstone
+    signed: false
+
+  meta-axelera:
+    layers:
+      meta-axelera:
+      meta-axelera/meta-voyager:
+
+local_conf_header:
+  meta-axelera: |
+    # Some useful lines you may want to copy to your site.conf for development
+    # INHERIT += "rm_work"
+    EXTRA_IMAGE_FEATURES += "empty-root-password \
+                             allow-empty-password \
+                             allow-root-login \
+                             "
+    # LICENSE_FLAGS_ACCEPTED += "NXP_EULA_v57 NXP_EULA_v58"
+    BBMASK += "meta-axelera/recipes-mender/mender-axelera-state-scripts/"
+    BBMASK += "meta-axelera/recipes-bsp/rockchip-npu-firefly/"
+    BBMASK += "meta-axelera/recipes-kernel/linux/linux-rockchip.*"
+    BBMASK += "meta-axelera/recipes-apps/xfce4-terminal/"
+    BBMASK += "meta-axelera/recipes-bsp/rk-binary/"
+    BBMASK += "meta-axelera/recipes-bsp/u-boot/u-boot-rockchip.bbappend"
+    BBMASK += "meta-axelera/recipes-containers/docker/"
+    BBMASK += "meta-axelera/recipes-devtools/android-tools/"
+    BBMASK += "meta-axelera/recipes-graphics/rockchip-libmali/"
+    BBMASK += "meta-axelera/recipes-graphics/rockchip-librga/"
+    BBMASK += "meta-axelera/recipes-mender/mender-client/"
+    BBMASK += "meta-axelera/recipes-multimedia/gstreamer-rockchip/"
+    BBMASK += "meta-axelera/recipes-multimedia/rockchip-mpp/"
+    BBMASK += "meta-axelera/recipes-support/libzip/"
+    BBMASK += "meta-axelera/recipes-support/opencv/"
