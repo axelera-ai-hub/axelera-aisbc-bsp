@@ -7,7 +7,7 @@ require recipes-bsp/u-boot/u-boot.inc
 # version were they have already been applied.
 SRC_URI = " \
     git://source.denx.de/u-boot/u-boot.git;protocol=https;branch=master \
-    file://0001-HACK-Add-antelao-support-in-u-boot.patch \
+    file://0001-Add-antelao-support-in-u-boot.patch \
 "
 
 # v2026.01
