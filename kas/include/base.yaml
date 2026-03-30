@@ -132,7 +132,7 @@ local_conf_header:
     EXTRA_IMAGE_FEATURES = "debug-tweaks package-management"
     IMAGE_FSTYPES:append = " ext4 wic wic.gz wic.bmap ext4.gz"
     RK_ROOTDEV_UUID ?= "614e0000-0000-4b53-8000-1d28000054a9"
-    REMOTE_REPOS_PREFIX := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai-hub/aisbc-', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/', d)}"
+    REMOTE_REPOS_PREFIX := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai-hub/aisbc.', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/', d)}"
     REMOTE_DRIVER := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai-hub/axelera-driver', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.linux', d)}"
     # Mend variables
     MEND_URL = "https://saas-eu.whitesourcesoftware.com/"
