@@ -16,7 +16,7 @@ target:
 repos:
   bitbake:
     url: "https://git.openembedded.org/bitbake"
-    tag: 2022-04.33-kirkstone
+    tag: yocto-4.0.33
     commit: 8e2d1f8de055549b2101614d85454fcd1d0f94b2
     signed: true
     allowed_signers:
@@ -26,7 +26,7 @@ repos:
 
   openembedded-core:
     url: "https://git.openembedded.org/openembedded-core"
-    tag: 2022-04.33-kirkstone
+    tag: yocto-4.0.33
     commit: 036f76ea35c49a78d612093dcd8eb1fac7ded8d7
     signed: true
     allowed_signers:
