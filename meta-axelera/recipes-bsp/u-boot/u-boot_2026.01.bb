@@ -8,6 +8,7 @@ require recipes-bsp/u-boot/u-boot.inc
 SRC_URI = " \
     git://source.denx.de/u-boot/u-boot.git;protocol=https;branch=master \
     file://0001-Add-antelao-support-in-u-boot.patch \
+    file://0002-dts-upstream-arm64-rockchip-Update-axe-sbc-dts-to-ma.patch \
 "
 
 # v2026.01
