@@ -1,6 +1,6 @@
 require linux-axelera-mainline.inc
 
-SRC_URI[sha256sum] = "c16068a3af12e3943dee3b1eef57ca70229c069128bfa1184fb3f48b219d55bf"
+SRC_URI[sha256sum] = "466d441a0ea5e04b7023618b7b201bfd60effab225f806fd41ce663484395a1c"
 
 SRC_URI += "\
     file://0001-Add-antelao-support-to-linux.patch \
