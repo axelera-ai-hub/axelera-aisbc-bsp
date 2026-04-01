@@ -4,7 +4,7 @@
 
 SUMMARY = "A simple, minimal image"
 
-IMAGE_INSTALL = "packagegroup-core-boot dropbear"
+IMAGE_INSTALL = "packagegroup-core-boot dropbear i2c-tools"
 
 IMAGE_LINGUAS = " "
 
