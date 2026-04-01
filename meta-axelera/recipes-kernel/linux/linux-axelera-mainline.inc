@@ -2,7 +2,7 @@
 
 LICENSE = "GPL-2.0-only"
 
-inherit kernel
+inherit kernel kernel-yocto
 
 # As we are using a fully mainline kernel there is no need to clone an
 # entire git repository, which would take time and disk space. Downloading
@@ -16,3 +16,6 @@ SRC_URI = "\
 "
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 S = "${WORKDIR}/linux-${PV}"
+
+# Bypass the outdated Yocto configcheck that crashes on the 'transitional' keyword
+do_kernel_configcheck[noexec] = "1"
