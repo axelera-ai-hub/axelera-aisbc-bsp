@@ -9,7 +9,7 @@ inherit local-git
 
 SRCREV = "39b0ec400133907605115eaa9bacf0b632953f45"
 SRC_URI = " \
-	${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=ssh;branch=rk3588-v6.1.148; \
+	${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=rk3588-v6.1.148; \
 	file://${THISDIR}/files/cgroups.cfg \
 	file://${THISDIR}/files/axelera.cfg \
 "

@@ -1,2 +1,2 @@
-SRC_URI = "${REMOTE_REPOS_PREFIX}rockchip-librga.git;protocol=ssh;nobranch=1;branch=rk3588"
+SRC_URI = "${REMOTE_REPOS_PREFIX}rockchip-librga.git;protocol=${REMOTE_PROTOCOL};nobranch=1;branch=rk3588"
 SRCREV = "fc3f742a7be43c62c9eb3e17a007f957b0e7db83"

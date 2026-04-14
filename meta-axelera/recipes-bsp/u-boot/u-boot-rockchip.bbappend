@@ -14,8 +14,8 @@ SRCREV_uboot = "4cb81ad5558dec446092422d4590d700d9815c7c"
 DEPENDS += "u-boot-tools-native"
 
 SRC_URI = " \
-    ${REMOTE_REPOS_PREFIX}uboot-rockchip.git;protocol=ssh;branch=rk3588;name=uboot; \
-    ${REMOTE_REPOS_PREFIX}rk-binary-native.git;protocol=ssh;branch=rk3588;name=rkbin;destsuffix=rkbin; \
+    ${REMOTE_REPOS_PREFIX}uboot-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=rk3588;name=uboot; \
+    ${REMOTE_REPOS_PREFIX}rk-binary-native.git;protocol=${REMOTE_PROTOCOL};branch=rk3588;name=rkbin;destsuffix=rkbin; \
     file://0001-add-itx-3588j_defconfig.patch; \
     file://0002-add-rockchip-environment-support.patch; \
     file://0003-use-root-instead-of-uuid-in-kernel-cmdline.patch; \
