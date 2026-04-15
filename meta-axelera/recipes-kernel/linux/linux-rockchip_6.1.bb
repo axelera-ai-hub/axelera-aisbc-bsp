@@ -13,6 +13,7 @@ SRC_URI = "\
     ${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=rk3588-v6.1.148; \
     file://${THISDIR}/files/cgroups.cfg \
     file://${THISDIR}/files/axelera.cfg \
+    file://${THISDIR}/linux-rockchip_6.1/0001-Revert-pinctrl-devicetree-do-not-goto-err-when-probi.patch \
 "
 
 SRC_URI:append:itx-3588j = " \
