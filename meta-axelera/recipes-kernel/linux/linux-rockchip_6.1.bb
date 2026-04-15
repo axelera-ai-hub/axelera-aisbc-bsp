@@ -7,23 +7,26 @@ require linux-rockchip.inc
 
 inherit local-git
 
-SRCREV = "39b0ec400133907605115eaa9bacf0b632953f45"
-SRC_URI = " \
-	${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=rk3588-v6.1.148; \
-	file://${THISDIR}/files/cgroups.cfg \
-	file://${THISDIR}/files/axelera.cfg \
+LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
+
+SRC_URI = "\
+    ${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=rk3588-v6.1.148; \
+    file://${THISDIR}/files/cgroups.cfg \
+    file://${THISDIR}/files/axelera.cfg \
 "
 
 SRC_URI:append:itx-3588j = " \
-	file://${THISDIR}/files/firefly.cfg \
+    file://${THISDIR}/files/firefly.cfg \
 "
 
-LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
+SRC_URI:append = " \
+    ${@bb.utils.contains('IMAGE_FSTYPES', 'ext4', \
+    'file://${THISDIR}/files/ext4.cfg', \
+    '', \
+    d)} \
+"
+
+SRCREV = "39b0ec400133907605115eaa9bacf0b632953f45"
 
 KERNEL_VERSION_SANITY_SKIP = "1"
 LINUX_VERSION ?= "6.1.148"
-
-SRC_URI:append = " ${@bb.utils.contains('IMAGE_FSTYPES', 'ext4', \
-		   'file://${THISDIR}/files/ext4.cfg', \
-		   '', \
-		   d)}"
