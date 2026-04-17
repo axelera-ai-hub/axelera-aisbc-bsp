@@ -1,4 +1,4 @@
-From c3ae34ff93bbd58a09f621df6f35910919ce791d Mon Sep 17 00:00:00 2001
+From 5047147588168fe6b48477cde9ac9a9ea820085e Mon Sep 17 00:00:00 2001
 From: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
 Date: Thu, 26 Mar 2026 15:23:56 +0100
 Subject: [PATCH] dts: upstream: arm64: rockchip: Update axe-sbc dts to match
@@ -13,11 +13,11 @@ aligning the regulators and other small details with the schematic.
 Upstream-Status: Pending
 Signed-off-by: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
 ---
- .../src/arm64/rockchip/axe-sbc-rk3588.dts     | 418 +++++++++---------
- 1 file changed, 220 insertions(+), 198 deletions(-)
+ .../src/arm64/rockchip/axe-sbc-rk3588.dts     | 419 +++++++++---------
+ 1 file changed, 221 insertions(+), 198 deletions(-)
 
 diff --git a/dts/upstream/src/arm64/rockchip/axe-sbc-rk3588.dts b/dts/upstream/src/arm64/rockchip/axe-sbc-rk3588.dts
-index a50a4b8b7a1..bcb5749828a 100644
+index a50a4b8b7a1..88d88d74de6 100644
 --- a/dts/upstream/src/arm64/rockchip/axe-sbc-rk3588.dts
 +++ b/dts/upstream/src/arm64/rockchip/axe-sbc-rk3588.dts
 @@ -22,169 +22,170 @@
@@ -553,7 +553,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  	full-pwr-cycle-in-suspend;
  	status = "okay";
  };
-@@ -491,36 +493,35 @@
+@@ -491,36 +493,36 @@
  /* microSD */
  &sdmmc {
  	bus-width = <4>;
@@ -593,6 +593,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  		interrupt-parent = <&gpio0>;
 -		interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
 +		interrupts = <RK_PA7 IRQ_TYPE_LEVEL_LOW>; /* PMIC_INT_L */
++		system-power-controller;
  
 -		pinctrl-names = "default", "pmic-power-off";
  		pinctrl-0 = <&pmic_pins>, <&rk806_dvs1_null>, <&rk806_dvs2_null>, <&rk806_dvs3_null>;
@@ -601,7 +602,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  
  		/* 2800mv-3500mv */
  		low_voltage_threshold = <3000>;
-@@ -539,21 +540,21 @@
+@@ -539,21 +541,21 @@
  		 */
  		pmic-reset-func = <1>;
  
@@ -635,7 +636,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  
  		pwrkey {
  			status = "okay";
-@@ -647,11 +648,12 @@
+@@ -647,11 +649,12 @@
  		regulators {
  			vdd_gpu_s0: vdd_gpu_mem_s0: dcdc-reg1 {
  				regulator-boot-on;
@@ -650,7 +651,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  				};
-@@ -663,8 +665,9 @@
+@@ -663,8 +666,9 @@
  				regulator-init-microvolt = <800000>;
  				regulator-min-microvolt = <550000>;
  				regulator-max-microvolt = <950000>;
@@ -661,7 +662,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  				};
-@@ -675,8 +678,9 @@
+@@ -675,8 +679,9 @@
  				regulator-boot-on;
  				regulator-min-microvolt = <675000>;
  				regulator-max-microvolt = <800000>;
@@ -672,7 +673,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  					regulator-suspend-microvolt = <750000>;
-@@ -686,11 +690,12 @@
+@@ -686,11 +691,12 @@
  			vdd_vdenc_s0: vdd_vdenc_mem_s0: dcdc-reg4 {
  				regulator-always-on;
  				regulator-boot-on;
@@ -687,7 +688,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  				};
-@@ -701,8 +706,9 @@
+@@ -701,8 +707,9 @@
  				regulator-boot-on;
  				regulator-min-microvolt = <675000>;
  				regulator-max-microvolt = <900000>;
@@ -698,7 +699,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  					regulator-suspend-microvolt = <850000>;
-@@ -713,6 +719,7 @@
+@@ -713,6 +720,7 @@
  				regulator-always-on;
  				regulator-boot-on;
  				regulator-name = "vdd2_ddr_s3";
@@ -706,7 +707,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-on-in-suspend;
  				};
-@@ -724,6 +731,7 @@
+@@ -724,6 +732,7 @@
  				regulator-min-microvolt = <2000000>;
  				regulator-max-microvolt = <2000000>;
  				regulator-name = "vdd_2v0_pldo_s3";
@@ -714,7 +715,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-on-in-suspend;
  					regulator-suspend-microvolt = <2000000>;
-@@ -736,6 +744,7 @@
+@@ -736,6 +745,7 @@
  				regulator-min-microvolt = <3300000>;
  				regulator-max-microvolt = <3300000>;
  				regulator-name = "vcc_3v3_s3";
@@ -722,7 +723,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-on-in-suspend;
  					regulator-suspend-microvolt = <3300000>;
-@@ -746,6 +755,7 @@
+@@ -746,6 +756,7 @@
  				regulator-always-on;
  				regulator-boot-on;
  				regulator-name = "vddq_ddr_s0";
@@ -730,7 +731,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  				};
-@@ -757,18 +767,20 @@
+@@ -757,18 +768,20 @@
  				regulator-min-microvolt = <1800000>;
  				regulator-max-microvolt = <1800000>;
  				regulator-name = "vcc_1v8_s3";
@@ -753,7 +754,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  				};
-@@ -780,29 +792,32 @@
+@@ -780,29 +793,32 @@
  				regulator-min-microvolt = <1800000>;
  				regulator-max-microvolt = <1800000>;
  				regulator-name = "vcc_1v8_s0";
@@ -790,7 +791,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  				};
-@@ -814,17 +829,19 @@
+@@ -814,17 +830,19 @@
  				regulator-min-microvolt = <1800000>;
  				regulator-max-microvolt = <3300000>;
  				regulator-name = "vccio_sd_s0";
@@ -812,7 +813,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-on-in-suspend;
  					regulator-suspend-microvolt = <1800000>;
-@@ -837,41 +854,45 @@
+@@ -837,41 +855,45 @@
  				regulator-min-microvolt = <750000>;
  				regulator-max-microvolt = <750000>;
  				regulator-name = "vdd_0v75_s3";
@@ -864,7 +865,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  				};
-@@ -883,6 +904,7 @@
+@@ -883,6 +905,7 @@
  				regulator-min-microvolt = <750000>;
  				regulator-max-microvolt = <750000>;
  				regulator-name = "vdd_0v75_s0";
@@ -872,7 +873,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  				regulator-state-mem {
  					regulator-off-in-suspend;
  				};
-@@ -891,11 +913,6 @@
+@@ -891,11 +914,6 @@
  	};
  };
  
@@ -884,7 +885,7 @@ index a50a4b8b7a1..bcb5749828a 100644
  &u2phy0_otg {
  	rockchip,typec-vbus-det;
  };
-@@ -911,3 +928,8 @@
+@@ -911,3 +929,8 @@
  &u2phy3_host {
  	phy-supply = <&vcc5v0_host>;
  };
