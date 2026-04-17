@@ -9,6 +9,7 @@ SRC_URI = " \
     git://source.denx.de/u-boot/u-boot.git;protocol=https;branch=master \
     file://0001-Add-antelao-support-in-u-boot.patch \
     file://0002-dts-upstream-arm64-rockchip-Update-axe-sbc-dts-to-ma.patch \
+    file://0003-dts-upstream-arm64-rockchip-Add-HDMI-support-to-axe-.patch \
 "
 
 # v2026.04
