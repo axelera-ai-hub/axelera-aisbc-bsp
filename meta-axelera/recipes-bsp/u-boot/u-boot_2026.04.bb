@@ -11,8 +11,8 @@ SRC_URI = " \
     file://0002-dts-upstream-arm64-rockchip-Update-axe-sbc-dts-to-ma.patch \
 "
 
-# v2026.01
-SRCREV = "127a42c7257a6ffbbd1575ed1cbaa8f5408a44b3"
+# v2026.04
+SRCREV = "88dc2788777babfd6322fa655df549a019aa1e69"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=2ca5f2c35c8cc335f0a19756634782f1"
 
 DEPENDS += "\
