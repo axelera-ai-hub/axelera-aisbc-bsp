@@ -17,6 +17,7 @@ IMAGE_INSTALL:append = " \
     alsa-utils \
     fontconfig \
     fontconfig-utils \
+    libdrm-tests \
     mesa-demos \
     ttf-noto-emoji-color \
     wayland \
