@@ -1,4 +1,9 @@
+axelera-doc/
 bitbake/
 openembedded-core/
 build/
-meta-arm/
+meta-*/
+!meta-axelera/
+.gnupg/
+.kas_gnupg/
+.kas_shell_history
