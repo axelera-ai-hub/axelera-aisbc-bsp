@@ -41,11 +41,11 @@ ExecStart=/usr/bin/weston --modules=systemd-notify.so --debug --log=/tmp/weston.
 #WatchdogSec=20
 
 # The user to run Weston as.
-User=#WESTON_USER#
-Group=axelera
+User=weston
+Group=weston
 
 # Make sure the working directory is the users home directory
-WorkingDirectory=/home/#WESTON_USER#
+WorkingDirectory=/home/weston
 
 # Set up a full user session for the user, required by Weston.
 PAMName=weston-autologin
