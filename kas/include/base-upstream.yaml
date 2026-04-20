@@ -66,14 +66,6 @@ repos:
     commit: d274f5d4653f6a36ccdc094b97770afc800541ab
     signed: false
 
-  meta-mender:
-    url: "https://github.com/mendersoftware/meta-mender.git"
-    branch: master
-    commit: 40f610d3cb236456fe9d71bec2442dfdfe220dfa
-    signed: false
-    layers:
-      meta-mender-core:
-
   meta-axelera:
     layers:
       meta-axelera:
@@ -103,3 +95,4 @@ local_conf_header:
     BBMASK += "meta-axelera/recipes-multimedia/rockchip-mpp/"
     BBMASK += "meta-axelera/recipes-support/libzip/"
     BBMASK += "meta-axelera/recipes-support/opencv/"
+    BBMASK += "meta-axelera/meta-voyager/recipes-core/images/voyager-image-weston.bb"
