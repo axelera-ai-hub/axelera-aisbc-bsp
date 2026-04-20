@@ -16,16 +16,16 @@ target:
 repos:
   bitbake:
     url: "https://git.openembedded.org/bitbake"
-    branch: master
-    commit: 7fd4d9d10524ac798ba96057462ea77e6998b0ff
+    tag: yocto-6.0_M3
+    commit: 5d722b5d65e4eef7befe6376983385421e993f86
     signed: false
     layers:
       .: disabled
 
   openembedded-core:
     url: "https://git.openembedded.org/openembedded-core"
-    branch: master
-    commit: e954a94b5b528b2430e8da331107d7d58287f89b
+    tag: yocto-6.0_M3
+    commit: f235ffc43c7783a84e1ac0dce8489fcba8354e12
     signed: false
     layers:
       meta:
@@ -33,7 +33,7 @@ repos:
   meta-openembedded:
     url: "https://git.openembedded.org/meta-openembedded"
     branch: master
-    commit: d1f51bbd0adf81a65e041ec2afbf8d266eabdf54
+    commit: 7bf89d06a41405b48fa3af260da36bc686973afc
     signed: false
     layers:
       meta-filesystems:
@@ -48,7 +48,7 @@ repos:
   meta-arm:
     url: "git://git.yoctoproject.org/meta-arm"
     branch: master
-    commit: efbc6b618e3e6ed9b7ab332deffcec95da5f3d31
+    commit: 8eb10af8092dc3fff86891339fd024d8583f457f
     signed: false
     layers:
       meta-arm-toolchain:
@@ -57,13 +57,13 @@ repos:
   meta-virtualization:
     url: "https://git.yoctoproject.org/meta-virtualization"
     branch: master
-    commit: f829fbfda0f14365235d48dbe2055121fbc0718c
+    commit: 47e3829101321fa694627c1b3cf19a28092d1b73
     signed: false
 
   meta-rockchip:
     url: "git://git.yoctoproject.org/meta-rockchip"
     branch: master
-    commit: d274f5d4653f6a36ccdc094b97770afc800541ab
+    commit: 7bc349061e8ac3f03b5646f2ae1d3958ce53c460
     signed: false
 
   meta-axelera:
