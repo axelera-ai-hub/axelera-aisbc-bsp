@@ -16,28 +16,24 @@ target:
 repos:
   bitbake:
     url: "https://git.openembedded.org/bitbake"
-    tag: yocto-4.0.33
-    commit: 8e2d1f8de055549b2101614d85454fcd1d0f94b2
-    signed: true
-    allowed_signers:
-      - YoctoBuildandRelease
+    branch: master
+    commit: 7fd4d9d10524ac798ba96057462ea77e6998b0ff
+    signed: false
     layers:
       .: disabled
 
   openembedded-core:
     url: "https://git.openembedded.org/openembedded-core"
-    tag: yocto-4.0.33
-    commit: 036f76ea35c49a78d612093dcd8eb1fac7ded8d7
-    signed: true
-    allowed_signers:
-      - YoctoBuildandRelease
+    branch: master
+    commit: e954a94b5b528b2430e8da331107d7d58287f89b
+    signed: false
     layers:
       meta:
 
   meta-openembedded:
     url: "https://git.openembedded.org/meta-openembedded"
-    branch: kirkstone
-    commit: de8681b4a2a101b99dd2c48d89a7de2ccd9a961f
+    branch: master
+    commit: d1f51bbd0adf81a65e041ec2afbf8d266eabdf54
     signed: false
     layers:
       meta-filesystems:
@@ -51,25 +47,32 @@ repos:
 
   meta-arm:
     url: "git://git.yoctoproject.org/meta-arm"
-    tag: yocto-4.0.7
-    commit: c3e9fb12aa31d25e33d8392c4a233ed1275a3278
-    signed: true
-    allowed_signers:
-      - JonMason
+    branch: master
+    commit: efbc6b618e3e6ed9b7ab332deffcec95da5f3d31
+    signed: false
     layers:
       meta-arm-toolchain:
       meta-arm:
 
   meta-virtualization:
     url: "https://git.yoctoproject.org/meta-virtualization"
-    branch: kirkstone
-    commit: b5a1645250c17fb657b7f10166f1c665ce192aaf
+    branch: master
+    commit: f829fbfda0f14365235d48dbe2055121fbc0718c
     signed: false
 
   meta-rockchip:
     url: "git://git.yoctoproject.org/meta-rockchip"
-    branch: kirkstone
+    branch: master
+    commit: d274f5d4653f6a36ccdc094b97770afc800541ab
     signed: false
+
+  meta-mender:
+    url: "https://github.com/mendersoftware/meta-mender.git"
+    branch: master
+    commit: 40f610d3cb236456fe9d71bec2442dfdfe220dfa
+    signed: false
+    layers:
+      meta-mender-core:
 
   meta-axelera:
     layers:

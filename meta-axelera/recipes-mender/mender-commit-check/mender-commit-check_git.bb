@@ -15,14 +15,14 @@ SRC_URI = "\
     file://mender-commit-check \
 "
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 do_install() {
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${S}/mender-commit-check.service ${D}${systemd_system_unitdir}
 
     install -d -m 755 ${D}${bindir}
-    install -m 755 ${WORKDIR}/mender-commit-check ${D}${bindir}/mender-commit-check
+    install -m 755 ${UNPACKDIR}/mender-commit-check ${D}${bindir}/mender-commit-check
 }
 
 inherit systemd

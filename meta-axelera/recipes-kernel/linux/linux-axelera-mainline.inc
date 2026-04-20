@@ -15,7 +15,7 @@ SRC_URI = "\
     ${KERNELORG_MIRROR}/linux/kernel/v7.x/linux-${PV}.tar.xz \
 "
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
-S = "${WORKDIR}/linux-${PV}"
+S = "${UNPACKDIR}/linux-${PV}"
 
 # Bypass the outdated Yocto configcheck that crashes on the 'transitional' keyword
 do_kernel_configcheck[noexec] = "1"
