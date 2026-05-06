@@ -1,9 +1,7 @@
 # Machine configuration for the Firefly ITX-RK3588J product.
-require conf/machine/include/rk3588.inc
-require conf/machine/include/mender.inc
 
-# Override Mali Version
-MALI_VERSION := "g13p0"
+require conf/machine/include/rockchip-arm64-common.inc
+require conf/machine/include/mender.inc
 
 # Common machine for all Axelera devices
 MACHINEOVERRIDES =. "axelera-machine:"

@@ -25,6 +25,11 @@ IMAGE_INSTALL:append = " \
     xfce4-terminal \
     xhost \
     xwayland \
+    linux-firmware-mali-csffw-arch108 \
+    libopencl-mesa \
+    mesa-vulkan-drivers \
+    vulkan-tools \
+    vulkan-loader \
 "
 
 # security tools

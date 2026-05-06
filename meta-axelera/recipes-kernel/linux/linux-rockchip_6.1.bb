@@ -10,9 +10,10 @@ inherit local-git
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 SRC_URI = "\
-    ${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=rk3588-v6.1.148; \
+    ${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=rk3588-v6.1.148-panthor; \
     file://${THISDIR}/files/cgroups.cfg \
     file://${THISDIR}/files/axelera.cfg \
+    file://${THISDIR}/files/panthor.cfg \
     file://${THISDIR}/linux-rockchip_6.1/0001-Revert-pinctrl-devicetree-do-not-goto-err-when-probi.patch \
 "
 
@@ -27,7 +28,7 @@ SRC_URI:append = " \
     d)} \
 "
 
-SRCREV = "5b667b6412d33cacac5bcdace9adb608946801af"
+SRCREV = "acc46ba064516731aa4abf7b57054d8cc53e2d38"
 
 KERNEL_VERSION_SANITY_SKIP = "1"
 LINUX_VERSION ?= "6.1.148"

@@ -23,6 +23,7 @@ IMAGE_INSTALL = " \
   kernel-module-g-zero \
   kernel-module-usb-f-ss-lb \
   kernel-module-usbtest \
+  kernel-module-panthor \
   libdrm \
   libubootenv \
   libzip \
@@ -40,7 +41,6 @@ IMAGE_INSTALL = " \
   pciutils \
   python3 \
   python3-pip \
-  rockchip-libmali \
   strace \
   tar\
   testusb \
