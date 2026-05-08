@@ -28,4 +28,4 @@ EXTRA_OEMESON = "-Dgl_provider=gl"
 REQUIRED_DISTRO_FEATURES = "x11 opengl"
 
 # Remove the mesa-glu dependency in mesa-glu-dev, as mesa-glu is empty
-DEV_PKG_DEPENDENCY = ""
+RDEPENDS:${PN}-dev = ""

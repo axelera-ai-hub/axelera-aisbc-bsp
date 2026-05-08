@@ -14,7 +14,7 @@ SRC_URI += "file://0001-xorg-macros.m4.in-do-not-run-AC_CANONICAL_HOST-in-ma.pat
 SRC_URI[sha256sum] = "8daf36913d551a90fd1013cb078401375dabae021cb4713b9b256a70f00eeb74"
 
 # ${PN} is empty so we need to tweak -dev and -dbg package dependencies
-DEV_PKG_DEPENDENCY = ""
+RDEPENDS:${PN}-dev = ""
 RRECOMMENDS:${PN}-dbg = "${PN}-dev (= ${EXTENDPKGV})"
 
 BBCLASSEXTEND = "native nativesdk"

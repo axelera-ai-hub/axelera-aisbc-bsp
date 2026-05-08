@@ -16,7 +16,7 @@ SRC_URI += "file://multilibfix.patch"
 
 PE = "1"
 
-DEV_PKG_DEPENDENCY = ""
+RDEPENDS:${PN}-dev = ""
 
 inherit gettext
 

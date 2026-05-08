@@ -230,7 +230,7 @@ CFLAGS:append:armv5 = " -DMISSING_64BIT_ATOMICS"
 CFLAGS:append:armv6 = " -DMISSING_64BIT_ATOMICS"
 
 # Remove the mesa dependency on mesa-dev, as mesa is empty
-DEV_PKG_DEPENDENCY = ""
+RDEPENDS:${PN}-dev = ""
 
 # Provide virtual names to allow selecting preferred rproviders
 RPROVIDES:mesa-vulkan-drivers += "virtual-vulkan-icd"

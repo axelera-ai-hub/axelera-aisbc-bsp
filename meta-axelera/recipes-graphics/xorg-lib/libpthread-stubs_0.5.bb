@@ -12,7 +12,7 @@ SRC_URI[sha256sum] = "59da566decceba7c2a7970a4a03b48d9905f1262ff94410a649224e33d
 
 inherit autotools
 
-DEV_PKG_DEPENDENCY = ""
+RDEPENDS:${PN}-dev = ""
 RRECOMMENDS:${PN}-dbg = "${PN}-dev (= ${EXTENDPKGV})"
 
 BBCLASSEXTEND = "native nativesdk"
