@@ -553,6 +553,7 @@ def start(args):
         "-v /etc/OpenCL:/etc/OpenCL "
         "-v /usr/lib/libOpenCL.so.1:/usr/lib/aarch64-linux-gnu/libOpenCL.so.1 "
         "-v /usr/lib/libRusticlOpenCL.so.1:/usr/lib/aarch64-linux-gnu/libRusticlOpenCL.so.1 "
+        "-v /usr/lib/libgstvulkan-1.0.so.0:/usr/lib/aarch64-linux-gnu/libgstvulkan-1.0.so.0 "
         f"-v /usr/lib/gstreamer-1.0/:/opt/axelera/runtime-{args.version}-1/lib/gstreamer-1.0 "
         "-v /usr/lib/librockchip_mpp.so.1:/usr/lib/librockchip_mpp.so.1 "
         "-v /usr/lib/librga.so.2:/usr/lib/librga.so.2 "
