@@ -531,7 +531,7 @@ def start(args):
         f"docker run {docker_param} --privileged "
         "-v $(pwd)/shared:/home/ubuntu/shared/ "
         "-v /usr/lib/dri:/usr/lib/aarch64-linux-gnu/dri "
-        "-v /usr/lib/libgallium-26.0.3.so:/usr/lib/aarch64-linux-gnu/libgallium-26.0.3.so "
+        "-v /usr/lib/libgallium-26.0.6.so:/usr/lib/aarch64-linux-gnu/libgallium-26.0.6.so "
         "-v /usr/lib/libEGL.so.1:/usr/lib/aarch64-linux-gnu/libEGL.so.1 "
         "-v /usr/lib/libgbm.so.1:/usr/lib/aarch64-linux-gnu/libgbm.so.1 "
         "-v /usr/lib/libGL.so.1:/usr/lib/aarch64-linux-gnu/libGL.so.1 "
