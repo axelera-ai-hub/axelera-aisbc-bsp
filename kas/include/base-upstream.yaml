@@ -46,7 +46,7 @@ repos:
       meta-xfce:
 
   meta-arm:
-    url: "git://git.yoctoproject.org/meta-arm"
+    url: "https://git.yoctoproject.org/meta-arm"
     branch: master
     commit: 8eb10af8092dc3fff86891339fd024d8583f457f
     signed: false
@@ -61,7 +61,7 @@ repos:
     signed: false
 
   meta-rockchip:
-    url: "git://git.yoctoproject.org/meta-rockchip"
+    url: "https://git.yoctoproject.org/meta-rockchip"
     branch: master
     commit: 7bc349061e8ac3f03b5646f2ae1d3958ce53c460
     signed: false
