@@ -1,0 +1,34 @@
+From e8ebf30cc4f17c3678194faed57d85abcf9397cc Mon Sep 17 00:00:00 2001
+From: Michael Trimarchi <michael@amarulasolutions.com>
+Date: Sat, 16 May 2026 14:25:02 +0200
+Subject: [PATCH] clc: Fix deprecated lookupTarget call for newer LLVM
+
+Newer versions of LLVM have deprecated the `lookupTarget` overload that
+accepts a raw `StringRef` for the triple, causing compilation to fail
+when warnings are treated as errors.
+
+Fix this by explicitly wrapping the `triple` string in an `llvm::Triple` object.
+
+Upstream-Status: Pending
+Signed-off-by: AI Collaborator <gemini@ai.local>
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+---
+ src/compiler/clc/clc_helpers.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/compiler/clc/clc_helpers.cpp b/src/compiler/clc/clc_helpers.cpp
+index 22528a8710d..7e288abd1a5 100644
+--- a/src/compiler/clc/clc_helpers.cpp
++++ b/src/compiler/clc/clc_helpers.cpp
+@@ -1189,7 +1189,7 @@ llvm_mod_to_spirv(std::unique_ptr<::llvm::Module> mod,
+    if (args->use_llvm_spirv_target) {
+       const char *triple = args->address_bits == 32 ? "spirv-unknown-unknown" : "spirv64-unknown-unknown";
+       std::string error_msg("");
+-      auto target = TargetRegistry::lookupTarget(triple, error_msg);
++      auto target = TargetRegistry::lookupTarget(llvm::Triple(triple), error_msg);
+       if (target) {
+          auto TM = target->createTargetMachine(
+ #if LLVM_VERSION_MAJOR >= 21
+-- 
+2.53.0
+

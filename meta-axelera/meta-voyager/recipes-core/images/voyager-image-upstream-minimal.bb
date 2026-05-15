@@ -10,6 +10,8 @@ IMAGE_FEATURES:append = " \
 "
 
 IMAGE_INSTALL:append = "\
+    clinfo \
+    clpeak \
     dropbear \
     glmark2 \
     gstreamer1.0 \
@@ -20,13 +22,17 @@ IMAGE_INSTALL:append = "\
     i2c-tools \
     kernel-modules \
     kmscube \
+    libopencl-mesa \
     linux-firmware-mali-csffw-arch108 \
     mesa-demos \
     mesa-megadriver \
+    mesa-vulkan-drivers \
     packagegroup-core-boot \
     pciutils \
     python3 \
     python3-pip \
+    vulkan-tools \
+    vulkan-loader \
     wayland \
     weston-xwayland \
     xauth \
