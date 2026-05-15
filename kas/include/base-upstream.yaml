@@ -16,24 +16,24 @@ target:
 repos:
   bitbake:
     url: "https://git.openembedded.org/bitbake"
-    tag: yocto-6.0_M3
-    commit: 5d722b5d65e4eef7befe6376983385421e993f86
+    tag: yocto-6.0
+    commit: 33581c84f3a85008239acbd940501a35de48dc91
     signed: false
     layers:
       .: disabled
 
   openembedded-core:
     url: "https://git.openembedded.org/openembedded-core"
-    tag: yocto-6.0_M3
-    commit: f235ffc43c7783a84e1ac0dce8489fcba8354e12
+    tag: yocto-6.0
+    commit: 42fa856a00ac16b2a7a83d7ecfa60a5be192b16c
     signed: false
     layers:
       meta:
 
   meta-openembedded:
     url: "https://git.openembedded.org/meta-openembedded"
-    branch: master
-    commit: 7bf89d06a41405b48fa3af260da36bc686973afc
+    branch: wrynose
+    commit: 420222862f5a6d95023b8f5f3b7e1808b2264ef9
     signed: false
     layers:
       meta-filesystems:
@@ -56,14 +56,14 @@ repos:
 
   meta-virtualization:
     url: "https://git.yoctoproject.org/meta-virtualization"
-    branch: master
-    commit: 47e3829101321fa694627c1b3cf19a28092d1b73
+    branch: wrynose
+    commit: e1bdfe90563487f0a3253cd4b0d5bb7fa5194d83
     signed: false
 
   meta-rockchip:
     url: "https://git.yoctoproject.org/meta-rockchip"
-    branch: master
-    commit: 7bc349061e8ac3f03b5646f2ae1d3958ce53c460
+    branch: wrynose
+    commit: 9d02575bfd9ca5e87c394f593f2bbdbdee914d4e
     signed: false
 
   meta-axelera:
