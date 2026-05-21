@@ -6,13 +6,13 @@ SUMMARY = "A simple, minimal image"
 
 IMAGE_FEATURES:append = " \
     splash \
+    ssh-server-openssh \
     weston \
 "
 
 IMAGE_INSTALL:append = "\
     clinfo \
     clpeak \
-    dropbear \
     e2fsprogs-resize2fs \
     glmark2 \
     gstreamer1.0 \
@@ -28,6 +28,7 @@ IMAGE_INSTALL:append = "\
     mesa-demos \
     mesa-megadriver \
     mesa-vulkan-drivers \
+    openssh \
     packagegroup-core-boot \
     parted \
     pciutils \
