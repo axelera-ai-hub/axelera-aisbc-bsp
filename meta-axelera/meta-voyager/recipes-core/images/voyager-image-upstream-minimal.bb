@@ -34,6 +34,7 @@ IMAGE_INSTALL:append = "\
     pciutils \
     python3 \
     python3-pip \
+    usbutils \
     vulkan-tools \
     vulkan-loader \
     wayland \
