@@ -96,3 +96,4 @@ local_conf_header:
     BBMASK += "meta-axelera/recipes-support/libzip/"
     BBMASK += "meta-axelera/recipes-support/opencv/"
     BBMASK += "meta-axelera/meta-voyager/recipes-core/images/voyager-image-weston.bb"
+    BBMASK += "meta-axelera/recipes-extended/parted/"

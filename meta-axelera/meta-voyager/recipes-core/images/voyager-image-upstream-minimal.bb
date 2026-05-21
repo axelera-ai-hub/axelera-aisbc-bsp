@@ -13,6 +13,7 @@ IMAGE_INSTALL:append = "\
     clinfo \
     clpeak \
     dropbear \
+    e2fsprogs-resize2fs \
     glmark2 \
     gstreamer1.0 \
     gstreamer1.0-plugins-base \
@@ -28,6 +29,7 @@ IMAGE_INSTALL:append = "\
     mesa-megadriver \
     mesa-vulkan-drivers \
     packagegroup-core-boot \
+    parted \
     pciutils \
     python3 \
     python3-pip \
