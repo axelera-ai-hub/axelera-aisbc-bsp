@@ -35,6 +35,7 @@ IMAGE_INSTALL = " \
   networkmanager \
   networkmanager-nmcli \
   opencv \
+  optee-rockchip \
   os-release \
   packagegroup-core-boot \
   parted \
