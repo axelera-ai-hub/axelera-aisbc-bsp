@@ -1,0 +1,9 @@
+[Unit]
+Description=TEE Supplicant
+
+[Service]
+User=root
+ExecStart=/usr/bin/tee-supplicant
+
+[Install]
+WantedBy=basic.target
