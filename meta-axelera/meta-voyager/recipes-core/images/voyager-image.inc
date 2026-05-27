@@ -25,6 +25,7 @@ IMAGE_INSTALL = " \
   kernel-module-usbtest \
   kernel-module-panthor \
   libdrm \
+  librkcrypto-test \
   libubootenv \
   libzip \
   lmsensors \
