@@ -24,6 +24,7 @@ IMAGE_INSTALL = " \
   kernel-module-usb-f-ss-lb \
   kernel-module-usbtest \
   libdrm \
+  librkcrypto-test \
   libubootenv \
   libzip \
   lmsensors \
