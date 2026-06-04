@@ -137,6 +137,7 @@ local_conf_header:
     REMOTE_PROTOCOL := "${@bb.utils.contains('USE_GITHUB', '1', 'https', 'ssh', d)}"
     # Mend variables
     MEND_URL = "https://saas-eu.whitesourcesoftware.com/"
+    MEND_BLACKLIST_PACKAGES = "linux-rockchip"
 
   sdk options: |
     # Include the kernel devsrc in the sdk for out of tree kernel and module development.
