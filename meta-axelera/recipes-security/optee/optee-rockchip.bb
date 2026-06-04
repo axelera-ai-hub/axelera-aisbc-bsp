@@ -5,7 +5,7 @@ LICENSE = "CLOSED"
 inherit systemd
 
 SRC_URI = "\
-    git://gitea@gitea.amarulasolutions.com:38745/axelera/optee-rockchip;protocol=ssh;branch=master \
+    ${REMOTE_REPOS_PREFIX}/optee-rockchip;protocol=ssh;branch=master \
     file://tee-supplicant.service \
 "
 
