@@ -5,7 +5,7 @@ LICENSE = "CLOSED"
 inherit systemd
 
 SRC_URI = "\
-    ${REMOTE_REPOS_PREFIX}/optee-rockchip;protocol=ssh;branch=master \
+    ${REMOTE_REPOS_PREFIX}optee-rockchip;protocol=ssh;branch=master \
     file://tee-supplicant.service \
 "
 
