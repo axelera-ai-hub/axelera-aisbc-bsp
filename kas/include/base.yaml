@@ -154,4 +154,4 @@ local_conf_header:
 
   sdk options: |
     # Include the kernel devsrc in the sdk for out of tree kernel and module development.
-    TOOLCHAIN_TARGET_TASK:append = " kernel-devsrc"
+    TOOLCHAIN_TARGET_TASK:append = "${@'' if d.getVar('PN') == 'buildtools-tarball' else ' kernel-devsrc'}"
