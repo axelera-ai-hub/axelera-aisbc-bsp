@@ -127,6 +127,7 @@ repos:
 
 local_conf_header:
   meta-axelera: |
+    CONF_VERSION = "2"
     # Some useful lines you may want to copy to your site.conf for development
     # INHERIT += "rm_work"
     INHERIT += " rockchip-image voyager-factoryimg voyager-dataimg"
