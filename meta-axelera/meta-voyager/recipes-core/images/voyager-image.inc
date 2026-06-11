@@ -54,6 +54,7 @@ IMAGE_INSTALL = " \
   u3loop \
   udev-conf-axelera \
   usbutils \
+  voyager-sdk \
   wireguard-tools \
   xauth \
 "
