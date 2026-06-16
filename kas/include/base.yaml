@@ -88,7 +88,7 @@ repos:
     signed: false
 
   meta-rockchip:
-    url: "ssh://gitea@gitea.amarulasolutions.com:38745/axelera/meta-rockchip.git"
+    url: "https://github.com/axelera-ai-hub/aisbc.meta-rockchip.git"
     branch: rk3588
     commit: fb6193a5f5cf80070cf8182c06cb5621433111aa
     signed: false
@@ -113,8 +113,9 @@ repos:
       meta-axelera/meta-voyager:
 
   axelera-doc:
-    url: "ssh://gitea@gitea.amarulasolutions.com:38745/axelera/axelera-doc.git"
+    url: "https://github.com/axelera-ai-hub/aisbc.axelera-doc.git"
     branch: master
+    commit: a2507319054691df1abacde0bff31297338070c1
     signed: false
     layers:
       .: disabled
