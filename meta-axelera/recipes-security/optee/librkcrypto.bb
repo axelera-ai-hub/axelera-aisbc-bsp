@@ -10,7 +10,7 @@ inherit cmake
 
 DEPENDS += "optee-rockchip"
 
-SRC_URI = "git://gitea@gitea.amarulasolutions.com:38745/axelera/optee-rockchip;protocol=ssh;branch=master"
+SRC_URI = "${REMOTE_REPOS_PREFIX}optee-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=master"
 SRCREV = "bf8d67f6e8e8b269e0198b45353440ba78c2b881"
 
 S = "${WORKDIR}/git/librkcrypto"
