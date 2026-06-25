@@ -12,16 +12,16 @@ CVE_PRODUCT = "axelera"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=4641e94ec96f98fabc56ff9cc48be14b"
 
-PV = "v1.6.1"
+PV = "v1.7.0"
 
 SRC_URI = " \
-    git://github.com/axelera-ai-hub/axelera-driver;protocol=https;branch=release/v1.6 \
+    git://github.com/axelera-ai-hub/axelera-driver.git;protocol=https;branch=release/v1.7 \
     file://check_pcie_device.sh \
     file://pcie-check.service \
 "
 
 SRC_URI[sha256sum] = "ecc224ab5121162a2f26a160153480cb8e84deee482b015c5eaacadc64942a37"
-SRCREV = "9b96591db5974c152ce2bbfa2a0c1300e169c3ee"
+SRCREV = "ec85b379c03c079c8fd25e3e766e511e78b1b481"
 S = "${WORKDIR}/git"
 
 EXTRA_OEMAKE = "CROSS_COMPILE=${TARGET_PREFIX} SYSROOT=${STAGING_DIR_TARGET}"
