@@ -13,7 +13,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 PROVIDES:${PN} += "udev-conf-axelera"
 
 SRC_URI = "\
-    file://72-triton.rules \
+    file://73-antelao.rules \
 "
 
 inherit allarch

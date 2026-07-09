@@ -40,9 +40,11 @@ do_install() {
 do_install:append:antelao-3588() {
     install -d ${D}${systemd_system_unitdir}
     install -d ${D}/usr/local/bin
+    install -d ${D}${nonarch_base_libdir}/udev/rules.d
 
     install -m 0755 ${WORKDIR}/check_pcie_device.sh ${D}/usr/local/bin
     install -m 0644 ${WORKDIR}/pcie-check.service ${D}${systemd_system_unitdir}
+    install -m 0644 ${S}/udev/72-axelera.rules ${D}${nonarch_base_libdir}/udev/rules.d/72-axelera.rules
 }
 
 COMPATIBLE_MACHINE = "(itx-3588j|antelao-3588)"
@@ -56,6 +58,7 @@ SYSTEMD_SERVICE:${PN}:antelao-3588 = "pcie-check.service"
 FILES:${PN}:antelao-3588 += " \
     /usr/local/bin/check_pcie_device.sh \
     ${systemd_system_unitdir}/pcie-check.service \
+    ${nonarch_base_libdir}/udev/rules.d/72-axelera.rules \
 "
 
 SYSTEMD_AUTO_ENABLE:antelao-3588 = "enable"
