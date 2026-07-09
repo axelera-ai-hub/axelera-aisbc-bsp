@@ -41,7 +41,7 @@ SRC_URI:append:mender-uboot = " file://0008-Change-boot-strategy.patch"
 
 do_deploy:append() {
     UBOOT_ENV_SIZE="$(cat ${B}/.config | grep "^CONFIG_ENV_SIZE=" | cut -d'=' -f2)"
-    mkenvimage -s ${UBOOT_ENV_SIZE} ${B}/u-boot-initial-env -o ${WORKDIR}/u-boot-env.img
+    mkenvimage -s ${UBOOT_ENV_SIZE} -r ${B}/u-boot-initial-env -o ${WORKDIR}/u-boot-env.img
 
     install -d ${DEPLOYDIR}
     install -m 0644 ${WORKDIR}/u-boot-env.img ${DEPLOYDIR}
