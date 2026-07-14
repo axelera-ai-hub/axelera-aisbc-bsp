@@ -38,20 +38,20 @@ SOURCE_PART=""
 TARGET_BOOT_PART=""
 
 case "${MENDER_PART_NUMBER}" in
-    6)
-        # Target rootfs is p6. Source for boot.img is /dev/mmcblk0p6.
+    10)
+        # Target rootfs is p10. Source for boot.img is /dev/mmcblk0p10.
         # Target boot partition for flashing is p2.
-        SOURCE_PART="${ROOT_DEVICE}p6"
+        SOURCE_PART="${ROOT_DEVICE}p10"
         TARGET_BOOT_PART="${ROOT_DEVICE}p2"
         ;;
-    7)
-        # Target rootfs is p7. Source for boot.img is /dev/mmcblk0p7.
+    11)
+        # Target rootfs is p11. Source for boot.img is /dev/mmcblk0p11.
         # Target boot partition for flashing is p3.
-        SOURCE_PART="${ROOT_DEVICE}p7"
+        SOURCE_PART="${ROOT_DEVICE}p11"
         TARGET_BOOT_PART="${ROOT_DEVICE}p3"
         ;;
     *)
-        echo "ERROR: Invalid or unsupported mender_boot_part value: ${MENDER_PART_NUMBER}. Expected 6 or 7." >&2
+        echo "ERROR: Invalid or unsupported mender_boot_part value: ${MENDER_PART_NUMBER}. Expected 10 or 11." >&2
         exit 1
         ;;
 esac
