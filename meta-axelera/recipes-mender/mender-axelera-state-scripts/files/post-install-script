@@ -36,6 +36,7 @@ echo "Mender target partition number detected: ${MENDER_PART_NUMBER}"
 # 3. Determine source and target partitions based on the Mender value
 SOURCE_PART=""
 TARGET_BOOT_PART=""
+TARGET_VBMETA_PART=""
 
 case "${MENDER_PART_NUMBER}" in
     10)
@@ -43,12 +44,14 @@ case "${MENDER_PART_NUMBER}" in
         # Target boot partition for flashing is p2.
         SOURCE_PART="${ROOT_DEVICE}p10"
         TARGET_BOOT_PART="${ROOT_DEVICE}p2"
+        TARGET_VBMETA_PART="${ROOT_DEVICE}p6"
         ;;
     11)
         # Target rootfs is p11. Source for boot.img is /dev/mmcblk0p11.
         # Target boot partition for flashing is p3.
         SOURCE_PART="${ROOT_DEVICE}p11"
         TARGET_BOOT_PART="${ROOT_DEVICE}p3"
+        TARGET_VBMETA_PART="${ROOT_DEVICE}p7"
         ;;
     *)
         echo "ERROR: Invalid or unsupported mender_boot_part value: ${MENDER_PART_NUMBER}. Expected 10 or 11." >&2
@@ -105,6 +108,24 @@ fi
 sync
 
 echo "Flashing successful! boot.img from $(basename "${SOURCE_PART}") written to $(basename "${TARGET_BOOT_PART}")."
+
+# 8. Verify vbmeta.img existence
+VBMETA_IMG_PATH="${MNT_POINT}/boot/vbmeta.img"
+if [[ ! -f "${VBMETA_IMG_PATH}" ]]; then
+    echo "ERROR: vbmeta.img not found at ${VBMETA_IMG_PATH}" >&2
+    exit 1
+fi
+
+echo "Found ${VBMETA_IMG_PATH}. Starting flashing to ${TARGET_VBMETA_PART}..."
+
+# 9. Flash vbmeta.img to the target vbmeta partition using dd
+if ! dd if="${VBMETA_IMG_PATH}" of="${TARGET_VBMETA_PART}" bs=4k; then
+    echo "ERROR: Flashing operation (dd) failed." >&2
+    exit 1
+fi
+sync
+
+echo "Flashing successful! vbmeta.img from $(basename "${SOURCE_PART}") written to $(basename "${TARGET_VBMETA_PART}")."
 
 # The cleanup trap handles unmounting and final messages.
 
