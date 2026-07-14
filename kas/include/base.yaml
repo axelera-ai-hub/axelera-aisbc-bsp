@@ -118,6 +118,12 @@ repos:
       meta-axelera:
       meta-axelera/meta-voyager:
 
+  meta-selinux:
+    url: "https://git.yoctoproject.org/meta-selinux.git"
+    branch: kirkstone
+    commit: a401f4b2816a0b41ce8d9351542658c721935bcd
+    signed: false
+
   axelera-doc:
     url: "https://github.com/axelera-ai-hub/aisbc.axelera-doc.git"
     branch: master

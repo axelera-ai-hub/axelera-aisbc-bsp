@@ -3,6 +3,7 @@ IMAGE_FEATURES:append = " ssh-server-openssh read-only-rootfs"
 IMAGE_LINK_NAME = "${IMAGE_BASENAME}-${MACHINE}-${DISTRO_VERSION}"
 
 IMAGE_INSTALL = " \
+  auditd \
   avahi-daemon \
   avahi-autoipd \
   avahi-utils \
@@ -42,6 +43,7 @@ IMAGE_INSTALL = " \
   optee-test \
   os-release \
   packagegroup-core-boot \
+  packagegroup-core-selinux \
   parted \
   pciutils \
   python3 \
