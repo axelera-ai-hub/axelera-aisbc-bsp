@@ -87,6 +87,12 @@ repos:
     commit: a745b50e63859873a63a8484715e7915f97a626e
     signed: false
 
+  meta-python2:
+    url: "https://git.openembedded.org/meta-python2.git"
+    branch: "kirkstone"
+    commit: f02882e2aa9279ca7becca8d0cedbffe88b5a253
+    signed: false
+
   meta-rockchip:
     url: "https://github.com/axelera-ai-hub/aisbc.meta-rockchip.git"
     branch: rk3588
