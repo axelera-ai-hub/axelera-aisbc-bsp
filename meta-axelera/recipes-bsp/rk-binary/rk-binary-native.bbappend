@@ -8,3 +8,7 @@ SRC_URI:axelera-machine = " \
 	${REMOTE_REPOS_PREFIX}rk-binary-native.git;protocol=${REMOTE_PROTOCOL};nobranch=1;branch=rk3588;name=rkbin \
 	${REMOTE_REPOS_PREFIX}tools.git;protocol=${REMOTE_PROTOCOL};branch=rk3588;name=tools;destsuffix=git/extra \
 "
+
+do_install:append() {
+    install -m 0755 ${S}/extra/linux/Linux_SecurityAVB/scripts/avbtool ${D}/${bindir}/avbtool
+}
