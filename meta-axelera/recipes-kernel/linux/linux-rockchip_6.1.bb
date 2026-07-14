@@ -9,7 +9,7 @@ inherit local-git
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
-SRC_URI = "\
+SRC_URI += "\
     ${REMOTE_REPOS_PREFIX}linux-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=rk3588-v6.1.148; \
     file://${THISDIR}/files/cgroups.cfg \
     file://${THISDIR}/files/axelera.cfg \

@@ -24,7 +24,11 @@ SRC_URI = " \
     file://0006-common-image-android-Boot-from-right-boot-partiong-u.patch \
     file://0007-tools-rockchip-Fix-string-truncation.patch \
     file://0009-common-bootm-Check-devtype-enviroment-before-strcmp.patch \
+    file://0010-avb-Spoof-A-B-slot-routing-to-follow-Mender.patch \
+    file://0011-android_bootloader.c-Fix-boot-crash-with-AVB-images.patch \
+    file://0012-avb-Add-Rockchip-patch-to-hardcode-pubkey.patch \
     file://environment.cfg; \
+    file://secureboot.cfg \
 "
 
 SRC_URI:append = " ${@bb.utils.contains('CPU_SERIES', 'RK356X', 'file://${CURDIR}/rk356x/0001-add-firefly-rk3566_defconfig.patch', '', d)} \

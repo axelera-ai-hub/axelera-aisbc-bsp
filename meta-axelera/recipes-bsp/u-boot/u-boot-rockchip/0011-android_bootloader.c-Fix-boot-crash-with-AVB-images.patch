@@ -1,0 +1,59 @@
+From 10afbd87284d229dce45b2ec0573a5297e9356d3 Mon Sep 17 00:00:00 2001
+From: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
+Date: Mon, 13 Jul 2026 11:41:18 +0200
+Subject: [PATCH] android_bootloader.c: Fix boot crash with AVB images
+
+At the moment, when using boot images correctly signed with AVB the
+bootflow is crashing.
+The reason for this is that our boot partition's descriptor is "boot",
+while U-Boot is looking for `boot_partname` as a descriptor, which is
+our case is either `boot_a` or `boot_b`, causing null pointer when
+calling the `hdr` array.
+
+To fix it, strip the suffix from the boot_partname and use that as a
+descriptor, allowing U-Boot to find our boot partitions.
+
+Upstream-Status: Inappropriate [oe-specific]
+Signed-off-by: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
+---
+ common/android_bootloader.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/common/android_bootloader.c b/common/android_bootloader.c
+index 819c490a37..99059aef13 100644
+--- a/common/android_bootloader.c
++++ b/common/android_bootloader.c
+@@ -750,8 +750,32 @@ static AvbSlotVerifyResult android_slot_verify(char *boot_partname,
+ 			       unsigned long *android_load_address,
+ 			       char *slot_suffix)
+ {
++	/*
++	 * Mender Integration: libavb requires the base name (e.g. "boot")
++	 * to match the vbmeta descriptor.
++	 * Strip the A/B suffix from the requested partition array.
++	 */
++	char boot_base_partname[PART_NAME_LEN] = {0};
++
++	if (!boot_partname)
++		return AVB_SLOT_VERIFY_RESULT_ERROR_INVALID_ARGUMENT;
++
++	strncpy(boot_base_partname, boot_partname, sizeof(boot_base_partname) - 1);
++
++	if (slot_suffix && strlen(slot_suffix) >= 2) {
++		size_t base_len = strlen(boot_base_partname);
++		size_t suffix_len = strlen(slot_suffix);
++
++		if (base_len >= suffix_len &&
++		    !strcmp(boot_base_partname + (base_len - suffix_len),
++			    slot_suffix)
++		    ) {
++			boot_base_partname[base_len - suffix_len] = '\0';
++		}
++	}
++
+ 	const char *requested_partitions[] = {
+-		boot_partname,
++		boot_base_partname,
+ 		NULL,
+ 		NULL,
+ 		NULL,

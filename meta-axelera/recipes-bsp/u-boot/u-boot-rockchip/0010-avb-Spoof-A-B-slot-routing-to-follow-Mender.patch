@@ -1,0 +1,279 @@
+From ba2633c1ee031ca17724ca5cdf608bd58bb9b9fd Mon Sep 17 00:00:00 2001
+From: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
+Date: Mon, 6 Jul 2026 10:51:21 +0200
+Subject: [PATCH] avb: Spoof A/B slot routing to follow Mender
+
+To allow proper Secureboot integration, we must make AVB slot selection
+correspond to Mender slot selection for the A/B partitions.
+
+Mender uses U-Boot environment variables, while AVB uses the misc
+partition.
+
+Make them collaborate by spoofing the active slot requests from U-Boot
+to read the environment variables instead of the misc partition.
+Allow AVB to write back to the Mender environment variables on failed
+boots as well, to avoid boot-loops.
+
+Upstream-Status: Inappropriate [oe-specific]
+Signed-off-by: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
+
+---
+ common/android_ab.c                  | 24 ++++------
+ common/android_bootloader.c          | 33 ++++++++++++--
+ lib/avb/libavb_ab/avb_ab_flow.c      | 65 ++++++++++------------------
+ lib/avb/rk_avb_user/rk_ab_ops_user.c | 30 ++++---------
+ 4 files changed, 71 insertions(+), 81 deletions(-)
+
+diff --git a/common/android_ab.c b/common/android_ab.c
+index 99c648b26a..e2d3d74ef6 100644
+--- a/common/android_ab.c
++++ b/common/android_ab.c
+@@ -15,6 +15,8 @@
+ #include <android_avb/rk_avb_ops_user.h>
+ #include <u-boot/crc.h>
+ #include <boot_rkimg.h>
++#include <environment.h>
++#include <config_mender_defines.h>
+ 
+ /** android_boot_control_compute_crc - Compute the CRC-32 of the bootloader
+  * control struct. Only the bytes up to the crc32_le field are considered for
+@@ -504,24 +506,16 @@ void ab_update_root_partition(void)
+ 
+ int ab_get_slot_suffix(char *slot_suffix)
+ {
+-	/* TODO: get from pre-loader or misc partition */
+-	if (rk_avb_get_current_slot(slot_suffix)) {
+-		printf("rk_avb_get_current_slot() failed\n");
+-		return -1;
+-	}
++	/* Mender Integration: Override AVB slot selection */
++	ulong part_num = env_get_ulong("mender_boot_part", 10, MENDER_ROOTFS_PART_A_NUMBER);
+ 
+-	if (slot_suffix[0] != '_') {
+-#ifndef CONFIG_ANDROID_AVB
+-		printf("###There is no bootable slot, bring up lastboot!###\n");
+-		if (rk_get_lastboot() == 1)
+-			memcpy(slot_suffix, "_b", 2);
+-		else if (rk_get_lastboot() == 0)
+-			memcpy(slot_suffix, "_a", 2);
+-		else
+-#endif
+-			return -1;
++	if (part_num == MENDER_ROOTFS_PART_A_NUMBER) {
++		strcpy(slot_suffix, "_a");
++	} else {
++		strcpy(slot_suffix, "_b");
+ 	}
+ 
++	printf("Mender forced AVB slot suffix to: %s\n", slot_suffix);
+ 	return 0;
+ }
+ 
+diff --git a/common/android_bootloader.c b/common/android_bootloader.c
+index c53bbaa3ef..819c490a37 100644
+--- a/common/android_bootloader.c
++++ b/common/android_bootloader.c
+@@ -29,6 +29,8 @@
+ #include <bidram.h>
+ #include <console.h>
+ #include <sysmem.h>
++#include <environment.h>
++#include <config_mender_defines.h>
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+@@ -1226,8 +1228,8 @@ int android_bootloader_boot_flow(struct blk_desc *dev_desc,
+ 	const char *mode_cmdline = NULL;
+ 	char *boot_partname;
+ 
+-	part_num = env_get_ulong("mender_boot_part", 10, MENDER_ROOTFS_PART_A_NUMBER);
+-	if (part_num == MENDER_ROOTFS_PART_B_NUMBER)
++	ulong mender_part_num = env_get_ulong("mender_boot_part", 10, MENDER_ROOTFS_PART_A_NUMBER);
++	if (mender_part_num == MENDER_ROOTFS_PART_B_NUMBER)
+ 		boot_partname = "boot_b";
+ 	else
+ 		boot_partname = "boot_a";
+@@ -1322,7 +1324,7 @@ int android_bootloader_boot_flow(struct blk_desc *dev_desc,
+ 					slot_suffix)) {
+ 			printf("AVB verify failed\n");
+ 
+-			return -1;
++			goto avb_mender_fail;
+ 		}
+ 	} else {
+ 		part_num = part_get_info_by_name(dev_desc,
+@@ -1344,10 +1346,33 @@ int android_bootloader_boot_flow(struct blk_desc *dev_desc,
+ 						slot_suffix)) {
+ 				printf("AVB verify failed\n");
+ 
+-				return -1;
++				goto avb_mender_fail;
+ 			}
+ 		}
+ 	}
++
++	goto avb_success;
++
++avb_mender_fail:
++	printf("Flipping mender active partition slot...\n");
++
++	/* Mender Integration: Override Mender slot selection */
++	mender_part_num = env_get_ulong("mender_boot_part", 10, MENDER_ROOTFS_PART_A_NUMBER);
++
++	if (mender_part_num == MENDER_ROOTFS_PART_A_NUMBER) {
++		env_set_ulong("mender_boot_part", MENDER_ROOTFS_PART_B_NUMBER);
++		env_set_hex("mender_boot_part_hex", MENDER_ROOTFS_PART_B_NUMBER);
++	} else {
++		env_set_ulong("mender_boot_part", MENDER_ROOTFS_PART_A_NUMBER);
++		env_set_hex("mender_boot_part_hex", MENDER_ROOTFS_PART_A_NUMBER);
++	}
++
++	env_save();
++	printf("AVB forced Mender active_part to: %s\n", env_get("mender_boot_part"));
++	return -1;
++
++avb_success:
++
+ #else
+ 	/*
+ 	 * 2. Load the boot/recovery from the desired "boot" partition.
+diff --git a/lib/avb/libavb_ab/avb_ab_flow.c b/lib/avb/libavb_ab/avb_ab_flow.c
+index c84131d6c3..3a3285a2c8 100755
+--- a/lib/avb/libavb_ab/avb_ab_flow.c
++++ b/lib/avb/libavb_ab/avb_ab_flow.c
+@@ -23,6 +23,9 @@
+  */
+ 
+ #include <android_avb/avb_ab_flow.h>
++#include <common.h>
++#include <environment.h>
++#include <config_mender_defines.h>
+ 
+ bool avb_ab_data_verify_and_byteswap(const AvbABData* src, AvbABData* dest) {
+   /* Ensure magic is correct. */
+@@ -82,53 +85,33 @@ void avb_ab_data_init(AvbABData* data) {
+ #define AB_METADATA_MISC_PARTITION_OFFSET 2048
+ 
+ AvbIOResult avb_ab_data_read(AvbABOps* ab_ops, AvbABData* data) {
+-  AvbOps* ops = ab_ops->ops;
+-  AvbABData serialized;
+-  AvbIOResult io_ret;
+-  size_t num_bytes_read;
+-
+-  io_ret = ops->read_from_partition(ops,
+-                                    "misc",
+-                                    AB_METADATA_MISC_PARTITION_OFFSET,
+-                                    sizeof(AvbABData),
+-                                    &serialized,
+-                                    &num_bytes_read);
+-  if (io_ret == AVB_IO_RESULT_ERROR_OOM) {
+-    return AVB_IO_RESULT_ERROR_OOM;
+-  } else if (io_ret != AVB_IO_RESULT_OK ||
+-             num_bytes_read != sizeof(AvbABData)) {
+-    avb_error("Error reading A/B metadata.\n");
+-    return AVB_IO_RESULT_ERROR_IO;
+-  }
+-
+-  if (!avb_ab_data_verify_and_byteswap(&serialized, data)) {
+-    avb_error(
+-        "Error validating A/B metadata from disk. "
+-        "Resetting and writing new A/B metadata to disk.\n");
+-    avb_ab_data_init(data);
+-    return avb_ab_data_write(ab_ops, data);
++  /* Mender-AVB Integration: Bridge Mender state to AVB metadata */
++  avb_ab_data_init(data);
++
++  ulong part_num = env_get_ulong("mender_boot_part", 10, MENDER_ROOTFS_PART_A_NUMBER);
++  int is_slot_b = (part_num == MENDER_ROOTFS_PART_B_NUMBER);
++
++  if (is_slot_b) {
++    /* Boot Slot B */
++    data->slots[0].priority = 0;
++    data->slots[0].successful_boot = 0;
++    data->slots[1].priority = AVB_AB_MAX_PRIORITY;
++    data->slots[1].successful_boot = 1;
++    data->slots[1].tries_remaining = 0;
++  } else {
++    /* Boot Slot A */
++    data->slots[0].priority = AVB_AB_MAX_PRIORITY;
++    data->slots[0].successful_boot = 1;
++    data->slots[0].tries_remaining = 0;
++    data->slots[1].priority = 0;
++    data->slots[1].successful_boot = 0;
+   }
+ 
+   return AVB_IO_RESULT_OK;
+ }
+ 
+ AvbIOResult avb_ab_data_write(AvbABOps* ab_ops, const AvbABData* data) {
+-  AvbOps* ops = ab_ops->ops;
+-  AvbABData serialized;
+-  AvbIOResult io_ret;
+-
+-  avb_ab_data_update_crc_and_byteswap(data, &serialized);
+-  io_ret = ops->write_to_partition(ops,
+-                                   "misc",
+-                                   AB_METADATA_MISC_PARTITION_OFFSET,
+-                                   sizeof(AvbABData),
+-                                   &serialized);
+-  if (io_ret == AVB_IO_RESULT_ERROR_OOM) {
+-    return AVB_IO_RESULT_ERROR_OOM;
+-  } else if (io_ret != AVB_IO_RESULT_OK) {
+-    avb_error("Error writing A/B metadata.\n");
+-    return AVB_IO_RESULT_ERROR_IO;
+-  }
++  /* Leave this up to Mender via U-Boot env */
+   return AVB_IO_RESULT_OK;
+ }
+ 
+diff --git a/lib/avb/rk_avb_user/rk_ab_ops_user.c b/lib/avb/rk_avb_user/rk_ab_ops_user.c
+index 2cd1562a6d..bc0aae6de4 100644
+--- a/lib/avb/rk_avb_user/rk_ab_ops_user.c
++++ b/lib/avb/rk_avb_user/rk_ab_ops_user.c
+@@ -12,6 +12,8 @@
+ #include <part.h>
+ #include <boot_rkimg.h>
+ #include <android_avb/rk_avb_ops_user.h>
++#include <environment.h>
++#include <config_mender_defines.h>
+ 
+ static int safe_memcmp(const void *s1, const void *s2, size_t n)
+ {
+@@ -443,30 +445,16 @@ out:
+ 
+ int rk_avb_get_current_slot(char *select_slot)
+ {
+-	AvbOps* ops;
+-	int ret = 0;
+-
+-	ops = avb_ops_user_new();
+-	if (ops == NULL) {
+-		printf("avb_ops_user_new() failed!\n");
+-		return -1;
+-	}
++	/* Mender Integration: Force Rockchip's core AVB engine to follow Mender variables */
++	ulong part_num = env_get_ulong("mender_boot_part", 10, MENDER_ROOTFS_PART_A_NUMBER);
+ 
+-	if (rk_avb_ab_slot_select(ops->ab_ops, select_slot) != 0) {
+-#ifndef CONFIG_ANDROID_AVB
+-		printf("###There is no bootable slot, bring up last_boot!###\n");
+-		if (rk_get_lastboot() == 1)
+-			memcpy(select_slot, "_b", 2);
+-		else if(rk_get_lastboot() == 0)
+-			memcpy(select_slot, "_a", 2);
+-		else
+-#endif
+-			return -1;
+-		ret = 0;
++	if (part_num == MENDER_ROOTFS_PART_A_NUMBER) {
++		strcpy(select_slot, "_a");
++	} else {
++		strcpy(select_slot, "_b");
+ 	}
+ 
+-	avb_ops_user_free(ops);
+-	return ret;
++	return 0;
+ }
+ 
+ bool rk_avb_ab_have_bootable_slot(void)
