@@ -11,8 +11,8 @@ part --source rawcopy --sourceparams="file=boot.img" --part-name boot_a --fixed-
 part --source rawcopy --sourceparams="file=boot.img" --part-name boot_b --fixed-size 30M
 part --part-name misc --fixed-size 512K
 part --part-name security --fixed-size 2M
-part --part-name vbmeta_a --fixed-size 768K
-part --part-name vbmeta_b --fixed-size 768K
+part --source rawcopy --sourceparams="file=vbmeta.img" --part-name vbmeta_a --fixed-size 768K
+part --source rawcopy --sourceparams="file=vbmeta.img" --part-name vbmeta_b --fixed-size 768K
 part --source rawcopy --sourceparams="file=u-boot-env.img" --part-name env_a --fixed-size 128K
 part --source rawcopy --sourceparams="file=u-boot-env.img" --part-name env_b --fixed-size 128K
 # Note fixed-size should == MENDER_STORAGE_TOTAL_SIZE_MB / 2
