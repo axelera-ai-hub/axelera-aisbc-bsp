@@ -62,4 +62,4 @@ Prerequisite to access user guide:
 To be registered on Axelera support platform.
 
 Link:
-[Axelera User Guide](https://support.axelera.ai/hc/en-us/article_attachments/31913266406034)
+[Axelera User Guide](https://docs.axelera.ai/docs/hardware/metis/compute-board/user-manual)
