@@ -26,7 +26,7 @@ then
         -o upperdir=$UPPER_DIR \
         -o lowerdir=/etc \
         -o workdir=$WORK_DIR \
-        -o index=off,xino=off,redirect_dir=off,metacopy=off \
+        -o index=off,xino=off,redirect_dir=off,metacopy=off,seclabel \
         $UPPER_DIR /etc || \
             echo "PREINIT: Mounting etc-overlay failed!"
 else
