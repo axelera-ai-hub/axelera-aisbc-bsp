@@ -1,0 +1,6 @@
+/data /mnt
+/factory /mnt
+/data/overlay/etc/work /etc
+/data/overlay/etc/upper /etc
+/data/overlay/home /home
+/data/docker /var/lib/docker
