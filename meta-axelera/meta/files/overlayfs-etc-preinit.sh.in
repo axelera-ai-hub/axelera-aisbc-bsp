@@ -8,6 +8,8 @@ mount -o remount,ro /
 
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
+mount -t selinuxfs selinuxfs /sys/fs/selinux
+load_policy -i
 
 [ -z "$CONSOLE" ] && CONSOLE="/dev/console"
 
@@ -19,16 +21,27 @@ if mount -n -t {OVERLAYFS_ETC_FSTYPE} \
     -o {OVERLAYFS_ETC_MOUNT_OPTIONS} \
     {OVERLAYFS_ETC_DEVICE} /data
 then
+
+    # Restore labels on /data BEFORE creating the overlay directories
+    # or exclude the overlay directories from this restorecon.
+    restorecon -rF /data/
+
     mkdir -p $UPPER_DIR
     mkdir -p $WORK_DIR
 
-    mount -n -t overlay \
+    if mount -n -t overlay \
         -o upperdir=$UPPER_DIR \
         -o lowerdir=/etc \
-        -o workdir=$WORK_DIR \
+        -o workdir=$WORK_DIR,rootcontext=system_u:object_r:etc_t:s0 \
         -o index=off,xino=off,redirect_dir=off,metacopy=off,seclabel \
-        $UPPER_DIR /etc || \
-            echo "PREINIT: Mounting etc-overlay failed!"
+        $UPPER_DIR /etc
+    then
+        # Restore labels on the mounted overlay path itself
+        # This ensures files get the correct etc_t, shadow_t, etc. labels.
+        restorecon -rF /etc
+    else
+        echo "PREINIT: Mounting etc-overlay failed!"
+    fi
 else
     echo "PREINIT: Mounting </data> failed!"
 fi
