@@ -1,0 +1,47 @@
+From 51e09873c8f0aea2f7ee5075c69f151b12eafaaf Mon Sep 17 00:00:00 2001
+From: Adam Duskett <adam.duskett@amarulasolutions.com>
+Date: Thu, 16 Jul 2026 13:20:01 +0200
+Subject: [PATCH 2/3] backport e29104086eaf72dae37140226113c694917b5b23
+
+Original commmit message:
+```
+selinux-autorelabel: enable labeling during build
+
+Previously, system using systemd would label selinux contexts on first
+boot. While system using sysvinit would label during build. Add a
+variable FIRST_BOOT_RELABEL as a switch to control labeling to make the
+behavior of sysvinit and systemd consistent.
+
+Set FIRST_BOOT_RELABEL to 1 in local.conf to enable labeling on first
+boot.
+
+Signed-off-by: Yi Zhao <yi.zhao@windriver.com>
+Signed-off-by: Joe MacDonald <joe@deserted.net>
+```
+
+As kirkstone is EOL, this patch must be backported to kirkstone.
+
+YouTrack-Id: AXELERA-211
+Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
+---
+ recipes-security/selinux-scripts/selinux-autorelabel_0.1.bb | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/recipes-security/selinux-scripts/selinux-autorelabel_0.1.bb b/recipes-security/selinux-scripts/selinux-autorelabel_0.1.bb
+index a919445..9fd066c 100644
+--- a/recipes-security/selinux-scripts/selinux-autorelabel_0.1.bb
++++ b/recipes-security/selinux-scripts/selinux-autorelabel_0.1.bb
+@@ -20,7 +20,7 @@ INITSCRIPT_PARAMS = "start 01 S ."
+ require selinux-initsh.inc
+ 
+ do_install:append() {
+-	if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
+-		echo "# first boot relabelling" > ${D}/.autorelabel
+-	fi
++    if ${@bb.utils.contains('FIRST_BOOT_RELABEL', '1', 'true', 'false', d)}; then
++        echo "# first boot relabelling" > ${D}/.autorelabel
++    fi
+ }
+-- 
+2.55.0
+
