@@ -23,6 +23,10 @@ env:
   WS_PRODUCTNAME: "Axelera"
 
 repos:
+  kas:
+    layers:
+      .: disabled
+
   bitbake:
     url: "https://git.openembedded.org/bitbake"
     tag: yocto-4.0.24
@@ -123,6 +127,10 @@ repos:
     branch: kirkstone
     commit: a401f4b2816a0b41ce8d9351542658c721935bcd
     signed: false
+    patches:
+      quilt:
+        repo: kas
+        path: kas/patches/meta-selinux
 
   axelera-doc:
     url: "https://github.com/axelera-ai-hub/aisbc.axelera-doc.git"
