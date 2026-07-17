@@ -1,0 +1,113 @@
+policy_module(voyager, 1.0.0)
+
+require {
+        type avahi_t;
+        type bin_t;
+        type cgroup_t;
+        type configfs_t;
+        type dnsmasq_t;
+        type getty_t;
+        type home_root_t;
+        type initrc_runtime_t;
+        type init_var_lib_t;
+        type klogd_t;
+        type lib_t;
+        type mnt_t;
+        type mount_t;
+        type NetworkManager_runtime_t;
+        type NetworkManager_t;
+        type NetworkManager_var_lib_t;
+        type nsfs_t;
+        type ntp_drift_t;
+        type removable_device_t;
+        type root_t;
+        type setfiles_t;
+        type ssh_keygen_t;
+        type syslogd_runtime_t;
+        type syslogd_t;
+        type system_dbusd_t;
+        type systemd_generator_t;
+        type systemd_logind_runtime_t;
+        type systemd_logind_var_lib_t;
+        type systemd_machined_runtime_t;
+        type systemd_sessions_runtime_t;
+        type systemd_sysusers_t;
+        type tmpfs_t;
+        type unlabeled_t;
+        type user_home_dir_t;
+        type var_lib_t;
+        type var_t;
+        class blk_file { getattr ioctl open read };
+        class capability2 checkpoint_restore;
+        class capability { dac_read_search fowner fsetid };
+        class chr_file { read write getattr link setattr unlink };
+        class dir { add_name create read remove_name rename reparent search setattr watch write };
+        class file { create execute getattr link map open read rename setattr unlink write };
+        class filesystem { getattr mount };
+        class lnk_file { getattr read };
+        class sock_file write;
+}
+
+#============= avahi_t ==============
+allow avahi_t syslogd_runtime_t:sock_file write;
+
+#============= dnsmasq_t ==============
+allow dnsmasq_t NetworkManager_runtime_t:dir { read watch };
+allow dnsmasq_t syslogd_runtime_t:sock_file write;
+
+#============= getty_t ==============
+allow getty_t self:capability2 checkpoint_restore;
+
+#============= klogd_t ==============
+allow klogd_t bin_t:file { execute map read };
+
+#============= mount_t ==============
+allow mount_t configfs_t:dir search;
+allow mount_t home_root_t:dir add_name;
+allow mount_t initrc_runtime_t:dir { add_name remove_name write };
+allow mount_t init_var_lib_t:dir { add_name write };
+allow mount_t mnt_t:chr_file unlink;
+allow mount_t mnt_t:dir { add_name create remove_name };
+allow mount_t mnt_t:file { create rename write unlink };
+allow mount_t NetworkManager_var_lib_t:dir { add_name create remove_name rename reparent setattr write };
+allow mount_t NetworkManager_var_lib_t:file { create rename write };
+allow mount_t ntp_drift_t:dir { add_name write };
+allow mount_t ntp_drift_t:file { create setattr write };
+allow mount_t self:capability { dac_read_search fowner fsetid };
+allow mount_t systemd_logind_var_lib_t:dir create;
+allow mount_t unlabeled_t:filesystem mount;
+allow mount_t user_home_dir_t:dir { add_name create remove_name rename reparent };
+allow mount_t user_home_dir_t:file { create link rename unlink write };
+allow mount_t var_lib_t:dir { add_name create remove_name };
+allow mount_t var_lib_t:file { create unlink write };
+allow mount_t var_lib_t:lnk_file { getattr read };
+allow mount_t var_t:dir { add_name create remove_name };
+allow mount_t var_t:file { create rename write };
+
+#============= NetworkManager_t ==============
+allow NetworkManager_t lib_t:dir watch;
+allow NetworkManager_t nsfs_t:file { open read };
+allow NetworkManager_t systemd_logind_runtime_t:dir watch;
+allow NetworkManager_t systemd_machined_runtime_t:dir watch;
+allow NetworkManager_t systemd_sessions_runtime_t:dir watch;
+
+#============= setfiles_t ==============
+allow setfiles_t root_t:chr_file { read write };
+
+#============= ssh_keygen_t ==============
+allow ssh_keygen_t mnt_t:dir { add_name search write };
+allow ssh_keygen_t mnt_t:file { create getattr open write };
+
+#============= system_dbusd_t ==============
+allow system_dbusd_t syslogd_runtime_t:sock_file write;
+
+#============= systemd_generator_t ==============
+allow systemd_generator_t removable_device_t:blk_file { getattr ioctl open read };
+
+#============= systemd_sysusers_t ==============
+allow systemd_sysusers_t cgroup_t:dir search;
+allow systemd_sysusers_t cgroup_t:filesystem getattr;
+allow systemd_sysusers_t tmpfs_t:filesystem getattr;
+
+#============= syslogd_t ==============
+allow syslogd_t bin_t:file { execute map read };
