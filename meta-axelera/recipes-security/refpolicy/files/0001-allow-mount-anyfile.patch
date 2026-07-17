@@ -1,0 +1,30 @@
+From a364dc1bbef9ceb9924ad2c0821fd17139d84d4a Mon Sep 17 00:00:00 2001
+From: Adam Duskett <adam.duskett@amarulasolutions.com>
+Date: Thu, 16 Jun 2026 09:40:43 +0200
+Subject: [PATCH] allow mount anyfile
+
+Allow mount to mount anyfile. Needed for the overlayfs.
+
+Upstream-Status: Inappropriate [embedded specific]
+
+Signed-off-by: Adam Duskett <adam.duskett@amarulasolutions.com>
+---
+ policy/modules/system/mount.te | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/policy/modules/system/mount.te b/policy/modules/system/mount.te
+index c5727585c..7b5054e92 100644
+--- a/policy/modules/system/mount.te
++++ b/policy/modules/system/mount.te
+@@ -10,7 +10,7 @@ policy_module(mount)
+ ## Allow the mount command to mount any directory or file.
+ ## </p>
+ ## </desc>
+-gen_tunable(allow_mount_anyfile, false)
++gen_tunable(allow_mount_anyfile, true)
+ 
+ attribute_role mount_roles;
+ roleattribute system_r mount_roles;
+-- 
+2.49.0
+

@@ -1,6 +1,9 @@
 FILESEXTRAPATHS:prepend:axelera-machine := "${THISDIR}/files:"
 
-SRC_URI:append:axelera-machine = "file://file_contexts.subs"
+SRC_URI:append:axelera-machine = "\
+    file://file_contexts.subs \
+    file://0001-allow-mount-anyfile.patch \
+"
 
 DEFAULT_ENFORCING:axelera-machine = "permissive"
 
