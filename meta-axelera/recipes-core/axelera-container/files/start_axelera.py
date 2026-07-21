@@ -458,6 +458,7 @@ def start(args):
                 print_debug(f"Error details: {e}")
 
     startup_command = (
+        "sudo ln -sf metis-0-1-0 /dev/metis-0:1:0; "
         "cd /home/ubuntu/voyager-sdk && source venv/bin/activate && /bin/bash"
     )
 
