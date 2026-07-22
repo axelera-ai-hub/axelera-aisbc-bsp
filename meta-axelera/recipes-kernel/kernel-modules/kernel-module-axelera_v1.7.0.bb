@@ -58,6 +58,9 @@ SYSTEMD_SERVICE:${PN}:antelao-3588 = "pcie-check.service"
 FILES:${PN}:antelao-3588 += " \
     /usr/local/bin/check_pcie_device.sh \
     ${systemd_system_unitdir}/pcie-check.service \
+"
+
+FILES:kernel-module-metis-${KERNEL_VERSION}:antelao-3588 += " \
     ${nonarch_base_libdir}/udev/rules.d/72-axelera.rules \
 "
 
