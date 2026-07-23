@@ -27,6 +27,7 @@ SRC_URI = " \
     file://0010-avb-Spoof-A-B-slot-routing-to-follow-Mender.patch \
     file://0011-android_bootloader.c-Fix-boot-crash-with-AVB-images.patch \
     file://0012-avb-Add-Rockchip-patch-to-hardcode-pubkey.patch \
+    file://0013-include-configs-Enlarge-SYS_BOOTM_LEN.patch \
     file://environment.cfg; \
     file://secureboot.cfg \
 "
