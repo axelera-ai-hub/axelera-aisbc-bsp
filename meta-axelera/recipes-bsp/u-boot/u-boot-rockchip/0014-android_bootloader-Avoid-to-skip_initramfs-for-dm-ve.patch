@@ -1,0 +1,43 @@
+From 0d649e9feaea605d25fcf83b796b053d20ef5c1c Mon Sep 17 00:00:00 2001
+From: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
+Date: Fri, 24 Jul 2026 09:30:42 +0200
+Subject: [PATCH] android_bootloader: Avoid to skip_initramfs for dm-verity
+
+Right now, Rockchip U-Boot is forcing normal boot only if it detects
+Android versions >=10, otherwise it defaults to skip_initramfs.
+
+To allow Linux dm-verity, force normal boot in any case.
+
+Upstream-Status: Inappropriate [oe-specific]
+Signed-off-by: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
+---
+ common/android_bootloader.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
+
+diff --git a/common/android_bootloader.c b/common/android_bootloader.c
+index 428afab267..11b01b792d 100644
+--- a/common/android_bootloader.c
++++ b/common/android_bootloader.c
+@@ -1296,20 +1296,8 @@ int android_bootloader_boot_flow(struct blk_desc *dev_desc,
+ 		 * recovery initramfs in the boot partition.
+ 		 */
+ #ifdef CONFIG_ANDROID_AB
+-		/*  In A/B, the recovery image is built as boot.img, containing the
+-		* recovery's ramdisk. Previously, bootloader used the skip_initramfs
+-		* kernel command line parameter to decide which mode to boot into.
+-		* For Android >=10 and with dynamic partition support, the bootloader
+-		* MUST NOT pass skip_initramfs to the kernel command-line.
+-		* Instead, bootloader should pass androidboot.force_normal_boot=1
+-		* and then Android's first-stage init in ramdisk
+-		* will skip recovery and boot normal Android.
+-		*/
+-		if (ab_is_support_dynamic_partition(dev_desc)) {
+-			mode_cmdline = "androidboot.force_normal_boot=1";
+-		} else {
+-			mode_cmdline = "skip_initramfs";
+-		}
++		/* For Linux dm-verity, do NOT skip_initramfs */
++		mode_cmdline = "androidboot.force_normal_boot=1";
+ #endif
+ 		break;
+ 	case ANDROID_BOOT_MODE_RECOVERY:

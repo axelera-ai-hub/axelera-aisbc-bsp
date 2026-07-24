@@ -28,6 +28,7 @@ SRC_URI = " \
     file://0011-android_bootloader.c-Fix-boot-crash-with-AVB-images.patch \
     file://0012-avb-Add-Rockchip-patch-to-hardcode-pubkey.patch \
     file://0013-include-configs-Enlarge-SYS_BOOTM_LEN.patch \
+    file://0014-android_bootloader-Avoid-to-skip_initramfs-for-dm-ve.patch \
     file://environment.cfg; \
     file://secureboot.cfg \
 "
