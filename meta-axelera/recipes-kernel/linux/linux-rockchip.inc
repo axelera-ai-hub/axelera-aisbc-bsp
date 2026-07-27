@@ -83,16 +83,16 @@ do_install:prepend() {
 	fi
 }
 
-do_install:append() {
-	if [ -f "${B}/arch/${ARCH}/boot/boot.img" ]; then
+do_deploy:append() {
+	if [ -f "${DEPLOYDIR}/boot.img" ]; then
 		# Back up the unsigned image for testing purposes
 		echo "Backing up unsigned boot.img as unsigned_boot.img..."
-		cp ${B}/arch/${ARCH}/boot/boot.img ${B}/arch/${ARCH}/boot/unsigned_boot.img
+		cp ${DEPLOYDIR}/boot.img ${DEPLOYDIR}/unsigned_boot.img
 
 		# Sign boot.img in order to generate vbmeta
 		echo "Adding AVB hash footer to boot.img..."
 		nativepython ${STAGING_BINDIR_NATIVE}/avbtool add_hash_footer \
-			--image ${B}/arch/${ARCH}/boot/boot.img \
+			--image ${DEPLOYDIR}/boot.img \
 			--partition_name boot \
 			--partition_size 31457280 \
 			--algorithm SHA256_RSA2048 \
@@ -101,30 +101,12 @@ do_install:append() {
 		# Generate vbmeta partition for AVB checking
 		echo "Generating standalone vbmeta.img from boot.img descriptors..."
 		nativepython ${STAGING_BINDIR_NATIVE}/avbtool make_vbmeta_image \
-			--include_descriptors_from_image ${B}/arch/${ARCH}/boot/boot.img \
+			--include_descriptors_from_image ${DEPLOYDIR}/boot.img \
 			--padding_size 4096 \
 			--algorithm SHA256_RSA2048 \
 			--key ${WORKDIR}/private_key.pem \
-			--output ${B}/arch/${ARCH}/boot/vbmeta.img
-
-		# Install directly into /boot directory so Mender post-install-script can find it
-		install -d ${D}/boot
-		install -m 0644 ${B}/arch/${ARCH}/boot/vbmeta.img ${D}/boot/vbmeta.img
+			--output ${DEPLOYDIR}/vbmeta.img
 	else
 		bbfatal "boot.img was not found; cannot generate vbmeta.img!"
 	fi
 }
-
-
-# Make a copy of vbmeta in deploy/images dir of the vbmeta.img so we can easily find it
-do_deploy:append() {
-	if [ -f "${B}/arch/${ARCH}/boot/vbmeta.img" ]; then
-		install -m 0644 ${B}/arch/${ARCH}/boot/vbmeta.img ${DEPLOYDIR}/vbmeta.img
-	fi
-
-	if [ -f "${B}/arch/${ARCH}/boot/unsigned_boot.img" ]; then
-		install -m 0644 ${B}/arch/${ARCH}/boot/unsigned_boot.img ${DEPLOYDIR}/unsigned_boot.img
-	fi
-}
-
-FILES:${KERNEL_PACKAGE_NAME}-image += "/boot/vbmeta.img"

@@ -39,3 +39,5 @@ IMAGE_INSTALL:append = " \
 "
 
 SYSTEMD_DEFAULT_TARGET = "graphical.target"
+
+do_image_wic[depends] += "virtual/kernel:do_deploy"
