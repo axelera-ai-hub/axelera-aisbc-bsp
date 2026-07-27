@@ -94,7 +94,7 @@ do_deploy:append() {
 		nativepython ${STAGING_BINDIR_NATIVE}/avbtool add_hash_footer \
 			--image ${DEPLOYDIR}/boot.img \
 			--partition_name boot \
-			--partition_size 31457280 \
+			--partition_size 50331648 \
 			--algorithm SHA256_RSA2048 \
 			--key ${WORKDIR}/private_key.pem
 
