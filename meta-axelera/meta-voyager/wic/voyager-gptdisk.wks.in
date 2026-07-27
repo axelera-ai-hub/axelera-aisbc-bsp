@@ -16,8 +16,8 @@ part --source rawcopy --sourceparams="file=vbmeta.img" --part-name vbmeta_b --fi
 part --source rawcopy --sourceparams="file=u-boot-env.img" --part-name env_a --fixed-size 128K
 part --source rawcopy --sourceparams="file=u-boot-env.img" --part-name env_b --fixed-size 128K
 # Note fixed-size should == MENDER_STORAGE_TOTAL_SIZE_MB / 2
-part / --source rootfs --fstype ext4 --part-name system_a --uuid ${RK_ROOTDEV_UUID} --align 8192 --fixed-size 2048M
-part / --source rootfs --fstype ext4 --part-name system_b --uuid ${RK_ROOTDEV_UUID} --align 8192 --fixed-size 2048M
+part / --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.${DM_VERITY_IMAGE_TYPE}.verity" --fstype ext4 --part-name system_a --uuid ${RK_ROOTDEV_UUID} --align 8192 --fixed-size 2048M
+part / --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.${DM_VERITY_IMAGE_TYPE}.verity" --fstype ext4 --part-name system_b --uuid ${RK_ROOTDEV_UUID} --align 8192 --fixed-size 2048M
 # Note fixed-size should >= voyager-factory.img file
 part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/voyager-factory.img" --part-name "voyager-factory" --fstype ext4 --align 8192 --fixed-size 128M
 part --source rawcopy --sourceparams="file=${IMGDEPLOYDIR}/voyager-data.img" --part-name "voyager-data" --fstype ext4 --align 8192

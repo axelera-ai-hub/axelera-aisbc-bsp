@@ -84,29 +84,34 @@ do_install:prepend() {
 }
 
 do_deploy:append() {
-	if [ -f "${DEPLOYDIR}/boot.img" ]; then
-		# Back up the unsigned image for testing purposes
-		echo "Backing up unsigned boot.img as unsigned_boot.img..."
-		cp ${DEPLOYDIR}/boot.img ${DEPLOYDIR}/unsigned_boot.img
+	# Create boot.img to bundle ramdisk
+	echo "Manually creating boot.img using mkbootimg..."
+	${S}/scripts/mkbootimg \
+		--kernel ${B}/arch/${ARCH}/boot/Image.lz4 \
+		--ramdisk ${DEPLOY_DIR_IMAGE}/${INITRAMFS_IMAGE}-${MACHINE}.cpio.gz \
+		--second ${B}/resource.img \
+		--cmdline "root=PARTUUID=${RK_ROOTDEV_UUID}" \
+		-o ${DEPLOYDIR}/boot.img
 
-		# Sign boot.img in order to generate vbmeta
-		echo "Adding AVB hash footer to boot.img..."
-		nativepython ${STAGING_BINDIR_NATIVE}/avbtool add_hash_footer \
-			--image ${DEPLOYDIR}/boot.img \
-			--partition_name boot \
-			--partition_size 50331648 \
-			--algorithm SHA256_RSA2048 \
-			--key ${WORKDIR}/private_key.pem
+	# Back up the unsigned image for testing purposes
+	echo "Backing up unsigned boot.img as unsigned_boot.img..."
+	cp ${DEPLOYDIR}/boot.img ${DEPLOYDIR}/unsigned_boot.img
 
-		# Generate vbmeta partition for AVB checking
-		echo "Generating standalone vbmeta.img from boot.img descriptors..."
-		nativepython ${STAGING_BINDIR_NATIVE}/avbtool make_vbmeta_image \
-			--include_descriptors_from_image ${DEPLOYDIR}/boot.img \
-			--padding_size 4096 \
-			--algorithm SHA256_RSA2048 \
-			--key ${WORKDIR}/private_key.pem \
-			--output ${DEPLOYDIR}/vbmeta.img
-	else
-		bbfatal "boot.img was not found; cannot generate vbmeta.img!"
-	fi
+	# Sign boot.img in order to generate vbmeta
+	echo "Adding AVB hash footer to boot.img..."
+	nativepython ${STAGING_BINDIR_NATIVE}/avbtool add_hash_footer \
+		--image ${DEPLOYDIR}/boot.img \
+		--partition_name boot \
+		--partition_size 50331648 \
+		--algorithm SHA256_RSA2048 \
+		--key ${WORKDIR}/private_key.pem
+
+	# Generate vbmeta partition for AVB checking
+	echo "Generating standalone vbmeta.img from boot.img descriptors..."
+	nativepython ${STAGING_BINDIR_NATIVE}/avbtool make_vbmeta_image \
+		--include_descriptors_from_image ${DEPLOYDIR}/boot.img \
+		--padding_size 4096 \
+		--algorithm SHA256_RSA2048 \
+		--key ${WORKDIR}/private_key.pem \
+		--output ${DEPLOYDIR}/vbmeta.img
 }

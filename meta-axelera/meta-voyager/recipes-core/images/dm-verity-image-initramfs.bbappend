@@ -1,0 +1,3 @@
+IMAGE_FSTYPES = "cpio.gz"
+IMAGE_CLASSES = "dm-verity-img"
+IMAGE_ROOTFS_SIZE = "8192"
