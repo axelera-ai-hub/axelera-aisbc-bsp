@@ -4,6 +4,7 @@ openembedded-core/
 build/
 meta-*/
 !meta-axelera/
+!meta-axelera/meta-voyager/
 .gnupg/
 .kas_gnupg/
 .kas_shell_history
