@@ -100,7 +100,7 @@ repos:
   meta-rockchip:
     url: "https://github.com/axelera-ai-hub/aisbc.meta-rockchip.git"
     branch: rk3588
-    commit: fb6193a5f5cf80070cf8182c06cb5621433111aa
+    commit: 7bb6743bbb114ba5c3340d4f45dc38610ce29935
     signed: false
 
   meta-mender:
@@ -152,7 +152,7 @@ local_conf_header:
     USB_DEBUGGING_ENABLED = "1"
     PACKAGE_CLASSES = "package_deb"
     EXTRA_IMAGE_FEATURES = "debug-tweaks package-management"
-    IMAGE_FSTYPES:append = " ext4 wic wic.gz wic.bmap ext4.gz"
+    IMAGE_FSTYPES = " ext4 wic wic.gz wic.bmap ext4.gz"
     RK_ROOTDEV_UUID ?= "614e0000-0000-4b53-8000-1d28000054a9"
     REMOTE_REPOS_PREFIX := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai-hub/aisbc.', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/', d)}"
     REMOTE_DRIVER := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai-hub/axelera-driver', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.linux', d)}"
