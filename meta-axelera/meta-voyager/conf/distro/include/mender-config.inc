@@ -8,4 +8,4 @@ MENDER_FEATURES_DISABLE:append = " mender-grub mender-image-uefi mender-auth-ins
 
 MENDER_ARTIFACT_NAME = "voyager-${DISTRO_VERSION}"
 
-IMAGE_TYPEDEP:wic += " dataimg factoryimg mender"
+IMAGE_TYPEDEP:wic += " dataimg factoryimg"

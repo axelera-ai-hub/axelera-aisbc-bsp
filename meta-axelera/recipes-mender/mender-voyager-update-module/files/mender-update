@@ -1,0 +1,263 @@
+#!/usr/bin/env sh
+set -e
+
+STATE="$1"
+FILES="$2"
+WORK_DIR="/data/mender/update-files"
+STAGING_DIR="${WORK_DIR}/staging"
+MANIFEST="${FILES}/header/meta-data"
+PRINTENV=fw_printenv
+SETENV=fw_setenv
+MENDER_BOOT_PART_A=""
+MENDER_BOOT_PART_B=""
+MENDER_ROOTFS_PART_A=""
+MENDER_ROOTFS_PART_B=""
+MENDER_VBMETA_A=""
+MENDER_VBMETA_B=""
+MENDER_BOOTPART_TO_UPDATE=""
+MENDER_VBMETAPART_TO_UPDATE=""
+
+jq_read() {
+    _file="${2}"
+    if [ -z "${_file}" ]; then
+        _file="${MANIFEST}"
+    fi
+    jq -r "${1}" "${_file}" || true
+}
+
+parse_conf_file() {
+    MENDER_BOOT_PART_A="$(jq_read '.BootPartA' /etc/mender/mender.conf)"
+    MENDER_BOOT_PART_B="$(jq_read '.BootPartB' /etc/mender/mender.conf)"
+    MENDER_ROOTFS_PART_A="$(jq_read '.RootfsPartA' /etc/mender/mender.conf)"
+    MENDER_ROOTFS_PART_B="$(jq_read '.RootfsPartB' /etc/mender/mender.conf)"
+    MENDER_VBMETA_PART_A="$(jq_read '.VbmetaPartA' /etc/mender/mender.conf)"
+    MENDER_VBMETA_PART_B="$(jq_read '.VbmetaPartB' /etc/mender/mender.conf)"
+
+    if [ -z "${MENDER_BOOT_PART_A}" ] || [ -z "${MENDER_BOOT_PART_B}" ]; then
+        log_message "Cannot parse BootPartA/B in /etc/mender/mender.conf" 1>&2
+        return 1
+    fi
+
+    if [ -z "${MENDER_VBMETA_PART_A}" ] || [ -z "${MENDER_VBMETA_PART_B}" ]; then
+        log_message "Cannot parse VbmetaPartA/B in /etc/mender/mender.conf" 1>&2
+        return 1
+    fi
+
+    if [ -z "${MENDER_ROOTFS_PART_A}" ] || [ -z "${MENDER_ROOTFS_PART_B}" ]; then
+        log_message "Cannot parse RootfsPartA/B in /etc/mender/mender.conf" 1>&2
+        return 1
+    fi
+
+    # Extract the partition number from the luks path (e.g. /dev/mapper/rootfsA --> 4).
+    MENDER_ROOTFS_PART_A_NUMBER="$(echo "${MENDER_ROOTFS_PART_A}" | grep -Eo '[0-9]+$' || true)"
+    MENDER_ROOTFS_PART_B_NUMBER="$(echo "${MENDER_ROOTFS_PART_B}" | grep -Eo '[0-9]+$' || true)"
+
+    return 0
+}
+
+set_upgrade_vars() {
+    active_num="$(${PRINTENV} mender_boot_part)"
+    active_num="${active_num#mender_boot_part=}"
+    active="${MENDER_ROOTFS_PART_B}"
+    passive="${MENDER_ROOTFS_PART_A}"
+    passive_num="${MENDER_ROOTFS_PART_A_NUMBER}"
+    MENDER_BOOTPART_TO_UPDATE="${MENDER_BOOT_PART_A}"
+    MENDER_VBMETAPART_TO_UPDATE="${MENDER_VBMETA_PART_A}"
+
+    if test "${active_num}" -eq "${MENDER_ROOTFS_PART_A_NUMBER}"; then
+        active="${MENDER_ROOTFS_PART_A}"
+        passive="${MENDER_ROOTFS_PART_B}"
+        passive_num="${MENDER_ROOTFS_PART_B_NUMBER}"
+        MENDER_BOOTPART_TO_UPDATE="${MENDER_BOOT_PART_B}"
+        MENDER_VBMETAPART_TO_UPDATE="${MENDER_VBMETA_PART_B}"
+    fi
+
+    active_num_hex=$(printf '%x' "${active_num}")
+    passive_num_hex=$(printf '%x' "${passive_num}")
+    upgrade_available="$(${PRINTENV} upgrade_available)"
+    upgrade_available="${upgrade_available#upgrade_available=}"
+}
+
+check_environment_canary() {
+    mender_check_saveenv_canary="$(${PRINTENV} mender_check_saveenv_canary)"
+    if [ "${mender_check_saveenv_canary}" = "mender_check_saveenv_canary=1" ]; then
+        # If the check canary exists (added during build), we need to check the real canary to make
+        # sure that the boot loader was successful in adding it during boot.
+        mender_saveenv_canary="$(${PRINTENV} mender_saveenv_canary)"
+        if [ "${mender_saveenv_canary}" != "mender_saveenv_canary=1" ]; then
+            echo "mender_check_saveenv_canary was set in the boot environment, but"
+            echo "mender_saveenv_canary was not. This is an indication that the bootloader"
+            echo "integration is not working correctly, and the bootloader was not able to save"
+            echo "an environment which we can read from userspace. Please re-check your"
+            echo "bootloader integration, and refer to the section on Bootloader support in the"
+            echo "Mender documentation if you need more information."
+            return 1
+        fi
+    fi
+    return 0
+}
+
+install_bootfs() {
+    boot_image="${1}"
+    echo "Updating boot partition ${MENDER_BOOTPART_TO_UPDATE}"
+    cat "${boot_image}" > "${MENDER_BOOTPART_TO_UPDATE}"
+    sync
+}
+
+install_vbmeta() {
+    vbmeta_image="${1}"
+    echo "Updating vbmeta partition ${MENDER_VBMETAPART_TO_UPDATE}"
+    cat "${vbmeta_image}" > "${MENDER_VBMETAPART_TO_UPDATE}"
+    sync
+}
+
+check_requirements() {
+    parse_conf_file
+    check_environment_canary
+    set_upgrade_vars
+}
+
+log_message() {
+    echo "${1}" 1>&2
+}
+
+install_rootfs() {
+    rootfs_image="${1}"
+    check_requirements
+
+    cat > "${FILES}/tmp/orig-part.tmp" <<EOF
+orig_part_num=${active_num}
+orig_part_num_hex=${active_num_hex}
+EOF
+        sync "${FILES}/tmp/orig-part.tmp"
+        mv "${FILES}/tmp/orig-part.tmp" "${FILES}/tmp/orig-part"
+        sync "${FILES}/tmp"
+
+        if [ "${upgrade_available}" != 0 ]; then
+            log_message "Unexpected \`upgrade_available=${upgrade_available}\` in ${STATE}."
+            exit 1
+        fi
+        echo "Updating rootfs partition ${passive}"
+        cat "${rootfs_image}" > "${passive}"
+
+        ${SETENV} -s - <<EOF
+mender_boot_part=${passive_num}
+mender_boot_part_hex=${passive_num_hex}
+upgrade_available=1
+bootcount=0
+EOF
+}
+
+case "${STATE}" in
+    NeedsArtifactReboot)
+        echo "Automatic"
+        ;;
+
+    SupportsRollback)
+        echo "Yes"
+        ;;
+
+    ArtifactVerifyReboot)
+        check_requirements
+        if test "${upgrade_available}" != 1; then
+            exit 1
+        fi
+        ;;
+
+    ArtifactVerifyRollbackReboot)
+        check_requirements
+        if test "${upgrade_available}" = 1; then
+            exit 1
+        fi
+        ;;
+
+    Download)
+        rm -rf "${STAGING_DIR}"
+        mkdir -p "${STAGING_DIR}"
+        file=$(cat stream-next)
+        file_name="$(basename "${file}")"
+        cat "${file}" > "${STAGING_DIR}"/"${file_name}"
+        [ -z "$(cat stream-next)" ] || { log_message "Unexpected extra files" >&2; exit 1; }
+        ;;
+
+    ArtifactInstall)
+        update_tar="$(jq_read '.files[].name')"
+
+        cd "${STAGING_DIR}"
+        printf "\nUnpacking %s\n" "${update_tar}"
+        tar -I pzstd -xf ./"${update_tar}"
+
+        if [ ! -f contents.json ]; then
+            log_message "contents.json does not exist in ${update_tar}!" 1>&2
+            exit 1
+        fi
+
+        bootimg="${STAGING_DIR}/$(jq_read '.boot' 'contents.json')"
+        rootimg="${STAGING_DIR}/$(jq_read '.root' 'contents.json')"
+        vbmetaimg="${STAGING_DIR}/$(jq_read '.vbmeta' 'contents.json')"
+
+        if [ ! -f "${bootimg}" ]; then
+            log_message "${bootimg} does not exist!"
+            exit 1
+        fi
+
+        if [ ! -f "${rootimg}" ]; then
+            log_message "${rootimg} does not exist!"
+            exit 1
+        fi
+
+        if [ ! -f "${vbmetaimg}" ]; then
+            log_message "${vbmetaimg} does not exist!"
+            exit 1
+        fi
+
+        install_rootfs "${rootimg}"
+        install_bootfs "${bootimg}"
+        install_vbmeta "${vbmetaimg}"
+        touch /var/lib/mender/boot_attempted
+        ;;
+
+    ArtifactCommit)
+        check_requirements
+
+        if [ "${upgrade_available}" != 1 ]; then
+            log_message "Unexpected upgrade_available=${upgrade_available} in ${STATE}."
+            log_message "Upgrade failed and was reverted: refusing to commit!"
+            exit 1
+        fi
+
+        ${SETENV} upgrade_available 0
+        ;;
+
+    ArtifactRollback)
+        # If we cannot parse the config file, exit anyway and let the bootloader handle the rollback
+        parse_conf_file || exit 0
+        check_requirements
+
+        log_message "Failed to update system! Rolling back!"
+
+        if test "${upgrade_available}" = 1; then
+            # If upgrade_available = 1, then we know that the bootloader will roll back for us, even
+            # if we fail here.
+            ${SETENV} -s - <<EOF || true
+mender_boot_part=${passive_num}
+mender_boot_part_hex=${passive_num_hex}
+upgrade_available=0
+EOF
+        elif [ -f "${FILES}/tmp/orig-part" ]; then
+            . "${FILES}/tmp/orig-part"
+            ${SETENV} -s - <<EOF
+mender_boot_part=${orig_part_num}
+mender_boot_part_hex=${orig_part_num_hex}
+upgrade_available=0
+EOF
+        fi
+        sleep 3
+        ;;
+
+    Cleanup)
+        rm -rf "${STAGING_DIR}"
+        ;;
+esac
+
+exit 0
