@@ -165,3 +165,7 @@ local_conf_header:
   sdk options: |
     # Include the kernel devsrc in the sdk for out of tree kernel and module development.
     TOOLCHAIN_TARGET_TASK:append = "${@'' if d.getVar('PN') == 'buildtools-tarball' else ' kernel-devsrc'}"
+
+  mender: |
+    AXE_MENDER_ARTIFACT_SIGN_KEY = "/work/meta-axelera/recipes-mender/mender-client/files/dev-private.key"
+    AXE_MENDER_ARTIFACT_PUBKEY = "/work/meta-axelera/recipes-mender/mender-client/files/dev-public.key"

@@ -1,10 +1,19 @@
+AXE_MENDER_ARTIFACT_SIGN_KEY ?= ""
+
 IMAGE_CMD:voyager-updateimg() {
+  if [ -z "${AXE_MENDER_ARTIFACT_SIGN_KEY}" ]; then
+    bbfatal "AXE_MENDER_ARTIFACT_SIGN_KEY is not set." \
+      "A private key is required to sign the Mender payload." \
+      "There is a development one provided at meta-axelera/recipes-mender/mender-client/files/dev-public.key"
+  fi
+
   mender-artifact write module-image \
     -T mender-update \
     -n "voyager-${DISTRO_VERSION}" \
     -t "${MENDER_DEVICE_TYPE}" \
     -m "${IMGDEPLOYDIR}"/"${IMAGE_NAME}"-voyager-update-manifest.json \
     -f "${IMGDEPLOYDIR}"/"${IMAGE_NAME}"-voyager-update-files.tar.zst \
+    -k ${AXE_MENDER_ARTIFACT_SIGN_KEY} \
     -o ${IMGDEPLOYDIR}/${IMAGE_NAME}.mender
 
   ln -sf "${IMAGE_NAME}".mender \
