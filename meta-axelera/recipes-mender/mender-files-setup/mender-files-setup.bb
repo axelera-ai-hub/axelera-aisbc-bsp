@@ -23,9 +23,6 @@ do_install() {
     install -d "${D}${MENDER_DATA_DIR}"
     install -d "${D}${MENDER_FACTORY_DIR}"
 
-    rm -f "${D}${MENDER_DATA_DIR}/mender.conf"
-    ln -sf /etc/mender/mender.conf ${D}${MENDER_DATA_DIR}/mender.conf
-
     echo "device_type=${MENDER_DEVICE_TYPE}" > ${WORKDIR}/device_type
     install -m 0644 ${WORKDIR}/device_type ${D}${MENDER_FACTORY_DIR}/device_type
 

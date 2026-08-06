@@ -26,25 +26,29 @@ jq_read() {
 }
 
 parse_conf_file() {
-    MENDER_BOOT_PART_A="$(jq_read '.BootPartA' /etc/mender/mender.conf)"
-    MENDER_BOOT_PART_B="$(jq_read '.BootPartB' /etc/mender/mender.conf)"
-    MENDER_ROOTFS_PART_A="$(jq_read '.RootfsPartA' /etc/mender/mender.conf)"
-    MENDER_ROOTFS_PART_B="$(jq_read '.RootfsPartB' /etc/mender/mender.conf)"
-    MENDER_VBMETA_PART_A="$(jq_read '.VbmetaPartA' /etc/mender/mender.conf)"
-    MENDER_VBMETA_PART_B="$(jq_read '.VbmetaPartB' /etc/mender/mender.conf)"
+    get_conf_val() {
+        cat /etc/mender/mender.conf /var/lib/mender/mender.conf 2>/dev/null | jq -r -s "add | .${1} // empty"
+    }
+
+    MENDER_BOOT_PART_A="$(get_conf_val BootPartA)"
+    MENDER_BOOT_PART_B="$(get_conf_val BootPartB)"
+    MENDER_ROOTFS_PART_A="$(get_conf_val RootfsPartA)"
+    MENDER_ROOTFS_PART_B="$(get_conf_val RootfsPartB)"
+    MENDER_VBMETA_PART_A="$(get_conf_val VbmetaPartA)"
+    MENDER_VBMETA_PART_B="$(get_conf_val VbmetaPartB)"
 
     if [ -z "${MENDER_BOOT_PART_A}" ] || [ -z "${MENDER_BOOT_PART_B}" ]; then
-        log_message "Cannot parse BootPartA/B in /etc/mender/mender.conf" 1>&2
+        log_message "Cannot parse BootPartA/B in either /etc/mender/mender.conf or /var/lib/mender/mender.conf" 1>&2
         return 1
     fi
 
     if [ -z "${MENDER_VBMETA_PART_A}" ] || [ -z "${MENDER_VBMETA_PART_B}" ]; then
-        log_message "Cannot parse VbmetaPartA/B in /etc/mender/mender.conf" 1>&2
+        log_message "Cannot parse VbmetaPartA/B in either /etc/mender/mender.conf or /var/lib/mender/mender.conf" 1>&2
         return 1
     fi
 
     if [ -z "${MENDER_ROOTFS_PART_A}" ] || [ -z "${MENDER_ROOTFS_PART_B}" ]; then
-        log_message "Cannot parse RootfsPartA/B in /etc/mender/mender.conf" 1>&2
+        log_message "Cannot parse RootfsPartA/B in either /etc/mender/mender.conf or /var/lib/mender/mender.conf" 1>&2
         return 1
     fi
 
