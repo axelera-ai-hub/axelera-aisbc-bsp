@@ -21,6 +21,7 @@ env:
   WS_AGENT_CONFIG: "/work/meta-axelera/conf/axelera.wss.config"
   JENKINS_BUILD_ID: ""
   WS_PRODUCTNAME: "Axelera"
+  AXE_ENGINEERING_BUILD: "0"
 
 repos:
   kas:
@@ -169,3 +170,6 @@ local_conf_header:
   mender: |
     AXE_MENDER_ARTIFACT_SIGN_KEY = "/work/meta-axelera/recipes-mender/mender-client/files/dev-private.key"
     AXE_MENDER_ARTIFACT_PUBKEY = "/work/meta-axelera/recipes-mender/mender-client/files/dev-public.key"
+
+  engineering: |
+    DISTRO_FEATURES:append = "${@' voyager-dm-verity' if d.getVar('AXE_ENGINEERING_BUILD') != '1' else ''}"

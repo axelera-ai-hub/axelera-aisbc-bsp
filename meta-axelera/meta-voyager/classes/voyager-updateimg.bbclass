@@ -23,7 +23,7 @@ IMAGE_CMD:voyager-updateimg() {
 do_create_update_tarball() {
   BOOT_IMAGE="boot.img"
   VBMETA_IMAGE="vbmeta.img"
-  ROOT_IMAGE="${IMAGE_NAME}.${DM_VERITY_IMAGE_TYPE}.verity"
+  ROOT_IMAGE="${AXE_ROOTFS_ARTIFACT}"
 
   rm -rf "${IMGDEPLOYDIR}"/update-files
   mkdir -p "${IMGDEPLOYDIR}"/update-files

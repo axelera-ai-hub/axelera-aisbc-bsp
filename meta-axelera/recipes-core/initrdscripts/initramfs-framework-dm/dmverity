@@ -9,7 +9,7 @@ dmverity_run() {
     DATA_BLOCK_SIZE="__not_set__"
     ROOT_HASH="__not_set__"
 
-    . /usr/share/misc/dm-verity.env
+    [ -f /usr/share/misc/dm-verity.env ] && . /usr/share/misc/dm-verity.env
 
     C=0
     delay=${bootparam_rootdelay:-1}
@@ -41,6 +41,14 @@ dmverity_run() {
 
         RDEV="$(realpath /dev/disk/by-partlabel/${ROOT_PARTLABEL} 2>/dev/null)"
     done
+
+    # Images built without dm-verity carry no root hash; plain-mount those so
+    # that one initramfs serves both build types.
+    if [ "${ROOT_HASH}" = "__not_set__" ]; then
+        msg "No root hash present; mounting ${RDEV} without dm-verity"
+        mount -o ro "${RDEV}" "${ROOTFS_DIR}" || exit 2
+        return
+    fi
 
     veritysetup \
         --data-block-size=${DATA_BLOCK_SIZE} \
