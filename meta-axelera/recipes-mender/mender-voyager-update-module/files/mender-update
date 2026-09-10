@@ -68,6 +68,13 @@ set_upgrade_vars() {
     MENDER_BOOTPART_TO_UPDATE="${MENDER_BOOT_PART_A}"
     MENDER_VBMETAPART_TO_UPDATE="${MENDER_VBMETA_PART_A}"
 
+    case "${active_num}" in
+        ''|*[!0-9]*)
+            log_message "Cannot determine the active slot: mender_boot_part='${active_num}'" 1>&2
+            return 1
+            ;;
+    esac
+
     if test "${active_num}" -eq "${MENDER_ROOTFS_PART_A_NUMBER}"; then
         active="${MENDER_ROOTFS_PART_A}"
         passive="${MENDER_ROOTFS_PART_B}"
