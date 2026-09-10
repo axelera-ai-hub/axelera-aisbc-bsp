@@ -5,6 +5,7 @@ build/
 meta-*/
 !meta-axelera/
 !meta-axelera/meta-voyager/
+!kas/patches/meta*/
 .gnupg/
 .kas_gnupg/
 .kas_shell_history
