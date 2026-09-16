@@ -136,7 +136,7 @@ repos:
   axelera-doc:
     url: "https://github.com/axelera-ai-hub/aisbc.axelera-doc.git"
     branch: master
-    commit: a2507319054691df1abacde0bff31297338070c1
+    commit: 1bf3f661b7ba2052e7e18294f2a4bd0e5a2b6c2a
     signed: false
     layers:
       .: disabled
