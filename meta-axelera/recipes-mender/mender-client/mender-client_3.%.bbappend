@@ -8,6 +8,9 @@ SRC_URI:append:axelera-machine = " \
 do_install:append:axelera-machine() {
     install -d ${D}/${sysconfdir}/mender
     install -m 0600 ${WORKDIR}/mender.conf ${D}/${sysconfdir}/mender/mender.conf
+
+    # Replace standard parted with a forced interactive parted that accepts the warning
+    sed -i 's|/usr/sbin/parted -s|yes "Yes" \| /usr/sbin/parted ---pretend-input-tty|g' ${D}${bindir}/mender-client-resize-data-part
 }
 
 SYSTEMD_AUTO_ENABLE = "disable"
