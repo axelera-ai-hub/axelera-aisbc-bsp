@@ -1,0 +1,31 @@
+From 2489fcb7f4eeb26effbfedca6ec5ff220eb7ce17 Mon Sep 17 00:00:00 2001
+From: Annachiara Gallo <annachiara.gallo@amarulasolutions.com>
+Date: Fri, 18 Sep 2026 10:27:26 +0200
+Subject: [PATCH] selinux_common.inc: update branch name
+
+The repo primary branch is now called 'main', update and parametrize
+SRCBRANCH to fix fecthing failure
+
+YouTrack-Id: AXELERA-231
+Signed-off-by: Annachiara Gallo <annachiara.gallo@amarulasolutions.com>
+---
+ recipes-security/selinux/selinux_common.inc | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/recipes-security/selinux/selinux_common.inc b/recipes-security/selinux/selinux_common.inc
+index 8bdf8ad..f0d9324 100644
+--- a/recipes-security/selinux/selinux_common.inc
++++ b/recipes-security/selinux/selinux_common.inc
+@@ -1,7 +1,8 @@
+ HOMEPAGE = "https://github.com/SELinuxProject"
+ 
+-SRC_URI = "git://github.com/SELinuxProject/selinux.git;branch=master;protocol=https"
++SRC_URI = "git://github.com/SELinuxProject/selinux.git;branch=${SRCBRANCH};protocol=https"
+ SRCREV = "7f600c40bc18d8180993edcd54daf45124736776"
++SRCBRANCH = "main"
+ 
+ UPSTREAM_CHECK_GITTAGREGEX = "(?P<pver>\d+(\.\d+)+)"
+ 
+-- 
+2.43.0
+
