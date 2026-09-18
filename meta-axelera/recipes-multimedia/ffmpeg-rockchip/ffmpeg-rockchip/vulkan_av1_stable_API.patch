@@ -1,4 +1,4 @@
-From ecdc94b97f809d5f2b88640842fd0541951ad295 Mon Sep 17 00:00:00 2001
+From b14e2e3111143342c5faf09431f3a6bef153d1b7 Mon Sep 17 00:00:00 2001
 From: Lynne <dev@lynne.ee>
 Date: Fri, 19 Jan 2024 10:49:02 +1000
 Subject: [PATCH] vulkan_av1: port to the new stable API
@@ -6,28 +6,29 @@ Subject: [PATCH] vulkan_av1: port to the new stable API
 Co-Authored-by: Dave Airlie <airlied@redhat.com>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Upstream-Status: Backport [https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/ecdc94b97f809d5f2b88640842fd0541951ad295]
+
 ---
  configure                                     |   4 +-
- libavcodec/Makefile                           |   5 +-
+ libavcodec/Makefile                           |   3 +-
  libavcodec/vulkan_av1.c                       | 512 ++++++++++--------
  libavcodec/vulkan_decode.c                    |  31 +-
  libavcodec/vulkan_decode.h                    |   2 +-
  libavcodec/vulkan_video.c                     |   2 +-
  libavcodec/vulkan_video.h                     |   2 -
- libavcodec/vulkan_video_codec_av1std.h        | 403 --------------
- libavcodec/vulkan_video_codec_av1std_decode.h |  36 --
+ .../vulkan_video_codec_av1std_decode_mesa.h   |  36 --
+ libavcodec/vulkan_video_codec_av1std_mesa.h   | 403 --------------
  libavutil/hwcontext_vulkan.c                  |   2 +-
  libavutil/vulkan_functions.h                  |   2 +-
  libavutil/vulkan_loader.h                     |   2 +-
- 12 files changed, 306 insertions(+), 697 deletions(-)
- delete mode 100644 libavcodec/vulkan_video_codec_av1std.h
- delete mode 100644 libavcodec/vulkan_video_codec_av1std_decode.h
+ 12 files changed, 305 insertions(+), 696 deletions(-)
+ delete mode 100644 libavcodec/vulkan_video_codec_av1std_decode_mesa.h
+ delete mode 100644 libavcodec/vulkan_video_codec_av1std_mesa.h
 
 diff --git a/configure b/configure
-index e853deb51d..9fa639fca6 100755
+index 559bd86d32..bb1a203c54 100755
 --- a/configure
 +++ b/configure
-@@ -7168,8 +7168,8 @@ enabled crystalhd && check_lib crystalhd "stdint.h libcrystalhd/libcrystalhd_if.
+@@ -7199,8 +7199,8 @@ enabled crystalhd && check_lib crystalhd "stdint.h libcrystalhd/libcrystalhd_if.
           "in maintaining it."
  
  if enabled vulkan; then
@@ -39,30 +40,28 @@ index e853deb51d..9fa639fca6 100755
  
  if disabled vulkan; then
 diff --git a/libavcodec/Makefile b/libavcodec/Makefile
-index 7ef2e03ca6..9ce6d445c1 100644
+index f53b38b419..f36e50d96d 100644
 --- a/libavcodec/Makefile
 +++ b/libavcodec/Makefile
-@@ -1292,8 +1292,7 @@ SKIPHEADERS                            += %_tablegen.h                  \
+@@ -1292,7 +1292,6 @@ SKIPHEADERS                            += %_tablegen.h                  \
                                            aacenc_quantization.h         \
                                            aacenc_quantization_misc.h    \
                                            bitstream_template.h          \
--                                          vulkan_video_codec_av1std.h   \
--                                          $(ARCH)/vpx_arith.h          \
-+                                          $(ARCH)/vpx_arith.h           \
+-                                          vulkan_video_codec_av1std_mesa.h \
+                                           $(ARCH)/vpx_arith.h          \
  
  SKIPHEADERS-$(CONFIG_AMF)              += amfenc.h
- SKIPHEADERS-$(CONFIG_D3D11VA)          += d3d11va.h dxva2_internal.h
 @@ -1314,7 +1313,7 @@ SKIPHEADERS-$(CONFIG_XVMC)             += xvmc.h
  SKIPHEADERS-$(CONFIG_VAAPI)            += vaapi_decode.h vaapi_hevc.h vaapi_encode.h
  SKIPHEADERS-$(CONFIG_VDPAU)            += vdpau.h vdpau_internal.h
  SKIPHEADERS-$(CONFIG_VIDEOTOOLBOX)     += videotoolbox.h vt_internal.h
--SKIPHEADERS-$(CONFIG_VULKAN)           += vulkan.h vulkan_video.h vulkan_decode.h vulkan_video_codec_av1std_decode.h
+-SKIPHEADERS-$(CONFIG_VULKAN)           += vulkan.h vulkan_video.h vulkan_decode.h vulkan_video_codec_av1std_decode_mesa.h
 +SKIPHEADERS-$(CONFIG_VULKAN)           += vulkan.h vulkan_video.h vulkan_decode.h
  SKIPHEADERS-$(CONFIG_V4L2_M2M)         += v4l2_buffers.h v4l2_context.h v4l2_m2m.h
  SKIPHEADERS-$(CONFIG_ZLIB)             += zlib_wrapper.h
  
 diff --git a/libavcodec/vulkan_av1.c b/libavcodec/vulkan_av1.c
-index 5afd5353cc..c9e398eaec 100644
+index 4998bf7ebc..3e96ffeb56 100644
 --- a/libavcodec/vulkan_av1.c
 +++ b/libavcodec/vulkan_av1.c
 @@ -31,33 +31,47 @@ const VkExtensionProperties ff_vk_dec_av1_ext = {
@@ -748,7 +747,7 @@ index 5afd5353cc..c9e398eaec 100644
      .caps_internal         = HWACCEL_CAP_ASYNC_SAFE,
  };
 diff --git a/libavcodec/vulkan_decode.c b/libavcodec/vulkan_decode.c
-index 91929d165f..4561f26b62 100644
+index a89d84fcaa..d409edc033 100644
 --- a/libavcodec/vulkan_decode.c
 +++ b/libavcodec/vulkan_decode.c
 @@ -50,7 +50,7 @@ static const VkVideoProfileInfoKHR *get_video_profile(FFVulkanDecodeShared *ctx,
@@ -851,7 +850,7 @@ index 91929d165f..4561f26b62 100644
      VkVideoSessionParametersCreateInfoKHR session_params_create = {
          .sType = VK_STRUCTURE_TYPE_VIDEO_SESSION_PARAMETERS_CREATE_INFO_KHR,
 diff --git a/libavcodec/vulkan_decode.h b/libavcodec/vulkan_decode.h
-index a43e328d73..7ba8b239cb 100644
+index b0b1ff5614..9991de6794 100644
 --- a/libavcodec/vulkan_decode.h
 +++ b/libavcodec/vulkan_decode.h
 @@ -28,7 +28,7 @@
@@ -877,22 +876,64 @@ index 236aa124bb..7d94195c9e 100644
  };
  
 diff --git a/libavcodec/vulkan_video.h b/libavcodec/vulkan_video.h
-index bb69e920bb..01a1de7d9d 100644
+index 51f44dd543..54cd75372d 100644
 --- a/libavcodec/vulkan_video.h
 +++ b/libavcodec/vulkan_video.h
 @@ -23,8 +23,6 @@
  #include "vulkan.h"
  
  #include <vk_video/vulkan_video_codecs_common.h>
--#include "vulkan_video_codec_av1std.h"
--#include "vulkan_video_codec_av1std_decode.h"
+-#include "vulkan_video_codec_av1std_mesa.h"
+-#include "vulkan_video_codec_av1std_decode_mesa.h"
  
  #define CODEC_VER_MAJ(ver) (ver >> 22)
  #define CODEC_VER_MIN(ver) ((ver >> 12) & ((1 << 10) - 1))
-diff --git a/libavcodec/vulkan_video_codec_av1std.h b/libavcodec/vulkan_video_codec_av1std.h
+diff --git a/libavcodec/vulkan_video_codec_av1std_decode_mesa.h b/libavcodec/vulkan_video_codec_av1std_decode_mesa.h
+deleted file mode 100644
+index e2f37b4e6e..0000000000
+--- a/libavcodec/vulkan_video_codec_av1std_decode_mesa.h
++++ /dev/null
+@@ -1,36 +0,0 @@
+-/* Copyright 2023 Lynne
+- * Copyright 2023 Dave Airlie
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- * http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-#ifndef VULKAN_VIDEO_CODEC_AV1STD_DECODE_MESA_H_
+-#define VULKAN_VIDEO_CODEC_AV1STD_DECODE_MESA_H_ 1
+-
+-/*
+-** This header is NOT YET generated from the Khronos Vulkan XML API Registry.
+-**
+-*/
+-
+-#ifdef __cplusplus
+-extern "C" {
+-#endif
+-#define vulkan_video_codec_av1std_decode 1
+-
+-
+-
+-#ifdef __cplusplus
+-}
+-#endif
+-
+-#endif
+diff --git a/libavcodec/vulkan_video_codec_av1std_mesa.h b/libavcodec/vulkan_video_codec_av1std_mesa.h
 deleted file mode 100644
 index c91589eee2..0000000000
---- a/libavcodec/vulkan_video_codec_av1std.h
+--- a/libavcodec/vulkan_video_codec_av1std_mesa.h
 +++ /dev/null
 @@ -1,403 +0,0 @@
 -/* Copyright 2023 Lynne
@@ -911,8 +952,8 @@ index c91589eee2..0000000000
 - * limitations under the License.
 - */
 -
--#ifndef VULKAN_VIDEO_CODEC_AV1STD_H_
--#define VULKAN_VIDEO_CODEC_AV1STD_H_ 1
+-#ifndef VULKAN_VIDEO_CODEC_AV1STD_MESA_H_
+-#define VULKAN_VIDEO_CODEC_AV1STD_MESA_H_ 1
 -
 -/*
 -** This header is NOT YET generated from the Khronos Vulkan XML API Registry.
@@ -1298,50 +1339,8 @@ index c91589eee2..0000000000
 -#endif
 -
 -#endif
-diff --git a/libavcodec/vulkan_video_codec_av1std_decode.h b/libavcodec/vulkan_video_codec_av1std_decode.h
-deleted file mode 100644
-index a697c00593..0000000000
---- a/libavcodec/vulkan_video_codec_av1std_decode.h
-+++ /dev/null
-@@ -1,36 +0,0 @@
--/* Copyright 2023 Lynne
-- * Copyright 2023 Dave Airlie
-- *
-- * Licensed under the Apache License, Version 2.0 (the "License");
-- * you may not use this file except in compliance with the License.
-- * You may obtain a copy of the License at
-- *
-- * http://www.apache.org/licenses/LICENSE-2.0
-- *
-- * Unless required by applicable law or agreed to in writing, software
-- * distributed under the License is distributed on an "AS IS" BASIS,
-- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-- * See the License for the specific language governing permissions and
-- * limitations under the License.
-- */
--
--#ifndef VULKAN_VIDEO_CODEC_AV1STD_DECODE_H_
--#define VULKAN_VIDEO_CODEC_AV1STD_DECODE_H_ 1
--
--/*
--** This header is NOT YET generated from the Khronos Vulkan XML API Registry.
--**
--*/
--
--#ifdef __cplusplus
--extern "C" {
--#endif
--#define vulkan_video_codec_av1std_decode 1
--
--
--
--#ifdef __cplusplus
--}
--#endif
--
--#endif
 diff --git a/libavutil/hwcontext_vulkan.c b/libavutil/hwcontext_vulkan.c
-index 91b9f96ccf..6e3b96b73a 100644
+index d288fb7ac7..4b0daecd02 100644
 --- a/libavutil/hwcontext_vulkan.c
 +++ b/libavutil/hwcontext_vulkan.c
 @@ -437,7 +437,7 @@ static const VulkanOptExtension optional_device_exts[] = {
@@ -1367,7 +1366,7 @@ index 65021b04b1..6b379acf93 100644
      FF_VK_EXT_COOP_MATRIX            = 1ULL << 16, /* VK_KHR_cooperative_matrix */
  
 diff --git a/libavutil/vulkan_loader.h b/libavutil/vulkan_loader.h
-index f9e739e1e3..73cf03935d 100644
+index f88722f28f..fc854242dd 100644
 --- a/libavutil/vulkan_loader.h
 +++ b/libavutil/vulkan_loader.h
 @@ -56,7 +56,7 @@ static inline uint64_t ff_vk_extensions_to_mask(const char * const *extensions,
@@ -1379,6 +1378,3 @@ index f9e739e1e3..73cf03935d 100644
      };
  
      FFVulkanExtensions mask = 0x0;
--- 
-2.48.1
-

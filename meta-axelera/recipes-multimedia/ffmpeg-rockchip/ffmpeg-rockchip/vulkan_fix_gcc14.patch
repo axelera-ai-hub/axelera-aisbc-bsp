@@ -1,4 +1,4 @@
-From 2f24f10d9cf34ddce274496c4daa73f732d370c1 Mon Sep 17 00:00:00 2001
+From 57f8fe61fd69afa2588965695323ef02d8322e81 Mon Sep 17 00:00:00 2001
 From: Sam James <sam@gentoo.org>
 Date: Wed, 20 Dec 2023 12:32:43 +0000
 Subject: [PATCH] libavcodec: fix -Wint-conversion in vulkan
@@ -23,6 +23,7 @@ Was reported downstream in Gentoo at https://bugs.gentoo.org/919067.
 
 Signed-off-by: Sam James <sam@gentoo.org>
 Upstream-Status: Backport [https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/2f24f10d9cf34ddce274496c4daa73f732d370c1]
+
 ---
  libavcodec/vulkan_av1.c    | 2 +-
  libavcodec/vulkan_decode.c | 6 +++---
@@ -32,7 +33,7 @@ Upstream-Status: Backport [https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/2
  5 files changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/libavcodec/vulkan_av1.c b/libavcodec/vulkan_av1.c
-index 4998bf7ebc55f..9730e4b08dd40 100644
+index 3e96ffeb56..0b3efd3932 100644
 --- a/libavcodec/vulkan_av1.c
 +++ b/libavcodec/vulkan_av1.c
 @@ -211,7 +211,7 @@ static int vk_av1_create_params(AVCodecContext *avctx, AVBufferRef **buf)
@@ -45,7 +46,7 @@ index 4998bf7ebc55f..9730e4b08dd40 100644
  
      err = ff_vk_decode_create_params(buf, avctx, ctx, &session_params_create);
 diff --git a/libavcodec/vulkan_decode.c b/libavcodec/vulkan_decode.c
-index a89d84fcaa972..fdbcbb450a1e0 100644
+index d409edc033..bb7649411c 100644
 --- a/libavcodec/vulkan_decode.c
 +++ b/libavcodec/vulkan_decode.c
 @@ -188,9 +188,9 @@ int ff_vk_decode_prepare_frame(FFVulkanDecodeContext *dec, AVFrame *pic,
@@ -62,7 +63,7 @@ index a89d84fcaa972..fdbcbb450a1e0 100644
      vkpic->destroy_image_view = vk->DestroyImageView;
      vkpic->wait_semaphores = vk->WaitSemaphores;
 diff --git a/libavcodec/vulkan_h264.c b/libavcodec/vulkan_h264.c
-index e727aafb162d3..39c123ddca57e 100644
+index e727aafb16..39c123ddca 100644
 --- a/libavcodec/vulkan_h264.c
 +++ b/libavcodec/vulkan_h264.c
 @@ -315,7 +315,7 @@ static int vk_h264_create_params(AVCodecContext *avctx, AVBufferRef **buf)
@@ -75,7 +76,7 @@ index e727aafb162d3..39c123ddca57e 100644
  
      /* SPS list */
 diff --git a/libavcodec/vulkan_hevc.c b/libavcodec/vulkan_hevc.c
-index 99fdcf3b45839..033172cbd6958 100644
+index 99fdcf3b45..033172cbd6 100644
 --- a/libavcodec/vulkan_hevc.c
 +++ b/libavcodec/vulkan_hevc.c
 @@ -653,7 +653,7 @@ static int vk_hevc_create_params(AVCodecContext *avctx, AVBufferRef **buf)
@@ -88,7 +89,7 @@ index 99fdcf3b45839..033172cbd6958 100644
  
      HEVCHeaderSet *hdr;
 diff --git a/libavcodec/vulkan_video.c b/libavcodec/vulkan_video.c
-index 5fa8292b28eaf..fb20315db4bbf 100644
+index 7d94195c9e..68b6471f28 100644
 --- a/libavcodec/vulkan_video.c
 +++ b/libavcodec/vulkan_video.c
 @@ -287,7 +287,7 @@ av_cold void ff_vk_video_common_uninit(FFVulkanContext *s,
@@ -100,6 +101,3 @@ index 5fa8292b28eaf..fb20315db4bbf 100644
      }
  
      if (common->nb_mem && common->mem)
--- 
-2.48.1
-
