@@ -161,7 +161,7 @@ local_conf_header:
     PREFERRED_PROVIDER_optee-client = "optee-rockchip"
     # Mend variables
     MEND_URL = "https://saas-eu.whitesourcesoftware.com/"
-    MEND_BLACKLIST_PACKAGES = "linux-rockchip"
+    MEND_BLACKLIST_PACKAGES = "linux-rockchip refpolicy-targeted"
 
   sdk options: |
     # Include the kernel devsrc in the sdk for out of tree kernel and module development.
