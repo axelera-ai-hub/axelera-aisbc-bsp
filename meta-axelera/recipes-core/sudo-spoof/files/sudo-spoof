@@ -1,0 +1,108 @@
+#!/bin/sh
+#
+# sudo-spoof -- a no-op stand-in for sudo.
+#
+# Vendor tooling calls sudo unconditionally. There is no sudo on this image.
+# When logged in as the root user, those calls fail for no good reason.
+# This strips sudo's own options and execs whatever is left,
+# only for the root user.
+#
+# It grants no privilege of any kind. It is installed 0750 in ${sbindir} so
+# only root can reach it, and it refuses to run as anyone else.
+#
+# SPDX-License-Identifier: MIT
+
+if [ "$(id -u)" -ne 0 ]; then
+    echo "sudo: this is a no-op spoof and grants no privilege; run as root" >&2
+    exit 1
+fi
+
+login_shell=0
+
+# --- strip sudo's own options -------------------------------------------
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --)
+            shift
+            break
+            ;;
+
+        # options taking a separate argument
+        -u|-g|-p|-C|-D|-R|-r|-t|-T|--user|--group|--prompt|--close-from|\
+        --chdir|--role|--type|--command-timeout)
+            if [ $# -lt 2 ]; then
+                echo "sudo: option $1 requires an argument" >&2
+                exit 1
+            fi
+            shift 2
+            ;;
+
+        # same options in attached form: -uroot, --user=root
+        -u?*|-g?*|-p?*|-C?*|-D?*|-R?*|-r?*|-t?*|-T?*)
+            shift
+            ;;
+        --user=*|--group=*|--prompt=*|--close-from=*|--chdir=*|--role=*|\
+        --type=*|--command-timeout=*|--preserve-env=*)
+            shift
+            ;;
+
+        # shell-invoking options: remember, in case no command follows
+        -i|-s|--login|--shell)
+            login_shell=1
+            shift
+            ;;
+
+        # queries that never run a command
+        -v|--validate|-l|--list)
+            exit 0
+            ;;
+        -V|--version)
+            echo "sudo-spoof 1.0 (no-op; grants no privilege)"
+            exit 0
+            ;;
+        -h|--help)
+            echo "sudo-spoof: strips sudo options and execs the command as the" >&2
+            echo "current (root) user. Grants no privilege." >&2
+            exit 0
+            ;;
+
+        # flags with no argument; env is preserved regardless since we exec
+        -A|-b|-E|-H|-k|-K|-n|-P|-S|--askpass|--background|--preserve-env|\
+        --set-home|--reset-timestamp|--remove-timestamp|--non-interactive|\
+        --preserve-groups|--stdin)
+            shift
+            ;;
+
+        # anything else that looks like an option: ignore it
+        -*)
+            shift
+            ;;
+
+        *)
+            break
+            ;;
+    esac
+done
+
+# --- VAR=value assignments may precede the command ----------------------
+while [ $# -gt 0 ]; do
+    case "$1" in
+        [A-Za-z_]*=*)
+            export "$1"
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+# --- run ----------------------------------------------------------------
+if [ $# -eq 0 ]; then
+    if [ "$login_shell" -eq 1 ]; then
+        exec "${SHELL:-/bin/sh}" -l
+    fi
+    exit 0
+fi
+
+exec "$@"
