@@ -30,7 +30,7 @@ DEPENDS = "libdrm nasm-native rockchip-mpp"
 
 # Should be API compatible with libav (which was a fork of ffmpeg)
 # libpostproc was previously packaged from a separate recipe
-PROVIDES = "libav libpostproc"
+PROVIDES = "ffmpeg libav libpostproc"
 
 SRC_URI = "\
     git://github.com/nyanmisaka/ffmpeg-rockchip.git;protocol=https;branch=${SRCBRANCH} \
