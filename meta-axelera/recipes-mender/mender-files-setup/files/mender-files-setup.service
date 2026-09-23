@@ -1,7 +1,7 @@
 [Unit]
 Description=Run script which sets up mender files
 After=factory.mount data.mount
-Require=factory.mount data.mount
+Requires=factory.mount data.mount
 
 [Service]
 Type=oneshot

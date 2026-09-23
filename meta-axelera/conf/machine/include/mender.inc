@@ -19,7 +19,7 @@ MENDER_STORAGE_TOTAL_SIZE_MB = "4096"
 IMAGE_OVERHEAD_FACTOR = "1.0"
 
 # There is an fstab provided in recipes-core/base-files/files/
-ROOTFS_POSTPROCESS_COMMAND:remove = "mender_update_fstab_file;"
+ROOTFS_POSTPROCESS_COMMAND:remove = "mender_update_fstab_file"
 
 # Data partition
 MENDER_DATA_PART_NUMBER ?= "13"

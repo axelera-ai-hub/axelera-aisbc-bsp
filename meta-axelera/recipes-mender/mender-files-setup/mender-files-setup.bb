@@ -10,7 +10,7 @@ MENDER_DATA_DIR = "${DATA_DIR}/mender"
 MENDER_FACTORY_DIR = "${FACTORY_DIR}/mender"
 MENDER_DEVICE_TYPE ?= "default"
 
-RDEPENDS:${PN} = "mender-client"
+RDEPENDS:${PN} = "mender-update"
 
 inherit systemd
 

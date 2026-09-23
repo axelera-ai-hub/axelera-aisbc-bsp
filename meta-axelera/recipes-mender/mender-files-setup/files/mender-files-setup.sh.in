@@ -5,7 +5,7 @@ MENDER_FACTORY_DIR="@@MENDER_FACTORY_DIR@@"
 
 # First run of mender will process and remove bootstrap.mender
 if [ -e "${MENDER_DATA_DIR}/bootstrap.mender" ]; then
-  mender show-provides > /dev/null
+  mender-update show-provides > /dev/null
 fi
 
 # If mender-store doesn't exist in the /data/mender directory, check

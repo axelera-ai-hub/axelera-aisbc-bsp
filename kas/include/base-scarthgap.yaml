@@ -117,3 +117,5 @@ local_conf_header:
     INITRAMFS_IMAGE = "core-image-minimal-initramfs"
 
     do_deploy[depends] += "core-image-minimal-initramfs:do_image_complete"
+
+    PREFERRED_VERSION_mender = "5.%"

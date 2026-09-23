@@ -13,7 +13,7 @@ do_install:append:axelera-machine() {
     install -m 0600 ${AXE_MENDER_ARTIFACT_PUBKEY} ${D}/${sysconfdir}/mender/artifact-verify-key.pem
 
     # Replace standard parted with a forced interactive parted that accepts the warning
-    sed -i 's|/usr/sbin/parted -s|yes "Yes" \| /usr/sbin/parted ---pretend-input-tty|g' ${D}${bindir}/mender-client-resize-data-part
+    sed -i 's|/usr/sbin/parted -s|yes "Yes" \| /usr/sbin/parted ---pretend-input-tty|g' ${D}${bindir}/mender-resize-data-part
 }
 
 SYSTEMD_AUTO_ENABLE = "disable"

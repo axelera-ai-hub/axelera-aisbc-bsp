@@ -6,7 +6,7 @@ LICENSE = "CLOSED"
 
 RDEPENDS:${PN} += "\
     jq \
-    mender-client \
+    mender-update \
 "
 
 SRC_URI = "file://mender-update"
