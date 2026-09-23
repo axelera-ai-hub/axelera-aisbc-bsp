@@ -13,6 +13,9 @@ DEPENDS += "optee-rockchip"
 SRC_URI = "${REMOTE_REPOS_PREFIX}optee-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=master"
 SRCREV = "bf8d67f6e8e8b269e0198b45353440ba78c2b881"
 
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+SRC_URI += "file://0001-libcrypto-Fix-premature-freeing-of-buf.patch;patchdir=.."
+
 S = "${WORKDIR}/git/librkcrypto"
 
 PACKAGES =+ "${PN}-test"

@@ -1,0 +1,31 @@
+From 1c44124078baa1ebd9295e4eb2c8ac06e222aa9b Mon Sep 17 00:00:00 2001
+From: kas User <kas@example.com>
+Date: Fri, 25 Sep 2026 15:10:34 +0200
+Subject: [PATCH] libcrypto: Fix premature freeing of buf
+
+YouTrack-Id: AXELERA-237
+Signed-off-by: Annachiara Gallo <annachiara.gallo@amarulasolutions.com>
+---
+ librkcrypto/src/rkcrypto_rsa_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/librkcrypto/src/rkcrypto_rsa_helper.c b/librkcrypto/src/rkcrypto_rsa_helper.c
+index f0f6926..7861e02 100644
+--- a/librkcrypto/src/rkcrypto_rsa_helper.c
++++ b/librkcrypto/src/rkcrypto_rsa_helper.c
+@@ -1061,13 +1061,13 @@ RK_RES rk_rsa_padding_check_pss_type(uint16_t key_len, uint16_t n_bits,
+ 	if (res)
+ 		goto error;
+ 
+-	free(buf);
+-
+ 	if (memcmp(p + slen, result, hlen) == 0)
+ 		return RK_CRYPTO_SUCCESS;
+ 	else
+ 		return RK_CRYPTO_ERR_VERIFY;
+ 
++	free(buf);
++
+ error:
+ 	if (buf)
+ 		free(buf);
