@@ -118,4 +118,8 @@ local_conf_header:
 
     do_deploy[depends] += "core-image-minimal-initramfs:do_image_complete"
 
+  mender: |
+    AXE_MENDER_ARTIFACT_SIGN_KEY = "${TOPDIR}/../meta-axelera/recipes-mender/mender-client/files/dev-private.key"
+    AXE_MENDER_ARTIFACT_PUBKEY = "${TOPDIR}/../meta-axelera/recipes-mender/mender-client/files/dev-public.key"
+
     PREFERRED_VERSION_mender = "5.%"
