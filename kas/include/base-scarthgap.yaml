@@ -107,7 +107,6 @@ local_conf_header:
 
     BBMASK += "meta-axelera/recipes-containers/docker/"
     BBMASK += "meta-axelera/meta-voyager/recipes-core/images/dm-verity-image-initramfs.bbappend"
-    BBMASK += "/meta-axelera/recipes-graphics/xwayland/xwayland_22.1.8.bbappend"
 
     DISTRO_FEATURES:append = " usrmerge"
     INITRAMFS_IMAGE = "core-image-minimal-initramfs"
