@@ -3,4 +3,4 @@ header:
   includes:
     - kas/include/base-scarthgap.yaml
 
-machine: qemux86-64
+machine: antelao-3588

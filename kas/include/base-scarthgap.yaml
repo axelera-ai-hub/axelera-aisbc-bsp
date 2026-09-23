@@ -5,12 +5,19 @@ signers:
   YoctoBuildandRelease:
     fingerprint: 2AFB13F28FBBB0D1B9DAF63087EB3D32FB631AD9
     gpg_keyserver: keyserver.ubuntu.com
+  JonMason:
+    fingerprint: A04F5BF5CDD4D89C57F7C9AA6E664BAC7A8BD223
+    gpg_keyserver: keyserver.ubuntu.com
 
-distro: nodistro
+distro: voyager-minimal
 target:
-  - core-image-base
+  - voyager-image-upstream-minimal
 
 repos:
+  kas:
+    layers:
+      .: disabled
+
   bitbake:
     url: "https://git.openembedded.org/bitbake"
     tag: yocto-5.0.20
@@ -37,6 +44,72 @@ repos:
     commit: b5874ea07d69919d9b40d59f2c2f0bbd24bc3259
     signed: false
     layers:
+      meta-filesystems:
+      meta-gnome:
       meta-oe:
+      meta-perl:
       meta-python:
       meta-networking:
+      meta-multimedia:
+      meta-xfce:
+
+  meta-arm:
+    url: "https://git.yoctoproject.org/meta-arm"
+    tag: yocto-5.0.3
+    commit: a81c19915b5b9e71ed394032e9a50fd06919e1cd
+    signed: true
+    allowed_signers:
+      - JonMason
+    layers:
+      meta-arm-toolchain:
+      meta-arm:
+
+  meta-rockchip:
+    url: "https://github.com/JeffyCN/meta-rockchip.git"
+    branch: scarthgap
+    commit: 0d2f157767af62c43acca2f82b8d51cb99aa257a
+    signed: false
+
+  meta-mender:
+    url: "https://github.com/amarula/meta-mender.git"
+    branch: scarthgap-rk3588
+    commit: 54d7cdffb7b00a17716fdba7fdd9eb74e67772c7
+    signed: false
+    layers:
+      meta-mender-core:
+
+  meta-selinux:
+    url: "https://git.yoctoproject.org/meta-selinux.git"
+    branch: scarthgap
+    commit: 48f745109a1ecea9afe2a74d41dbd90fa7b370af
+    signed: false
+
+  meta-avb:
+    url: "https://github.com/embetrix/meta-avb.git"
+    branch: scarthgap
+    commit: 4304e1dc80df4414b584fe13925448b80ab449e5
+    signed: false
+
+  meta-axelera:
+    layers:
+      meta-axelera:
+      meta-axelera/meta-voyager:
+
+local_conf_header:
+  meta-axelera: |
+    CONF_VERSION = "2"
+    # Some useful lines you may want to copy to your site.conf for development
+    # INHERIT += "rm_work"
+
+    REMOTE_REPOS_PREFIX := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai-hub/aisbc.', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/', d)}"
+    REMOTE_DRIVER := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai-hub/axelera-driver', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.linux', d)}"
+    REMOTE_PROTOCOL := "${@bb.utils.contains('USE_GITHUB', '1', 'https', 'ssh', d)}"
+
+    BBMASK += "meta-axelera/recipes-containers/docker/"
+    BBMASK += "meta-axelera/meta-voyager/recipes-core/images/dm-verity-image-initramfs.bbappend"
+    BBMASK += "/meta-axelera/recipes-graphics/xwayland/xwayland_22.1.8.bbappend"
+
+    DISTRO_FEATURES:append = " usrmerge"
+    INITRAMFS_IMAGE = "core-image-minimal-initramfs"
+
+    do_deploy[depends] += "core-image-minimal-initramfs:do_image_complete"

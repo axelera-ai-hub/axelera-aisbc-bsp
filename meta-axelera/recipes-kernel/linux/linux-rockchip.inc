@@ -1,9 +1,9 @@
 # Copyright (C) 2019, Fuzhou Rockchip Electronics Co., Ltd
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-inherit python3-dir
+inherit python3-dir python3native
 
-DEPENDS:append = " openssl-native lz4-native ${PYTHON_PN}-native python-native rk-binary-native"
+DEPENDS:append = " openssl-native lz4-native ${PYTHON_PN}-native python3-avbtool-native rk-binary-native"
 
 LINUX_VERSION_EXTENSION ?= "-rockchip-${LINUX_KERNEL_TYPE}"
 
@@ -99,7 +99,7 @@ do_deploy:append() {
 
 	# Sign boot.img in order to generate vbmeta
 	echo "Adding AVB hash footer to boot.img..."
-	nativepython ${STAGING_BINDIR_NATIVE}/avbtool add_hash_footer \
+	nativepython3 ${STAGING_BINDIR_NATIVE}/avbtool add_hash_footer \
 		--image ${DEPLOYDIR}/boot.img \
 		--partition_name boot \
 		--partition_size 50331648 \
@@ -108,7 +108,7 @@ do_deploy:append() {
 
 	# Generate vbmeta partition for AVB checking
 	echo "Generating standalone vbmeta.img from boot.img descriptors..."
-	nativepython ${STAGING_BINDIR_NATIVE}/avbtool make_vbmeta_image \
+	nativepython3 ${STAGING_BINDIR_NATIVE}/avbtool make_vbmeta_image \
 		--include_descriptors_from_image ${DEPLOYDIR}/boot.img \
 		--padding_size 4096 \
 		--algorithm SHA256_RSA2048 \
