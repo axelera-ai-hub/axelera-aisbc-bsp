@@ -4,6 +4,8 @@ IMAGE_ROOTFS_SIZE = "8192"
 
 AXE_DM_VERITY = "${@bb.utils.contains('DISTRO_FEATURES', 'voyager-dm-verity', '1', '0', d)}"
 
+ARTIFACTIMG_FSTYPE ?= ""
+
 deploy_verity_hash() {
     if [ "${AXE_DM_VERITY}" = "1" ]; then
         install -D -m 0644 \
