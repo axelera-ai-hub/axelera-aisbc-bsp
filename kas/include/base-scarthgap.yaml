@@ -95,6 +95,11 @@ repos:
       meta-axelera:
       meta-axelera/meta-voyager:
 
+  meta-clang:
+    url: https://github.com/kraj/meta-clang.git
+    branch: scarthgap
+    commit: cc29beb210ab94eacc53bbd67e287e4e33ede342
+
 local_conf_header:
   meta-axelera: |
     CONF_VERSION = "2"
