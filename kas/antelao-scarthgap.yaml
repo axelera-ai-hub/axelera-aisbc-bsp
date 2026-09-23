@@ -1,0 +1,6 @@
+header:
+  version: 19
+  includes:
+    - kas/include/base-scarthgap.yaml
+
+machine: qemux86-64
