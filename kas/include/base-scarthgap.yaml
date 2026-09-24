@@ -96,6 +96,12 @@ repos:
     layers:
       meta-mender-core:
 
+  meta-mend:
+    url: "https://github.com/amarula/meta-mend.git"
+    branch: main
+    commit: 2e445197162e286426489b9a6c6b0681d2d2f910
+    signed: false
+
   meta-selinux:
     url: "https://git.yoctoproject.org/meta-selinux.git"
     branch: scarthgap
