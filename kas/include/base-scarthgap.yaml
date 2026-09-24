@@ -76,6 +76,12 @@ repos:
       meta-arm-toolchain:
       meta-arm:
 
+  meta-qt6:
+    url: "git://code.qt.io/yocto/meta-qt6.git"
+    branch: "lts-6.8.8"
+    commit: bf419154d340fa8198a999bdd6583734c8f1eaa0
+    signed: false
+
   meta-rockchip:
     url: "https://github.com/JeffyCN/meta-rockchip.git"
     branch: scarthgap
