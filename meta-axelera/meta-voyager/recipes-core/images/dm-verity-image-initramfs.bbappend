@@ -1,3 +1,5 @@
+IMAGE_FSTYPES:remove = "wic wic.gz wic.bmap ext4 ext4.gz"
+
 IMAGE_FSTYPES = "cpio.gz"
 IMAGE_CLASSES = "dm-verity-img"
 IMAGE_ROOTFS_SIZE = "8192"

@@ -9,9 +9,9 @@ signers:
     fingerprint: A04F5BF5CDD4D89C57F7C9AA6E664BAC7A8BD223
     gpg_keyserver: keyserver.ubuntu.com
 
-distro: voyager-minimal
+distro: voyager
 target:
-  - voyager-image-upstream-minimal
+  - voyager-image-weston
 
 repos:
   kas:
@@ -52,6 +52,18 @@ repos:
       meta-networking:
       meta-multimedia:
       meta-xfce:
+
+  meta-security:
+    url: "https://git.yoctoproject.org/meta-security"
+    branch: scarthgap
+    commit: b13f1705d723650de61277670c8a76aadea4cfdd
+    signed: false
+
+  meta-virtualization:
+    url: "https://git.yoctoproject.org/meta-virtualization"
+    branch: scarthgap
+    commit: ee1ec1ee542389a3fc3692fdd232f9dd86c849a5
+    signed: false
 
   meta-arm:
     url: "https://git.yoctoproject.org/meta-arm"
@@ -105,18 +117,27 @@ local_conf_header:
     CONF_VERSION = "2"
     # Some useful lines you may want to copy to your site.conf for development
     # INHERIT += "rm_work"
-
+    INHERIT += " rockchip-image voyager-factoryimg voyager-dataimg"
+    INIT_MANAGER = "systemd"
+    IMAGE_INSTALL:append = " android-tools-adbd android-tools-conf-rockchip "
+    PREFERRED_PROVIDER_android-tools-conf = "android-tools-conf-rockchip"
+    USB_DEBUGGING_ENABLED = "1"
+    PACKAGE_CLASSES = "package_deb"
+    EXTRA_IMAGE_FEATURES = "debug-tweaks package-management"
+    IMAGE_FSTYPES = " ext4 wic wic.gz wic.bmap ext4.gz"
+    RK_ROOTDEV_UUID ?= "614e0000-0000-4b53-8000-1d28000054a9"
     REMOTE_REPOS_PREFIX := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai-hub/aisbc.', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/', d)}"
     REMOTE_DRIVER := "${@bb.utils.contains('USE_GITHUB', '1', 'git://git@github.com/axelera-ai-hub/axelera-driver', 'git://gitea@gitea.amarulasolutions.com:38745/axelera/host.pcie-driver.linux', d)}"
     REMOTE_PROTOCOL := "${@bb.utils.contains('USE_GITHUB', '1', 'https', 'ssh', d)}"
+    PREFERRED_PROVIDER_optee-client = "optee-rockchip"
+    # Mend variables
+    MEND_URL = "https://saas-eu.whitesourcesoftware.com/"
+    MEND_BLACKLIST_PACKAGES = "linux-rockchip refpolicy-targeted"
+    GLIBC_GENERATE_LOCALES = "en_US.UTF-8"
 
-    BBMASK += "meta-axelera/recipes-containers/docker/"
-    BBMASK += "meta-axelera/meta-voyager/recipes-core/images/dm-verity-image-initramfs.bbappend"
-
-    DISTRO_FEATURES:append = " usrmerge"
-    INITRAMFS_IMAGE = "core-image-minimal-initramfs"
-
-    do_deploy[depends] += "core-image-minimal-initramfs:do_image_complete"
+  sdk options: |
+    # Include the kernel devsrc in the sdk for out of tree kernel and module development.
+    TOOLCHAIN_TARGET_TASK:append = "${@'' if d.getVar('PN') == 'buildtools-tarball' else ' kernel-devsrc'}"
 
   mender: |
     AXE_MENDER_ARTIFACT_SIGN_KEY = "${TOPDIR}/../meta-axelera/recipes-mender/mender-client/files/dev-private.key"
