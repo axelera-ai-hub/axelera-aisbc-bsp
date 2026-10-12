@@ -21,6 +21,7 @@ env:
   WS_AGENT_CONFIG: "/work/meta-axelera/conf/axelera.wss.config"
   JENKINS_BUILD_ID: ""
   WS_PRODUCTNAME: "Axelera"
+  USE_GITHUB: ""
 
 repos:
   bitbake:
