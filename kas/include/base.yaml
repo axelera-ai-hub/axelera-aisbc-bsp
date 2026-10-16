@@ -21,7 +21,7 @@ env:
   WS_AGENT_CONFIG: "/work/meta-axelera/conf/axelera.wss.config"
   JENKINS_BUILD_ID: ""
   WS_PRODUCTNAME: "Axelera"
-  AXE_ENGINEERING_BUILD: "0"
+  AXE_ENGINEERING_BUILD: "1"
 
 repos:
   kas:
@@ -173,3 +173,4 @@ local_conf_header:
 
   engineering: |
     DISTRO_FEATURES:append = "${@' voyager-dm-verity' if d.getVar('AXE_ENGINEERING_BUILD') != '1' else ''}"
+    AXE_ENGINEERING_BUILD ?= "1"
