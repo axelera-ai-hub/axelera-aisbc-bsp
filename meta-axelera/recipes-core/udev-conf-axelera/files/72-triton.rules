@@ -6,3 +6,4 @@ SUBSYSTEM=="mpp_class", DEVPATH=="/devices/platform/mpp-srv/mpp_class/mpp_servic
 SUBSYSTEM=="misc", KERNEL=="mali0", GROUP="axelera", MODE="0660"
 SUBSYSTEM=="devfreq", DEVPATH=="*/fb000000.gpu", ATTR{governor}="performance"
 ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="05e3", ATTRS{idProduct}=="0620", ATTR{power/control}="on"
+SUBSYSTEM=="metis", KERNEL=="metis-0-1-0", SUBSYSTEMS=="pci", DRIVERS=="axl", ATTRS{vendor}=="0x1f9d", ATTRS{device}=="0x1100", SYMLINK+="metis-0:1:0"
