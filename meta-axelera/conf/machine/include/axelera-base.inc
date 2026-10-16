@@ -3,7 +3,7 @@ require conf/machine/include/rk3588.inc
 require conf/machine/include/mender.inc
 
 # Override Mali Version
-MALI_VERSION := "g13p0"
+MALI_VERSION := "g24p0"
 
 # Common machine for all Axelera devices
 MACHINEOVERRIDES =. "axelera-machine:"

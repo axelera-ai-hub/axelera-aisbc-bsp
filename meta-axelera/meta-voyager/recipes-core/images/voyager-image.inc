@@ -59,6 +59,7 @@ IMAGE_INSTALL = " \
   udev-conf-axelera \
   usbutils \
   voyager-sdk \
+  vulkan-tools \
   wireguard-tools \
   xauth \
 "
