@@ -1,6 +1,8 @@
 IMAGE_FEATURES:append = " ssh-server-openssh read-only-rootfs"
 
-IMAGE_LINK_NAME = "${IMAGE_BASENAME}-${MACHINE}-${DISTRO_VERSION}"
+BUILD_VARIANT = "${@'eng-' if d.getVar('AXE_ENGINEERING_BUILD') == '1' else ''}"
+
+IMAGE_LINK_NAME = "${IMAGE_BASENAME}-${BUILD_VARIANT}${MACHINE}-${DISTRO_VERSION}"
 
 IMAGE_INSTALL = " \
   auditd \
