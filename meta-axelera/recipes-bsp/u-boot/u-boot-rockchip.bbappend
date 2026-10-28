@@ -34,6 +34,8 @@ SRC_URI = " \
     file://secureboot.cfg \
 "
 
+SRC_URI:append = " ${@'file://fit-signature.cfg' if d.getVar('AXE_UBOOT_SIGN_KEY_DIR') else ''}"
+
 SRC_URI:append = " ${@bb.utils.contains('CPU_SERIES', 'RK356X', 'file://${CURDIR}/rk356x/0001-add-firefly-rk3566_defconfig.patch', '', d)} \
 ${@bb.utils.contains('CPU_SERIES', 'RK356X', 'file://${CURDIR}/rk356x/0002-remove-python2-check.patch', '', d)}"
 
@@ -52,4 +54,35 @@ do_deploy:append() {
 
     install -d ${DEPLOYDIR}
     install -m 0644 ${WORKDIR}/u-boot-env.img ${DEPLOYDIR}
+}
+
+# Set RK_UBOOT_SPL so we build the SPL from source instead of the prebuilt Rockchip loader
+RK_UBOOT_SPL = "${@'1' if d.getVar('AXE_UBOOT_SIGN_KEY_DIR') else ''}"
+
+# Directory with dev.key, dev.pubkey and dev.crt used to sign the loader and
+# U-Boot. Leave empty for an unsigned build.
+AXE_UBOOT_SIGN_KEY_DIR ?= ""
+
+do_compile:prepend() {
+    if [ -n "${AXE_UBOOT_SIGN_KEY_DIR}" ]; then
+        install -d ${B}/keys
+        install -m 0600 ${AXE_UBOOT_SIGN_KEY_DIR}/dev.key ${B}/keys/
+        install -m 0644 ${AXE_UBOOT_SIGN_KEY_DIR}/dev.pubkey \
+                        ${AXE_UBOOT_SIGN_KEY_DIR}/dev.crt ${B}/keys/
+    fi
+}
+
+do_compile:append() {
+    if [ -n "${AXE_UBOOT_SIGN_KEY_DIR}" ]; then
+        cd ${B}
+        # Repack the idblock with the SPL built from source, not rkbin's
+        ./make.sh --idblock --spl
+        ln -sf idblock.bin "${RK_IDBLOCK_IMG}"
+
+        # Sign it with the same key as the loader and U-Boot
+        SIGN_TOOL=${WORKDIR}/rkbin/tools/rk_sign_tool
+        ${SIGN_TOOL} cc --chip 3588
+        ${SIGN_TOOL} lk --key keys/dev.key --pubkey keys/dev.pubkey
+        ${SIGN_TOOL} sb --idb idblock.bin
+    fi
 }
