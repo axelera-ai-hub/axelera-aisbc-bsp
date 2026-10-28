@@ -9,3 +9,4 @@ meta-*/
 .gnupg/
 .kas_gnupg/
 .kas_shell_history
+env/
