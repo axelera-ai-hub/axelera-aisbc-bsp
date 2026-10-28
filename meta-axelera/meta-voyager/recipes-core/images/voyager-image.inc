@@ -4,13 +4,28 @@ BUILD_VARIANT = "${@'eng-' if d.getVar('AXE_ENGINEERING_BUILD') == '1' else ''}"
 
 IMAGE_LINK_NAME = "${IMAGE_BASENAME}-${BUILD_VARIANT}${MACHINE}-${DISTRO_VERSION}"
 
+ENG_PACKAGE = " \
+  clinfo \
+  htop \
+  iperf3 \
+  librkcrypto-test \
+  lmsensors \
+  minicom \
+  optee-test \
+  testusb \
+  strace \
+  stress-ng \
+  u3loop \
+  vulkan-tools \
+  kernel-module-usbtest \
+"
+
 IMAGE_INSTALL = " \
   auditd \
   avahi-daemon \
   avahi-autoipd \
   avahi-utils \
   axelera-container \
-  clinfo \
   curl \
   docker \
   e2fsprogs-mke2fs \
@@ -24,25 +39,19 @@ IMAGE_INSTALL = " \
   gstreamer1.0-plugins-ugly \
   gstreamer1.0-rockchip \
   gzip \
-  htop \
   kernel-module-axelera \
   kernel-module-g-zero \
   kernel-module-usb-f-ss-lb \
-  kernel-module-usbtest \
   libdrm \
-  librkcrypto-test \
   libubootenv \
   libzip \
-  lmsensors \
   mender-commit-check \
   mender-files-setup \
   mender-voyager-update-module \
-  minicom \
   networkmanager \
   networkmanager-nmcli \
   opencv \
   optee-rockchip \
-  optee-test \
   os-release \
   packagegroup-core-boot \
   packagegroup-core-selinux \
@@ -51,15 +60,11 @@ IMAGE_INSTALL = " \
   python3 \
   python3-pip \
   rockchip-libmali \
-  strace \
   tar\
-  testusb \
   u-boot-fw-utils \
-  u3loop \
   udev-conf-axelera \
   usbutils \
   voyager-sdk \
-  vulkan-tools \
   wireguard-tools \
   xauth \
 "
@@ -69,6 +74,8 @@ IMAGE_INSTALL:append:itx-3588j = " \
   firefly-fan \
   rockchip-npu-firefly \
 "
+
+IMAGE_INSTALL:append = "${@' ' + (d.getVar('ENG_PACKAGES') or '') if d.getVar('AXE_ENGINEERING_BUILD') == '1' else ''}"
 
 PREFERRED_VERSION:parted = "3.6"
 PREFERRED_VERSION:strace = "6.9"

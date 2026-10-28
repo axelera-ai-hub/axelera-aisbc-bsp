@@ -32,12 +32,6 @@ IMAGE_INSTALL:append = " \
 #    clamav \
 #"
 
-# tools for automatic testing
-IMAGE_INSTALL:append = " \
-    stress-ng \
-    iperf3 \
-"
-
 SYSTEMD_DEFAULT_TARGET = "graphical.target"
 
 do_image_wic[depends] += "virtual/kernel:do_deploy"
