@@ -29,6 +29,7 @@ SRC_URI = " \
     file://0012-avb-Add-Rockchip-patch-to-hardcode-pubkey.patch \
     file://0013-include-configs-Enlarge-SYS_BOOTM_LEN.patch \
     file://0014-android_bootloader-Avoid-to-skip_initramfs-for-dm-ve.patch \
+    file://0015-rsa-sign-Use-maximum-salt-length-for-RSA-PSS-signatu.patch \
     file://environment.cfg; \
     file://secureboot.cfg \
 "
