@@ -175,6 +175,10 @@ local_conf_header:
 
     PREFERRED_VERSION_mender = "5.%"
 
+  uboot-signing: |
+    AXE_UBOOT_SIGN_KEY_DIR = ""
+    # AXE_UBOOT_SIGN_KEY_DIR = "${TOPDIR}/../env/keys/uboot-spl"
+
   avb-signing: |
     AXE_AVB_SIGN_KEY_DIR = "${TOPDIR}/../meta-axelera/recipes-kernel/linux/files"
     # AXE_AVB_SIGN_KEY_DIR = "${TOPDIR}/../env/keys/avb"
