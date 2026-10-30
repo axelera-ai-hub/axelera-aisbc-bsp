@@ -178,3 +178,4 @@ local_conf_header:
   engineering: |
     DISTRO_FEATURES:append = "${@' voyager-dm-verity' if d.getVar('AXE_ENGINEERING_BUILD') != '1' else ''}"
     AXE_ENGINEERING_BUILD ?= "1"
+    TMPDIR:append = "${@'' if d.getVar('AXE_ENGINEERING_BUILD') == '1' else '-release'}"
