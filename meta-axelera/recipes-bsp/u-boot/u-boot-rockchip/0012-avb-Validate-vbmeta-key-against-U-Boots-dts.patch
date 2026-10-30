@@ -1,0 +1,224 @@
+From f2bf019b2ba7b8359b643ac084f988c0019fe513 Mon Sep 17 00:00:00 2001
+From: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
+Date: Mon, 13 Jul 2026 17:14:27 +0200
+Subject: [PATCH] avb: Validate vbmeta key against U-Boot's dts
+
+Avoid using OTP to verify the public key when checking Linux from
+U-Boot.
+This hack is only as safe as the link before it in the boot flow.
+It can only be considered safe if:
+- U-Boot is validated by the SPL
+- The SPL is verified by the BootROM against the OTP
+
+Compare the pubkey against the one stored in U-Boot's dts, in the
+public-key property of the /avb node (comes from
+arch/arm/dts/axe-avb.dtsi).
+The key is generated at build time from Yocto using the AVB signing key,
+so it is not part of the U-Boot source itself.
+
+The key MUST be read from U-Boot's own device tree, never from the
+kernel's.
+With CONFIG_USING_KERNEL_DTB, U-Boot switches gd->fdt_blob to the
+kernel's device tree, which is in the boot.img we are verifying,
+which makes it unsafe.
+gd->ufdt_blob keeps pointing to the U-Boot dts, so use this instead.
+
+Missing key, missing device tree or length mismatches lead to
+verification fails.
+
+Force the device lock state to locked, as an unlocked device skips
+verification entirely.
+
+Upstream-Status: Inappropriate [oe-specific]
+Signed-off-by: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
+---
+ arch/arm/dts/axe-avb.dtsi               | 12 ++++
+ arch/arm/dts/rk3588-antelao-axe-sbc.dts |  1 +
+ arch/arm/dts/rk3588-evb.dts             |  1 +
+ common/android_bootloader.c             |  1 +
+ lib/avb/libavb_user/avb_ops_user.c      | 96 +++++++++++++++++--------
+ 5 files changed, 80 insertions(+), 31 deletions(-)
+ create mode 100644 arch/arm/dts/axe-avb.dtsi
+
+diff --git a/arch/arm/dts/axe-avb.dtsi b/arch/arm/dts/axe-avb.dtsi
+new file mode 100644
+index 0000000000..ed840933b5
+--- /dev/null
++++ b/arch/arm/dts/axe-avb.dtsi
+@@ -0,0 +1,12 @@
++// SPDX-License-Identifier: MIT
++/*
++ * AVB root public key. avb_root_pub.bin is generated at build time from
++ * the AVB signing key; U-Boot compares the key in vbmeta against it.
++ */
++
++/ {
++	avb {
++		u-boot,dm-pre-reloc;
++		public-key = /incbin/("avb_root_pub.bin");
++	};
++};
+diff --git a/arch/arm/dts/rk3588-antelao-axe-sbc.dts b/arch/arm/dts/rk3588-antelao-axe-sbc.dts
+index cb9710c827..d96586b6fd 100644
+--- a/arch/arm/dts/rk3588-antelao-axe-sbc.dts
++++ b/arch/arm/dts/rk3588-antelao-axe-sbc.dts
+@@ -8,6 +8,7 @@
+ #include "rk3588.dtsi"
+ #include "rk3588-u-boot.dtsi"
+ #include <dt-bindings/input/input.h>
++#include "axe-avb.dtsi"
+ 
+ / {
+ 	model = "ANTELAO IPC AXE-SBC-RK3588 Board";
+diff --git a/arch/arm/dts/rk3588-evb.dts b/arch/arm/dts/rk3588-evb.dts
+index ad750d5b74..abb6873e23 100644
+--- a/arch/arm/dts/rk3588-evb.dts
++++ b/arch/arm/dts/rk3588-evb.dts
+@@ -8,6 +8,7 @@
+ #include "rk3588.dtsi"
+ #include "rk3588-u-boot.dtsi"
+ #include <dt-bindings/input/input.h>
++#include "axe-avb.dtsi"
+ 
+ / {
+ 	model = "Rockchip RK3588 Evaluation Board";
+diff --git a/common/android_bootloader.c b/common/android_bootloader.c
+index 99059aef13..428afab267 100644
+--- a/common/android_bootloader.c
++++ b/common/android_bootloader.c
+@@ -827,6 +827,7 @@ static AvbSlotVerifyResult android_slot_verify(char *boot_partname,
+ 	if (ops->read_is_device_unlocked(ops, (bool *)&unlocked) != AVB_IO_RESULT_OK)
+ 		printf("Error determining whether device is unlocked.\n");
+ 
++	unlocked = 0; /* Lock State Fixed */
+ 	printf("read_is_device_unlocked() ops returned that device is %s\n",
+ 	       (unlocked & LOCK_MASK)? "UNLOCKED" : "LOCKED");
+ 
+diff --git a/lib/avb/libavb_user/avb_ops_user.c b/lib/avb/libavb_user/avb_ops_user.c
+index 4f57e7e617..1caf4aed69 100644
+--- a/lib/avb/libavb_user/avb_ops_user.c
++++ b/lib/avb/libavb_user/avb_ops_user.c
+@@ -42,6 +42,9 @@
+ #include <android_avb/avb_vbmeta_image.h>
+ #include <android_avb/avb_atx_validate.h>
+ #include <boot_rkimg.h>
++#include <fdtdec.h>
++
++DECLARE_GLOBAL_DATA_PTR;
+ 
+ static void byte_to_block(int64_t *offset,
+ 			  size_t *num_bytes,
+@@ -184,6 +187,59 @@ static AvbIOResult write_to_partition(AvbOps *ops,
+ 	return AVB_IO_RESULT_OK;
+ }
+ 
++/*
++ * The AVB root public key is in U-Boot's device tree,
++ * at arch/arm/dts/axe-avb.dtsi.
++ */
++static const void *avb_root_pub(int *len)
++{
++#ifdef CONFIG_USING_KERNEL_DTB
++	const void *blob = gd->ufdt_blob;
++#else
++	const void *blob = gd->fdt_blob;
++#endif
++	int node;
++
++	if (!blob)
++		return NULL;
++
++	node = fdt_path_offset(blob, "/avb");
++	if (node < 0)
++		return NULL;
++
++	return fdt_getprop(blob, node, "public-key", len);
++}
++
++static AvbIOResult avb_check_root_pub(const uint8_t *public_key_data,
++				      size_t public_key_length,
++				      bool *out_is_trusted)
++{
++	const void *root_pub;
++	int root_pub_len;
++
++	if (!public_key_length || !out_is_trusted || !public_key_data) {
++		printf("%s: Invalid parameters\n", __func__);
++		return AVB_IO_RESULT_ERROR_IO;
++	}
++
++	*out_is_trusted = false;
++
++	root_pub = avb_root_pub(&root_pub_len);
++	if (!root_pub) {
++		printf("%s: No AVB root public key in U-Boot's device tree\n",
++		       __func__);
++		return AVB_IO_RESULT_ERROR_IO;
++	}
++
++	if (public_key_length != (size_t)root_pub_len)
++		return AVB_IO_RESULT_ERROR_IO;
++
++	if (memcmp(public_key_data, root_pub, public_key_length) == 0)
++		*out_is_trusted = true;
++
++	return AVB_IO_RESULT_OK;
++}
++
+ static AvbIOResult
+ validate_vbmeta_public_key(AvbOps *ops,
+ 			   const uint8_t *public_key_data,
+@@ -192,22 +248,8 @@ validate_vbmeta_public_key(AvbOps *ops,
+ 			   size_t public_key_metadata_length,
+ 			   bool *out_is_trusted)
+ {
+-/* remain AVB_VBMETA_PUBLIC_KEY_VALIDATE to compatible legacy code */
+-#if defined(CONFIG_AVB_VBMETA_PUBLIC_KEY_VALIDATE) || \
+-    defined(AVB_VBMETA_PUBLIC_KEY_VALIDATE)
+-	if (out_is_trusted) {
+-		avb_atx_validate_vbmeta_public_key(ops,
+-						   public_key_data,
+-						   public_key_length,
+-						   public_key_metadata,
+-						   public_key_metadata_length,
+-						   out_is_trusted);
+-	}
+-#else
+-	if (out_is_trusted)
+-		*out_is_trusted = true;
+-#endif
+-	return AVB_IO_RESULT_OK;
++	return avb_check_root_pub(public_key_data, public_key_length,
++				  out_is_trusted);
+ }
+ 
+ static AvbIOResult read_rollback_index(AvbOps *ops,
+@@ -567,21 +609,13 @@ AvbIOResult validate_public_key_for_partition(AvbOps *ops,
+ 					      bool *out_is_trusted,
+ 					      uint32_t *out_rollback_index_location)
+ {
+-/* remain AVB_VBMETA_PUBLIC_KEY_VALIDATE to compatible legacy code */
+-#if defined(CONFIG_AVB_VBMETA_PUBLIC_KEY_VALIDATE) || \
+-    defined(AVB_VBMETA_PUBLIC_KEY_VALIDATE)
+-	if (out_is_trusted) {
+-		avb_atx_validate_vbmeta_public_key(ops,
+-						   public_key_data,
+-						   public_key_length,
+-						   public_key_metadata,
+-						   public_key_metadata_length,
+-						   out_is_trusted);
+-	}
+-#else
+-	if (out_is_trusted)
+-		*out_is_trusted = true;
+-#endif
++	AvbIOResult ret;
++
++	ret = avb_check_root_pub(public_key_data, public_key_length,
++				 out_is_trusted);
++	if (ret != AVB_IO_RESULT_OK)
++		return ret;
++
+ 	*out_rollback_index_location = 0;
+ 	return AVB_IO_RESULT_OK;
+ }

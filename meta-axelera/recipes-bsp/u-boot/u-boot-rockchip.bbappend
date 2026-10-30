@@ -11,7 +11,7 @@ inherit local-git
 SRCREV_rkbin = "12660714c81be85350a4092542e2ff599aa5adcb"
 SRCREV_uboot = "4cb81ad5558dec446092422d4590d700d9815c7c"
 
-DEPENDS += "u-boot-tools-native"
+DEPENDS += "u-boot-tools-native python3-native python3-avbtool-native"
 
 SRC_URI = " \
     ${REMOTE_REPOS_PREFIX}uboot-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=rk3588;name=uboot; \
@@ -26,7 +26,7 @@ SRC_URI = " \
     file://0009-common-bootm-Check-devtype-enviroment-before-strcmp.patch \
     file://0010-avb-Spoof-A-B-slot-routing-to-follow-Mender.patch \
     file://0011-android_bootloader.c-Fix-boot-crash-with-AVB-images.patch \
-    file://0012-avb-Add-Rockchip-patch-to-hardcode-pubkey.patch \
+    file://0012-avb-Validate-vbmeta-key-against-U-Boots-dts.patch \
     file://0013-include-configs-Enlarge-SYS_BOOTM_LEN.patch \
     file://0014-android_bootloader-Avoid-to-skip_initramfs-for-dm-ve.patch \
     file://0015-rsa-sign-Use-maximum-salt-length-for-RSA-PSS-signatu.patch \
@@ -63,6 +63,7 @@ RK_UBOOT_SPL = "${@'1' if d.getVar('AXE_UBOOT_SIGN_KEY_DIR') else ''}"
 # U-Boot. Leave empty for an unsigned build.
 AXE_UBOOT_SIGN_KEY_DIR ?= ""
 
+do_compile[file-checksums] += "${@'${AXE_AVB_SIGN_KEY_DIR}/private_key.pem:True' if d.getVar('AXE_AVB_SIGN_KEY_DIR') else ''}"
 do_compile:prepend() {
     if [ -n "${AXE_UBOOT_SIGN_KEY_DIR}" ]; then
         install -d ${B}/keys
@@ -70,6 +71,13 @@ do_compile:prepend() {
         install -m 0644 ${AXE_UBOOT_SIGN_KEY_DIR}/dev.pubkey \
                         ${AXE_UBOOT_SIGN_KEY_DIR}/dev.crt ${B}/keys/
     fi
+
+    if [ -z "${AXE_AVB_SIGN_KEY_DIR}" ]; then
+        bbfatal "AXE_AVB_SIGN_KEY_DIR is not set: no AVB key to embed in U-Boot"
+    fi
+    nativepython3 ${STAGING_BINDIR_NATIVE}/avbtool extract_public_key \
+        --key ${AXE_AVB_SIGN_KEY_DIR}/private_key.pem \
+        --output ${S}/arch/arm/dts/avb_root_pub.bin
 }
 
 do_compile:append() {
