@@ -1,4 +1,4 @@
-From ba2633c1ee031ca17724ca5cdf608bd58bb9b9fd Mon Sep 17 00:00:00 2001
+From d98fbd83df8fe22e0c51ca1a0d6f089b7ad52800 Mon Sep 17 00:00:00 2001
 From: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
 Date: Mon, 6 Jul 2026 10:51:21 +0200
 Subject: [PATCH] avb: Spoof A/B slot routing to follow Mender
@@ -16,13 +16,12 @@ boots as well, to avoid boot-loops.
 
 Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Patrick Barsanti <patrick.barsanti@amarulasolutions.com>
-
 ---
  common/android_ab.c                  | 24 ++++------
- common/android_bootloader.c          | 33 ++++++++++++--
+ common/android_bootloader.c          | 39 +++++++++++++++--
  lib/avb/libavb_ab/avb_ab_flow.c      | 65 ++++++++++------------------
  lib/avb/rk_avb_user/rk_ab_ops_user.c | 30 ++++---------
- 4 files changed, 71 insertions(+), 81 deletions(-)
+ 4 files changed, 77 insertions(+), 81 deletions(-)
 
 diff --git a/common/android_ab.c b/common/android_ab.c
 index 99c648b26a..e2d3d74ef6 100644
@@ -70,7 +69,7 @@ index 99c648b26a..e2d3d74ef6 100644
  }
  
 diff --git a/common/android_bootloader.c b/common/android_bootloader.c
-index c53bbaa3ef..819c490a37 100644
+index c53bbaa3ef..1219aeb6cd 100644
 --- a/common/android_bootloader.c
 +++ b/common/android_bootloader.c
 @@ -29,6 +29,8 @@
@@ -102,7 +101,7 @@ index c53bbaa3ef..819c490a37 100644
  		}
  	} else {
  		part_num = part_get_info_by_name(dev_desc,
-@@ -1344,10 +1346,33 @@ int android_bootloader_boot_flow(struct blk_desc *dev_desc,
+@@ -1344,10 +1346,39 @@ int android_bootloader_boot_flow(struct blk_desc *dev_desc,
  						slot_suffix)) {
  				printf("AVB verify failed\n");
  
@@ -128,6 +127,12 @@ index c53bbaa3ef..819c490a37 100644
 +		env_set_hex("mender_boot_part_hex", MENDER_ROOTFS_PART_A_NUMBER);
 +	}
 +
++	/*
++	 * env_save() writes the whole environment, including the bootargs
++	 * bootcmd built for this boot. The default environment has none:
++	 * drop it, or every failed boot persists another copy.
++	 */
++	env_set("bootargs", NULL);
 +	env_save();
 +	printf("AVB forced Mender active_part to: %s\n", env_get("mender_boot_part"));
 +	return -1;
@@ -277,3 +282,6 @@ index 2cd1562a6d..bc0aae6de4 100644
  }
  
  bool rk_avb_ab_have_bootable_slot(void)
+-- 
+2.53.0
+
