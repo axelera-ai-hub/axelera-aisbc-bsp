@@ -14,8 +14,6 @@ INSANE_SKIP:${PN}-src += "buildpaths"
 
 KCONFIG_MODE ?= "--alldefconfig"
 
-SRC_URI = "file://private_key.pem"
-
 # Make sure we use /usr/bin/env ${PYTHON_PN} for scripts
 do_patch:append() {
 	for s in `grep -rIl python ${S}/scripts`; do
@@ -83,7 +81,12 @@ do_install:prepend() {
 	fi
 }
 
+do_deploy[file-checksums] += "${@'${AXE_AVB_SIGN_KEY_DIR}/private_key.pem:True' if d.getVar('AXE_AVB_SIGN_KEY_DIR') else ''}"
 do_deploy:append() {
+	if [ -z "${AXE_AVB_SIGN_KEY_DIR}" ]; then
+		bbfatal "AXE_AVB_SIGN_KEY_DIR is not set: no AVB key to sign boot.img with"
+	fi
+
 	# Create boot.img to bundle ramdisk
 	echo "Manually creating boot.img using mkbootimg..."
 	${S}/scripts/mkbootimg \
@@ -104,7 +107,7 @@ do_deploy:append() {
 		--partition_name boot \
 		--partition_size 50331648 \
 		--algorithm SHA256_RSA2048 \
-		--key ${WORKDIR}/private_key.pem
+		--key ${AXE_AVB_SIGN_KEY_DIR}/private_key.pem
 
 	# Generate vbmeta partition for AVB checking
 	echo "Generating standalone vbmeta.img from boot.img descriptors..."
@@ -112,6 +115,6 @@ do_deploy:append() {
 		--include_descriptors_from_image ${DEPLOYDIR}/boot.img \
 		--padding_size 4096 \
 		--algorithm SHA256_RSA2048 \
-		--key ${WORKDIR}/private_key.pem \
+		--key ${AXE_AVB_SIGN_KEY_DIR}/private_key.pem \
 		--output ${DEPLOYDIR}/vbmeta.img
 }
