@@ -1,0 +1,74 @@
+#!groovy
+
+@Library('ci_scripts')
+@Library('repo_jenkins_lib')
+import com.amarula.build.Verification
+
+def runYoctoTargetBuild(String target, String config) {
+  sh """
+    #!/bin/bash -xe
+    mkdir -p ${HOME}/data
+    export SSTATE_DIR="${HOME}/data/bitbake.sstate"
+    export DL_DIR="${HOME}/data/bitbake.downloads"
+    export KAS_CONTAINER_IMAGE_DISTRO=debian-bookworm
+    export KAS_IMAGE_VERSION="5.1"
+    mkdir -p ssh-build-hosts
+    ssh-keyscan -p 38745 gitea.amarulasolutions.com > ssh-build-hosts/known_hosts
+    ssh-keyscan github.com >> ssh-build-hosts/known_hosts
+    sed -i 's/ rockchip-image//' kas/include/base.yaml
+    kas-container --ssh-dir ssh-build-hosts --ssh-agent shell --update $config -c \\
+       "bitbake $target"
+  """
+}
+
+throttle(['heavy_job']) { node('axelera-node') {
+  def credentials = ['c4f9fa8c-45d7-459e-a645-203f1245d914', '9af8a985-9516-467e-b9cb-0174692fe8c0']
+  def manifestUrl = "${GERRIT_SSH_JENKINSBUILDER_URL}/axelera/meta-axelera.git"
+  def options = [ history: true, branch: "${GERRIT_BRANCH}" ]
+  def buildCode
+  env.GERRIT_TOPIC = ''
+
+  def branch = env.GERRIT_BRANCH
+
+  switch(branch) {
+    case 'wrynose':
+      buildCode = [
+        'Yocto image verification ANTELAO-3588-UPSTREAM' : {
+          runYoctoTargetBuild("voyager-image-upstream-minimal", "kas/antelao-upstream.yaml")
+        }
+      ]
+      break;
+    default:
+      buildCode = [
+        'Yocto image verification ITX-3588J' : {
+          runYoctoTargetBuild("voyager-image-weston", "kas/itx-3588j.yaml")
+        },
+        'Yocto image verification ANTELAO-3588' : {
+          runYoctoTargetBuild("voyager-image-weston", "kas/antelao.yaml")
+        }
+      ]
+      break;
+  }
+
+  try {
+    catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+      def ver = new Verification(this, env, credentials)
+      ver.build(manifestUrl, buildCode, options)
+    }
+
+    if (currentBuild.result == 'FAILURE' || currentBuild.result == 'UNSTABLE') {
+      explainError()
+    }
+  } finally {
+    def path
+    /* Clean up workspace */
+    if (env.GERRIT_BRANCH != 'wrynose') {
+      path = "${WORKSPACE}/meta-axelera/build/tmp-glibc"
+    } else {
+      path = "${WORKSPACE}/meta-axelera/build/tmp"
+    }
+    dir (path) {
+      deleteDir()
+    }
+  }
+}}
