@@ -4,7 +4,7 @@ BUILD_VARIANT = "${@'eng-' if d.getVar('AXE_ENGINEERING_BUILD') == '1' else ''}"
 
 IMAGE_LINK_NAME = "${IMAGE_BASENAME}-${BUILD_VARIANT}${MACHINE}-${DISTRO_VERSION}"
 
-ENG_PACKAGE = " \
+ENG_PACKAGES = " \
     clinfo \
     htop \
     iperf3 \
