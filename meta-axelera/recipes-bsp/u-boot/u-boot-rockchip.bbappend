@@ -32,6 +32,7 @@ SRC_URI = " \
     file://0015-rsa-sign-Use-maximum-salt-length-for-RSA-PSS-signatu.patch \
     file://environment.cfg; \
     file://secureboot.cfg \
+    file://prevent-rollback.cfg \
 "
 
 SRC_URI:append = " ${@'file://fit-signature.cfg' if d.getVar('AXE_UBOOT_SIGN_KEY_DIR') else ''}"

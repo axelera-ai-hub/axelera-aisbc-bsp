@@ -116,5 +116,6 @@ do_deploy:append() {
 		--padding_size 4096 \
 		--algorithm SHA256_RSA2048 \
 		--key ${AXE_AVB_SIGN_KEY_DIR}/private_key.pem \
-		--output ${DEPLOYDIR}/vbmeta.img
+		--output ${DEPLOYDIR}/vbmeta.img \
+		--rollback_index ${AVB_ROLLBACK_INDEX}
 }
