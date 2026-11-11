@@ -183,6 +183,10 @@ local_conf_header:
     AXE_AVB_SIGN_KEY_DIR = "${TOPDIR}/../meta-axelera/recipes-kernel/linux/files"
     # AXE_AVB_SIGN_KEY_DIR = "${TOPDIR}/../env/keys/avb"
 
+  optee-signing: |
+    AXE_OPTEE_TA_SIGN_KEY_DIR = ""
+    # AXE_OPTEE_TA_SIGN_KEY_DIR = "${TOPDIR}/../env/keys/optee"
+
   engineering: |
     DISTRO_FEATURES:append = "${@' voyager-dm-verity' if d.getVar('AXE_ENGINEERING_BUILD') != '1' else ''}"
     AXE_ENGINEERING_BUILD ?= "1"

@@ -11,7 +11,7 @@ inherit local-git
 SRCREV_rkbin = "12660714c81be85350a4092542e2ff599aa5adcb"
 SRCREV_uboot = "4cb81ad5558dec446092422d4590d700d9815c7c"
 
-DEPENDS += "u-boot-tools-native python3-native python3-avbtool-native"
+DEPENDS += "u-boot-tools-native python3-native python3-avbtool-native optee-rockchip-native"
 
 SRC_URI = " \
     ${REMOTE_REPOS_PREFIX}uboot-rockchip.git;protocol=${REMOTE_PROTOCOL};branch=rk3588;name=uboot; \
@@ -63,7 +63,15 @@ RK_UBOOT_SPL = "${@'1' if d.getVar('AXE_UBOOT_SIGN_KEY_DIR') else ''}"
 # U-Boot. Leave empty for an unsigned build.
 AXE_UBOOT_SIGN_KEY_DIR ?= ""
 
+# Update this together with SRCREV_rkbin
+AXE_RK_BL32 = "bin/rk35/rk3588_bl32_v1.17.bin"
+
+# Directory with oem_privkey.pem. OP-TEE will only load TAs signed with it.
+# Leave empty to keep default Rockchip key.
+AXE_OPTEE_TA_SIGN_KEY_DIR ?= ""
+
 do_compile[file-checksums] += "${@'${AXE_AVB_SIGN_KEY_DIR}/private_key.pem:True' if d.getVar('AXE_AVB_SIGN_KEY_DIR') else ''}"
+do_compile[file-checksums] += "${@'${AXE_OPTEE_TA_SIGN_KEY_DIR}/oem_privkey.pem:True' if d.getVar('AXE_OPTEE_TA_SIGN_KEY_DIR') else ''}"
 do_compile:prepend() {
     if [ -n "${AXE_UBOOT_SIGN_KEY_DIR}" ]; then
         install -d ${B}/keys
@@ -78,6 +86,22 @@ do_compile:prepend() {
     nativepython3 ${STAGING_BINDIR_NATIVE}/avbtool extract_public_key \
         --key ${AXE_AVB_SIGN_KEY_DIR}/private_key.pem \
         --output ${S}/arch/arm/dts/avb_root_pub.bin
+
+    bl32=${WORKDIR}/rkbin/${AXE_RK_BL32}
+    [ -f ${bl32}.orig ] || cp ${bl32} ${bl32}.orig
+    cp ${bl32}.orig ${bl32}
+
+    if [ -n "${AXE_OPTEE_TA_SIGN_KEY_DIR}" ]; then
+        # change_puk exits 0 even when it refuses a key (e.g. not RSA-2048),
+        # so check its output rather than only its exit status
+        out=$(cd ${WORKDIR}/rkbin && change_puk --teebin ${AXE_RK_BL32} \
+              --key ${AXE_OPTEE_TA_SIGN_KEY_DIR}/oem_privkey.pem 2>&1) \
+            || bbfatal "change_puk failed on ${AXE_RK_BL32}: ${out}"
+        case "${out}" in
+            *Success!*) ;;
+            *) bbfatal "change_puk did not replace the TA key: ${out}" ;;
+        esac
+    fi
 }
 
 do_compile:append() {
