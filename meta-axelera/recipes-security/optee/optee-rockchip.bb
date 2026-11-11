@@ -4,6 +4,8 @@ LICENSE = "CLOSED"
 
 inherit systemd
 
+BBCLASSEXTEND = "native"
+
 SRC_URI = "\
     ${REMOTE_REPOS_PREFIX}optee-rockchip;protocol=ssh;branch=master \
     file://tee-supplicant.service \
@@ -11,7 +13,7 @@ SRC_URI = "\
 
 SRCREV = "bf8d67f6e8e8b269e0198b45353440ba78c2b881"
 
-do_install:append() {
+do_install:append:class-target() {
     install -d ${D}${libdir}
     cp -rP ${WORKDIR}/git/bin/optee_v2/lib/arm64/*.so* ${D}${libdir}/
     chmod 0755 ${D}${libdir}/*.so*
@@ -28,6 +30,12 @@ do_install:append() {
 
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/tee-supplicant.service ${D}${systemd_system_unitdir}/
+}
+
+do_install:class-native() {
+    install -D -m 0755 \
+        ${WORKDIR}/git/rk_tee_user/v1/tools/change_puk_tool-release/change_puk_linux/change_puk \
+        ${D}${bindir}/change_puk
 }
 
 SYSTEMD_SERVICE:${PN} = "tee-supplicant.service"
