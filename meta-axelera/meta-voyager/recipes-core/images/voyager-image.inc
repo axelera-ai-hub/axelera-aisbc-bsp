@@ -11,7 +11,7 @@ ENG_PACKAGES = " \
     librkcrypto-test \
     lmsensors \
     minicom \
-    optee-test \
+    optee-test-rockchip \
     testusb \
     strace \
     stress-ng \
