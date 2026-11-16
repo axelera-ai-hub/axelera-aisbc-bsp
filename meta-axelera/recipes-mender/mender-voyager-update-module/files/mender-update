@@ -3,6 +3,8 @@ set -e
 
 STATE="$1"
 FILES="$2"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+VERSION_CHECK="${SCRIPT_DIR}/voyager-version-check.py"
 WORK_DIR="/data/mender/update-files"
 STAGING_DIR="${WORK_DIR}/staging"
 MANIFEST="${FILES}/header/meta-data"
@@ -183,6 +185,9 @@ case "${STATE}" in
         ;;
 
     Download)
+        incoming_artifact=$(cat "${FILES}/header/artifact_name")
+        python3 "${VERSION_CHECK}" "${incoming_artifact}" || exit 1
+
         rm -rf "${STAGING_DIR}"
         mkdir -p "${STAGING_DIR}"
         file=$(cat stream-next)
