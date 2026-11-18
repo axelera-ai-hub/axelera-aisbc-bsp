@@ -30,6 +30,7 @@ SRC_URI = " \
     file://0013-include-configs-Enlarge-SYS_BOOTM_LEN.patch \
     file://0014-android_bootloader-Avoid-to-skip_initramfs-for-dm-ve.patch \
     file://0015-rsa-sign-Use-maximum-salt-length-for-RSA-PSS-signatu.patch \
+    file://0016-rk_avb_ops_user.c-Only-update-indexes-if-slot-succes.patch \
     file://environment.cfg; \
     file://secureboot.cfg \
     file://prevent-rollback.cfg \

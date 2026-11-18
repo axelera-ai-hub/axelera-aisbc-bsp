@@ -1,0 +1,41 @@
+From a8f0b2547d70275ebf956ede8de230f6121336e6 Mon Sep 17 00:00:00 2001
+From: Annachiara Gallo <annachiara.gallo@amarulasolutions.com>
+Date: Wed, 18 Nov 2026 09:48:13 +0100
+Subject: [PATCH] rk_avb_ops_user.c: Only update indexes if slot successful
+
+Rockchip index updating always writes the greater index in vbmeta's
+header during android_slot_verify().
+Leverage upgrade_available U-Boot environment variable set by
+mender-update tp only update indexes if mender has reached the
+Commit phase and rebooted, allowing rollback to the idle partiton
+even in case of index increase.
+
+This is a temporary solution since upgrade_available is not
+protected.
+
+Upstream-Status: Inappropriate [oe-specific]
+Signed-off-by: Annachiara Gallo <annachiara.gallo@amarulasolutions.com>
+---
+ lib/avb/rk_avb_user/rk_avb_ops_user.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/lib/avb/rk_avb_user/rk_avb_ops_user.c b/lib/avb/rk_avb_user/rk_avb_ops_user.c
+index 78e0d9aa5f..262d9878c5 100644
+--- a/lib/avb/rk_avb_user/rk_avb_ops_user.c
++++ b/lib/avb/rk_avb_user/rk_avb_ops_user.c
+@@ -825,6 +825,15 @@ int rk_avb_update_stored_rollback_indexes_for_slot(AvbOps* ops, AvbSlotVerifyDat
+ 	uint64_t current_stored_rollback_index;
+ 	AvbIOResult io_ret;
+ 
++	/* Only update secure storage with new rollback index if:
++	 *
++	 * - We are in a rollback reboot (mender-update failed and triggered rollback)
++	 * - We are in a >= second reboot after mender install (mender-update succeeded and committed)
++	 * - We are in the image flashed in MaskROM mode case (upgrade_available does not exist, defaults to 0) */
++	if (env_get_ulong("upgrade_available", 10, 0) != 0){
++		return 0;
++	}
++
+ 	if (rollback_index > 0) {
+ 		io_ret = ops->read_rollback_index(ops, 0, &current_stored_rollback_index);
+ 		if (io_ret != AVB_IO_RESULT_OK)
