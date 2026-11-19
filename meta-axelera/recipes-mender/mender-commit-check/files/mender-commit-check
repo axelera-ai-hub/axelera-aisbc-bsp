@@ -4,7 +4,7 @@ set -e
 MENDER_DIR="/var/lib/mender"
 
 if [ -d "${MENDER_DIR}"/scripts ]; then
-  /usr/bin/mender commit
+  /usr/bin/mender-update commit
 
   # Scripts are packaged with the artifact and are not needed after a
   # sucessfull boot.
