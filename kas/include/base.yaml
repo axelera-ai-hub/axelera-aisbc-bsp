@@ -110,7 +110,7 @@ repos:
   meta-mend:
     url: "https://github.com/amarula/meta-mend.git"
     branch: main
-    commit: 2e445197162e286426489b9a6c6b0681d2d2f910
+    commit: 708d2dd919ecc45c6542df2ca9fafc4c29924761
     signed: false
 
   meta-selinux:
